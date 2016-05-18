@@ -44,9 +44,7 @@ public struct D{
     }
     
     public struct NAVBAR{
-        public static let HEIGHT : CGFloat = 188.0
-        public static let HEIGHT_DEFAULT : CGFloat = 44.0
-        public static let HEIGHT_DIFF : CGFloat = D.NAVBAR.HEIGHT - D.NAVBAR.HEIGHT_DEFAULT
+        public static let HEIGHT : CGFloat = 88.0
     }
     
 }

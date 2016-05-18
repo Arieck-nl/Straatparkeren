@@ -13,14 +13,19 @@
 		1D0C04781CE1FE1400CC167F /* CarplayWindowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C04771CE1FE1400CC167F /* CarplayWindowViewController.swift */; };
 		1D0C047B1CE23C2800CC167F /* SPNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C047A1CE23C2800CC167F /* SPNavigationController.swift */; };
 		1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C047C1CE23CE000CC167F /* SPViewController.swift */; };
+		1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */; };
+		1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
 		1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C21CE0C67B00B697ED /* Helpers.swift */; };
 		1D97E8C51CE0C6E200B697ED /* Dimens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C41CE0C6E200B697ED /* Dimens.swift */; };
 		1DD505EC1CE31B1800BC56A2 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD505EB1CE31B1800BC56A2 /* Colors.swift */; };
+		1DD505F01CE369EB00BC56A2 /* SPNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */; };
 		1DEA933A1CE0A801003917CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA93391CE0A801003917CE /* AppDelegate.swift */; };
 		1DEA93411CE0A801003917CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1DEA93401CE0A801003917CE /* Assets.xcassets */; };
 		1DEA935C1CE0ABBD003917CE /* SpringboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA935B1CE0ABBD003917CE /* SpringboardViewController.swift */; };
+		1DF7F5B51CEB26550065502B /* GoogleAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7F5B41CEB26550065502B /* GoogleAPIController.swift */; };
+		1DF7F5B91CEB33CF0065502B /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF7F5B81CEB33CF0065502B /* Keys.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,16 +35,21 @@
 		1D0C04771CE1FE1400CC167F /* CarplayWindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarplayWindowViewController.swift; path = CarplayWindow/CarplayWindowViewController.swift; sourceTree = "<group>"; };
 		1D0C047A1CE23C2800CC167F /* SPNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNavigationController.swift; sourceTree = "<group>"; };
 		1D0C047C1CE23CE000CC167F /* SPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPViewController.swift; sourceTree = "<group>"; };
+		1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingAvailabilty.swift; sourceTree = "<group>"; };
+		1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPolyline.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D97E8C21CE0C67B00B697ED /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		1D97E8C41CE0C6E200B697ED /* Dimens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dimens.swift; sourceTree = "<group>"; };
 		1DD505EB1CE31B1800BC56A2 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNavigationBar.swift; sourceTree = "<group>"; };
 		1DEA93361CE0A7FD003917CE /* Straatparkeren.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Straatparkeren.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DEA93391CE0A801003917CE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1DEA93401CE0A801003917CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1DEA93451CE0A801003917CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1DEA935B1CE0ABBD003917CE /* SpringboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardViewController.swift; path = Springboard/SpringboardViewController.swift; sourceTree = "<group>"; };
+		1DF7F5B41CEB26550065502B /* GoogleAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GoogleAPIController.swift; path = GoogleAPI/GoogleAPIController.swift; sourceTree = "<group>"; };
+		1DF7F5B81CEB33CF0065502B /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		282CA78CB4334B1C2AA7444E /* Pods-Straatparkeren.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Straatparkeren.release.xcconfig"; path = "Pods/Target Support Files/Pods-Straatparkeren/Pods-Straatparkeren.release.xcconfig"; sourceTree = "<group>"; };
 		FEF178419434FE361397D735 /* Pods_Straatparkeren.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Straatparkeren.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -94,6 +104,8 @@
 			children = (
 				1D0C047A1CE23C2800CC167F /* SPNavigationController.swift */,
 				1D0C047C1CE23CE000CC167F /* SPViewController.swift */,
+				1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */,
+				1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -127,6 +139,7 @@
 				1DEA93391CE0A801003917CE /* AppDelegate.swift */,
 				1DEA93401CE0A801003917CE /* Assets.xcassets */,
 				1DEA93451CE0A801003917CE /* Info.plist */,
+				1DF7F5B81CEB33CF0065502B /* Keys.plist */,
 			);
 			path = Straatparkeren;
 			sourceTree = "<group>";
@@ -141,6 +154,7 @@
 		1DEA93561CE0AAAB003917CE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1DF7F5B31CEB24EA0065502B /* GoogleAPI */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -160,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */,
+				1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -182,6 +197,14 @@
 				1D0C045F1CE1BEB300CC167F /* SpringboardAppCell.swift */,
 			);
 			name = Springboard;
+			sourceTree = "<group>";
+		};
+		1DF7F5B31CEB24EA0065502B /* GoogleAPI */ = {
+			isa = PBXGroup;
+			children = (
+				1DF7F5B41CEB26550065502B /* GoogleAPIController.swift */,
+			);
+			name = GoogleAPI;
 			sourceTree = "<group>";
 		};
 		7355DC93B8172AA324089CD6 /* Frameworks */ = {
@@ -253,6 +276,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DF7F5B91CEB33CF0065502B /* Keys.plist in Resources */,
 				1DEA93411CE0A801003917CE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,13 +341,17 @@
 				1DEA933A1CE0A801003917CE /* AppDelegate.swift in Sources */,
 				1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */,
 				1D0C04751CE1EB0200CC167F /* MapsOverviewController.swift in Sources */,
+				1DD505F01CE369EB00BC56A2 /* SPNavigationBar.swift in Sources */,
 				1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */,
+				1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */,
 				1D97E8C51CE0C6E200B697ED /* Dimens.swift in Sources */,
 				1D0C04781CE1FE1400CC167F /* CarplayWindowViewController.swift in Sources */,
 				1D0C04601CE1BEB300CC167F /* SpringboardAppCell.swift in Sources */,
+				1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */,
 				1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */,
 				1D0C047B1CE23C2800CC167F /* SPNavigationController.swift in Sources */,
 				1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */,
+				1DF7F5B51CEB26550065502B /* GoogleAPIController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

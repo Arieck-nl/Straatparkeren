@@ -21,3 +21,19 @@ func UIColorFromRGB(colorCode: String, alpha: Float = 1.0) -> UIColor {
     return UIColor(red: r, green: g, blue: b, alpha: CGFloat(alpha))
 }
 
+/* return key for string used in Keys.plist */
+func getKeyFor(id : String) -> String{
+    var keys: NSDictionary?
+    var returnKey = ""
+    
+    if let path = NSBundle.mainBundle().pathForResource("Keys", ofType: "plist") {
+        keys = NSDictionary(contentsOfFile: path)
+    }
+    
+    if let dict = keys {
+        returnKey = (dict[id] as? String)!
+    }
+    
+    return returnKey
+}
+

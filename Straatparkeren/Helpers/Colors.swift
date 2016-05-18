@@ -34,4 +34,13 @@ public struct C{
     public static let BACKGROUND = UIColorFromRGB("000000")
     public static let TEXT = UIColorFromRGB("FFFFFF")
     
+    //OTHER
+    
+    /* Parking State colors */
+    public struct PARKING_STATE{
+        public static let FREE = UIColor.greenColor().colorWithAlphaComponent(S.OPACITY.REGULAR)
+        public static let SEMI_FULL = UIColor.orangeColor().colorWithAlphaComponent(S.OPACITY.REGULAR)
+        public static let FULL = UIColor.redColor().colorWithAlphaComponent(S.OPACITY.REGULAR)
+    }
+    
 }

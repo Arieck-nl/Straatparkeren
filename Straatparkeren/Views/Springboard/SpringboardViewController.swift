@@ -22,6 +22,7 @@ class SpringboardViewController: SPViewController, UICollectionViewDataSource, U
         self.edgesForExtendedLayout = .None
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+//        self.setCustomToolbarHidden(true)
         
         vc = MapsOverviewController()
         createCollectionView()

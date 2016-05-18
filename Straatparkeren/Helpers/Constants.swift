@@ -19,7 +19,38 @@ public struct S{
         public static let REGULAR : CGFloat = 0.5
         public static let DARK : CGFloat = 0.75
     }
+    
+    
 }
 
+public enum PARKING_STATE : Int {
+    case FREE
+    case SEMI_FULL
+    case FULL
+    
+    var color: UIColor {
+        switch self {
+        case .FREE: return C.PARKING_STATE.FREE
+        case .SEMI_FULL: return C.PARKING_STATE.SEMI_FULL
+        case .FULL: return C.PARKING_STATE.FULL
+        }
+    }
+    
+    
+    
+}
 
+public struct API{
+    public static let GOOGLE_MAPS_ROADS = "https://roads.googleapis.com/v1/snapToRoads"
+    /* 
+     PARAMETERS:
+        path        : path
+        key         : api key
+        interpolate : interpolate (optional)
+     */
+}
+
+public struct K{
+    public static let GOOGLE_MAPS_API = "GoogleMapsAPIKey"
+}
 
