@@ -30,6 +30,7 @@ class GoogleAPIController: NSObject {
         polylineString = String(polylineString.characters.dropLast())
         print(polylineString)
         
+        
         Alamofire.request(.GET, API.GOOGLE_MAPS_ROADS, parameters: [
             "interpolate": "true",
             "path": polylineString,
@@ -41,7 +42,9 @@ class GoogleAPIController: NSObject {
 //                print(response.response) // URL response
 //                print(response.data)     // server data
 //                print(response.result)   // result of response serialization
-                
+                if (response.result.value == nil){
+                    return
+                }
                 
                 if let json : JSON = JSON(response.result.value!) {
                     print("JSON: \(json)")

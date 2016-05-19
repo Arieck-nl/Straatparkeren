@@ -15,6 +15,7 @@
 		1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C047C1CE23CE000CC167F /* SPViewController.swift */; };
 		1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */; };
 		1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */; };
+		1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
 		1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C21CE0C67B00B697ED /* Helpers.swift */; };
@@ -37,6 +38,7 @@
 		1D0C047C1CE23CE000CC167F /* SPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPViewController.swift; sourceTree = "<group>"; };
 		1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingAvailabilty.swift; sourceTree = "<group>"; };
 		1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPolyline.swift; sourceTree = "<group>"; };
+		1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPSearchBar.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D97E8C21CE0C67B00B697ED /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				1D0C047C1CE23CE000CC167F /* SPViewController.swift */,
 				1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */,
 				1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */,
+				1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				TargetAttributes = {
 					1DEA93351CE0A7FC003917CE = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = LS2XT4329G;
 					};
 				};
 			};
@@ -346,6 +350,7 @@
 				1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */,
 				1D97E8C51CE0C6E200B697ED /* Dimens.swift in Sources */,
 				1D0C04781CE1FE1400CC167F /* CarplayWindowViewController.swift in Sources */,
+				1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */,
 				1D0C04601CE1BEB300CC167F /* SpringboardAppCell.swift in Sources */,
 				1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */,
 				1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */,
@@ -449,10 +454,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Straatparkeren/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.arieck.Straatparkeren;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -462,10 +472,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Straatparkeren/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nl.arieck.Straatparkeren;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

@@ -54,3 +54,8 @@ public struct K{
     public static let GOOGLE_MAPS_API = "GoogleMapsAPIKey"
 }
 
+public struct STR{
+    public static let navbar_search_btn = "Zoeken"
+    public static let navbar_back_btn = "Terug"
+}
+

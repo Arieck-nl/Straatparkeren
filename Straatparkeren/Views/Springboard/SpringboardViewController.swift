@@ -21,8 +21,7 @@ class SpringboardViewController: SPViewController, UICollectionViewDataSource, U
         
         self.edgesForExtendedLayout = .None
         
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-//        self.setCustomToolbarHidden(true)
+        self.setCustomToolbarHidden(true)
         
         vc = MapsOverviewController()
         createCollectionView()
@@ -36,7 +35,6 @@ class SpringboardViewController: SPViewController, UICollectionViewDataSource, U
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     func createCollectionView() {

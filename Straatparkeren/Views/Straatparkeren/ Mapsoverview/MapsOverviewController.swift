@@ -15,13 +15,23 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var locationManager     : CLLocationManager!
     var started = false
     
+    var searchBar           : UISearchBar?
+    var searchBtn           : UIButton?
+    var searchText          : UILabel?
+    let searchImg           : UIImage = UIImage(named: "SearchIcon")!
+    let backImg           : UIImage = UIImage(named: "BackIcon")!
+    
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor.whiteColor()
+        
+        view.backgroundColor = UIColor.blackColor()
         
         // Map init
-        map = MKMapView(frame: view.frame)
+        map = MKMapView(frame: CGRect(x: 0, y: 0, w: D.SCREEN_WIDTH, h: D.SCREEN_HEIGHT))
         map.delegate = self
+        map.showsPointsOfInterest = false
+        map.showsUserLocation = true
+        map.setUserTrackingMode(.FollowWithHeading, animated: false)
+        map.clipsToBounds = true
         view.addSubview(map)
         
         if (CLLocationManager.locationServicesEnabled())
@@ -38,25 +48,50 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         self.map.setRegion(region, animated: true)
         
-        //        var parkingLanes : [ParkingAvailability] = []
-        //        parkingLanes.append(ParkingAvailability(polylinePoints: [
-        //            CLLocationCoordinate2DMake(51.9260289, 4.4538485),
-        //            CLLocationCoordinate2DMake(51.9280289, 4.4568485)
-        //            ], parkingState: PARKING_STATE.FREE))
-        //        parkingLanes.append(ParkingAvailability(polylinePoints: [
-        //            CLLocationCoordinate2DMake(51.9270289, 4.4538485),
-        //            CLLocationCoordinate2DMake(51.9280289, 4.4548485),
-        //            CLLocationCoordinate2DMake(51.9290289, 4.4558685)
-        //            ], parkingState: PARKING_STATE.SEMI_FULL))
-        //        parkingLanes.append(ParkingAvailability(polylinePoints: [
-        //            CLLocationCoordinate2DMake(51.9160289, 4.4596485),
-        //            CLLocationCoordinate2DMake(51.9160289, 4.4598485)
-        //            ], parkingState: PARKING_STATE.FULL))
+        super.viewDidLoad()
+        setSearchBar()
         
     }
     
+    func setSearchBar(){
+        
+        searchBtn  = UIButton(frame: CGRect(x: D.SCREEN_WIDTH - D.NAVBAR.HEIGHT - D.SPACING.REGULAR, y: D.SPACING.REGULAR, w: D.NAVBAR.HEIGHT, h: D.NAVBAR.HEIGHT - (D.SPACING.REGULAR * 2)))
+        searchBtn?.setImage(UIImage(named: "SearchIcon"), forState: .Normal)
+        searchBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, D.SPACING.REGULAR, D.SPACING.SMALL + D.FONT.XXLARGE, D.SPACING.REGULAR)
+        searchBtn?.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
+        searchBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
+        self.view.addSubview(searchBtn!)
+        
+        searchText = UILabel(frame: CGRect(x: (searchBtn?.frame.x)!, y: searchBtn!.frame.y + searchBtn!.frame.height - D.FONT.XXLARGE, w: searchBtn!.frame.width, h: 100))
+        searchText!.text = STR.navbar_search_btn
+        searchText?.textColor = C.TEXT
+        searchText!.textAlignment = .Center
+        searchText?.font = searchText?.font.fontWithSize(D.FONT.XXLARGE)
+        searchText!.fitHeight()
+        self.view.addSubview(searchText!)
+        
+        
+        
+        searchBar = SPSearchBar(frame: CGRect(x: 0, y: 0, w: (searchBtn?.frame.x)! - D.SPACING.REGULAR, h: D.NAVBAR.HEIGHT))
+        searchBar!.hidden = true
+        view.addSubview(searchBar!)
+    }
+    
+    func toggleSearchBar(){
+        if(searchBar!.hidden){
+            searchBar!.hidden = false
+            searchBar!.becomeFirstResponder()
+            searchBtn?.setImage(backImg, forState: .Normal)
+            searchText!.text = STR.navbar_back_btn
+        }else{
+            searchBar!.hidden = true
+            searchBar!.text = ""
+            searchBtn?.setImage(searchImg, forState: .Normal)
+            searchText!.text = STR.navbar_search_btn
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -68,10 +103,13 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         
-        let parkingLanes : [ParkingAvailability] = generateParkingAvailabilities(userLocation.coordinate)
-        if parkingLanes.count > 0{
-            renderParkingPolylines(parkingLanes)
-        }
+        //        if !started{
+        //            let parkingLanes : [ParkingAvailability] = generateParkingAvailabilities(userLocation.coordinate)
+        //            if parkingLanes.count > 0{
+        //                started = true
+        //                renderParkingPolylines(parkingLanes)
+        //            }
+        //        }
         
     }
     
@@ -107,7 +145,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let dividerLong = 1000000.0
         
         
-        for i in (0..<1){
+        for _ in (0..<1){
             let endLatInt1 = (Double(arc4random_uniform(distanceLat)) - corrLat) / dividerLat
             let endLat1 = location.latitude - endLatInt1
             let endLongInt1 = (Double(arc4random_uniform(distanceLong)) - corrLong) / dividerLong
@@ -116,24 +154,19 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             let endLat2 = location.latitude - endLatInt2
             let endLongInt2 = (Double(arc4random_uniform(distanceLong)) - corrLong) / dividerLong
             let endLong2 = location.longitude - endLongInt2
-            let endLatInt3 = (Double(arc4random_uniform(distanceLat)) - corrLat) / dividerLat
-            let endLat3 = location.latitude - endLatInt3
-            let endLongInt3 = (Double(arc4random_uniform(distanceLong)) - corrLong) / dividerLong
-            let endLong3 = location.longitude - endLongInt3
             
             let parkingAvailability = ParkingAvailability(polylinePoints: [
                 CLLocationCoordinate2DMake(endLat1, endLong1),
                 CLLocationCoordinate2DMake(endLat2, endLong2),
-//                CLLocationCoordinate2DMake(endLat3, endLong3),
                 ], parkingState: PARKING_STATE(rawValue: Int(arc4random_uniform(3)))!)
-//            
-//            for coordinate in parkingAvailability.polylinePoints{
-//                let ann = MKPointAnnotation()
-//                ann.coordinate = coordinate
-//                self.map.addAnnotation(ann)
-//            }
+            //
+            //            for coordinate in parkingAvailability.polylinePoints{
+            //                let ann = MKPointAnnotation()
+            //                ann.coordinate = coordinate
+            //                self.map.addAnnotation(ann)
+            //            }
             
-                        parkingAvailabilities.append(parkingAvailability)
+            parkingAvailabilities.append(parkingAvailability)
         }
         return parkingAvailabilities
     }
@@ -157,9 +190,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         
         let polyline : SPPolyline = overlay as! SPPolyline
-        var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+        let polylineRenderer = MKPolylineRenderer(overlay: overlay)
         polylineRenderer.strokeColor = polyline.strokeColor
         polylineRenderer.lineWidth = 10
+        
         return polylineRenderer
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 class SPNavigationController: UINavigationController {
     
     override func viewDidLoad() {
-
+        setNavigationBarHidden(true, animated: false)
     }
 
 }

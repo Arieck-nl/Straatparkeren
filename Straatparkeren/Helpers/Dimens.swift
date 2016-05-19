@@ -30,6 +30,7 @@ public struct D{
         public static let LARGE : CGFloat = 20.0
         public static let XLARGE : CGFloat = 24.0
         public static let XXLARGE : CGFloat = 28.0
+        public static let XXXLARGE : CGFloat = 32.0
     }
     
     //OTHER
@@ -44,7 +45,11 @@ public struct D{
     }
     
     public struct NAVBAR{
-        public static let HEIGHT : CGFloat = 88.0
+        public static let HEIGHT : CGFloat = 124.0
+    }
+    
+    public struct SEARCHBAR{
+        public static let ICON_HEIGHT : CGFloat = 44.0
     }
     
 }

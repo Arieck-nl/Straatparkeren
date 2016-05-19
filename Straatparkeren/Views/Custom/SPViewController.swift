@@ -19,9 +19,9 @@ class SPViewController: UIViewController {
     func setToolbar(){
         SPNavBar.frame = CGRectMake(0, 0, D.SCREEN_WIDTH, D.NAVBAR.HEIGHT)
         
-        let nextView : UIButton = UIButton(x: 0, y: 0, w: 50, h: 50, target: self, action: #selector(SPViewController.itemSelected))
-        nextView.backgroundColor = C.PRIMARY.REGULAR
-        SPNavBar.addSubview(nextView)
+//        let nextView : UIButton = UIButton(x: 0, y: 0, w: 50, h: 50, target: self, action: #selector(SPViewController.itemSelected))
+//        nextView.backgroundColor = C.PRIMARY.REGULAR
+//        SPNavBar.addSubview(nextView)
         
         view.addSubview(SPNavBar)
     }
