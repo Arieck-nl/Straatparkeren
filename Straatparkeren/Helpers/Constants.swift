@@ -16,8 +16,10 @@ let FONT_REGULAR = "AzoSans-Regular"
 //STYLE RELATED
 public struct S{
     public struct OPACITY{
+        public static let LIGHT : CGFloat = 0.25
         public static let REGULAR : CGFloat = 0.5
         public static let DARK : CGFloat = 0.75
+        public static let XDARK : CGFloat = 0.85
     }
     
     
@@ -36,8 +38,10 @@ public enum PARKING_STATE : Int {
         }
     }
     
-    
-    
+}
+
+public struct USER_DEFAULTS{
+    public static let FIRST_TIME = "FirstTimeUse"
 }
 
 public struct API{
@@ -56,7 +60,10 @@ public struct K{
 
 public struct STR{
     public static let navbar_search_btn = "Zoeken"
+    public static let map_home_btn = "Huidige Locatie"
     public static let navbar_back_btn = "Terug"
     public static let search_no_results = "Geen resultaten"
+    public static let explanation_text = "In deze app kunt u de parkeerbezetting zien van de gewenste locatie. Groen geeft de meeste kans op voldoende parkeerplaatsen. \n Deze app toont functionaliteit afhankelijk van uw veiligheid."
+    public static let explanation_btn = "Begrepen"
 }
 

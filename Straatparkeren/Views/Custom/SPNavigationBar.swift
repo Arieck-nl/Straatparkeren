@@ -10,15 +10,17 @@ import UIKit
 
 class SPNavigationBar: UIView {
     
+    private var titleLabel : UILabel?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-
+        titleLabel = UILabel(x: D.SPACING.REGULAR, y: (frame.height - D.FONT.XXXLARGE) / 2, w: self.frame.width - D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), h: 100, fontSize: D.FONT.XXXLARGE)
+        titleLabel?.textColor = C.TEXT
+        titleLabel?.fitHeight()
+        self.addSubview(titleLabel!)
     }
     
-    func itemSelected(){
-        print("got it")
-    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -26,6 +28,11 @@ class SPNavigationBar: UIView {
     
     func addTab(title: String, icon: String){
         
+    }
+    
+    func setTitle(title : String){
+        self.titleLabel!.text = title
+        self.titleLabel!.fitHeight()
     }
     
 }

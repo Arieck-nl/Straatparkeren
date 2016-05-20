@@ -18,10 +18,12 @@
 		1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */; };
 		1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A11CEDFCED0063893E /* MapSearchController.swift */; };
 		1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */; };
+		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
 		1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C21CE0C67B00B697ED /* Helpers.swift */; };
 		1D97E8C51CE0C6E200B697ED /* Dimens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C41CE0C6E200B697ED /* Dimens.swift */; };
+		1DB2C0A21CEEF8A100FB5BCC /* SPNavButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB2C0A11CEEF8A100FB5BCC /* SPNavButtonView.swift */; };
 		1DD505EC1CE31B1800BC56A2 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD505EB1CE31B1800BC56A2 /* Colors.swift */; };
 		1DD505F01CE369EB00BC56A2 /* SPNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */; };
 		1DEA933A1CE0A801003917CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA93391CE0A801003917CE /* AppDelegate.swift */; };
@@ -43,10 +45,12 @@
 		1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPSearchBar.swift; sourceTree = "<group>"; };
 		1D2042A11CEDFCED0063893E /* MapSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchController.swift; path = MapSearch/MapSearchController.swift; sourceTree = "<group>"; };
 		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchResultViewCell.swift; sourceTree = "<group>"; };
+		1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPOverlayView.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D97E8C21CE0C67B00B697ED /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		1D97E8C41CE0C6E200B697ED /* Dimens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dimens.swift; sourceTree = "<group>"; };
+		1DB2C0A11CEEF8A100FB5BCC /* SPNavButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNavButtonView.swift; sourceTree = "<group>"; };
 		1DD505EB1CE31B1800BC56A2 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNavigationBar.swift; sourceTree = "<group>"; };
 		1DEA93361CE0A7FD003917CE /* Straatparkeren.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Straatparkeren.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +118,8 @@
 				1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */,
 				1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */,
 				1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */,
+				1DB2C0A11CEEF8A100FB5BCC /* SPNavButtonView.swift */,
+				1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -357,6 +363,7 @@
 				1DEA935C1CE0ABBD003917CE /* SpringboardViewController.swift in Sources */,
 				1DD505EC1CE31B1800BC56A2 /* Colors.swift in Sources */,
 				1DEA933A1CE0A801003917CE /* AppDelegate.swift in Sources */,
+				1DB2C0A21CEEF8A100FB5BCC /* SPNavButtonView.swift in Sources */,
 				1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */,
 				1D0C04751CE1EB0200CC167F /* MapsOverviewController.swift in Sources */,
 				1DD505F01CE369EB00BC56A2 /* SPNavigationBar.swift in Sources */,
@@ -373,6 +380,7 @@
 				1D0C047B1CE23C2800CC167F /* SPNavigationController.swift in Sources */,
 				1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */,
 				1DF7F5B51CEB26550065502B /* GoogleAPIController.swift in Sources */,
+				1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

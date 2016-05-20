@@ -12,19 +12,23 @@ import MapKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Number of parking availabilities to render
-    static let NPA          : Int = 10
+    static let NPA          : Int = 1
+    
     var map                 : MKMapView!
     var locationManager     : CLLocationManager!
     var started = false
     var autocompleteTimer   : NSTimer?
+    var searchResults       : [MKMapItem] = []
+    var isCurrentLocation   : Bool = true
     
+    // Views
     var searchBar           : SPSearchBar?
-    var searchBtn           : UIButton?
-    var searchText          : UILabel?
+    var navbarBtn           : SPNavButtonView?
+    var navbarBtnText       : UILabel?
     let searchImg           : UIImage = UIImage(named: "SearchIcon")!
     let backImg             : UIImage = UIImage(named: "BackIcon")!
     var searchTable         : UITableView!
-    var searchResults       : [MKMapItem] = []
+    var homeBtn             : SPNavButtonView?
     
     override func viewDidLoad() {
         
@@ -38,6 +42,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.setUserTrackingMode(.FollowWithHeading, animated: false)
         map.clipsToBounds = true
         view.addSubview(map)
+        
+        homeBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "LocationIcon")!, text: STR.map_home_btn)
+        homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.goToUserLocation))
+        homeBtn!.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        view.addSubview(homeBtn!)
+        homeBtn?.btnText?.fitWidth()
+        homeBtn?.frame = CGRect(x: D.SCREEN_WIDTH - homeBtn!.btnText!.frame.width - (D.SPACING.REGULAR * 2), y: homeBtn!.frame.y, w: homeBtn!.btnText!.frame.width + (D.SPACING.REGULAR * 2), h: homeBtn!.frame.height)
+        homeBtn?.btnIcon?.frame = CGRect(x: (homeBtn!.frame.width / 2)  - (homeBtn!.btnIcon!.frame.width / 2), y: homeBtn!.btnIcon!.frame.y, w: homeBtn!.btnIcon!.frame.width, h: homeBtn!.btnIcon!.frame.height)
+        toggleHomeBtn()
         
         if (CLLocationManager.locationServicesEnabled())
         {
@@ -56,26 +69,28 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         super.viewDidLoad()
         setSearchBar()
         
+        // Only show explanation of app on first start
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if !defaults.boolForKey(USER_DEFAULTS.FIRST_TIME) {
+            defaults.setBool(true, forKey: USER_DEFAULTS.FIRST_TIME)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            setFirstTimeOverlay()
+        }
+        
+    }
+    
+    func setFirstTimeOverlay(){
+        let overlay = SPOverlayView(frame: self.view.frame, text: STR.explanation_text, btnText: STR.explanation_btn)
+        self.view.addSubview(overlay)
     }
     
     func setSearchBar(){
-        searchBtn  = UIButton(frame: CGRect(x: D.SCREEN_WIDTH - D.NAVBAR.HEIGHT - D.SPACING.REGULAR, y: D.SPACING.REGULAR, w: D.NAVBAR.HEIGHT, h: D.NAVBAR.HEIGHT - (D.SPACING.REGULAR * 2)))
-        searchBtn?.setImage(UIImage(named: "SearchIcon"), forState: .Normal)
-        searchBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, D.SPACING.REGULAR, D.SPACING.SMALL + D.FONT.XXLARGE, D.SPACING.REGULAR)
-        searchBtn?.imageView!.contentMode = UIViewContentMode.ScaleAspectFit
-        searchBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
-        self.view.addSubview(searchBtn!)
-        
-        searchText = UILabel(frame: CGRect(x: (searchBtn?.frame.x)!, y: searchBtn!.frame.y + searchBtn!.frame.height - D.FONT.XXLARGE, w: searchBtn!.frame.width, h: 100))
-        searchText!.text = STR.navbar_search_btn
-        searchText?.textColor = C.TEXT
-        searchText!.textAlignment = .Center
-        searchText?.font = searchText?.font.fontWithSize(D.FONT.XXLARGE)
-        searchText!.fitHeight()
-        self.view.addSubview(searchText!)
+        navbarBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: 0, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "SearchIcon")!, text: STR.navbar_search_btn)
+        navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
+        self.view.addSubview(navbarBtn!)
         
         
-        searchBar = SPSearchBar(frame: CGRect(x: 0, y: 0, w: (searchBtn?.frame.x)! - D.SPACING.REGULAR, h: D.NAVBAR.HEIGHT))
+        searchBar = SPSearchBar(frame: CGRect(x: 0, y: 0, w: (navbarBtn?.frame.x)!, h: D.NAVBAR.HEIGHT))
         searchBar!.hidden = true
         searchBar?.delegate = self
         
@@ -124,20 +139,41 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             //show
             searchBar!.hidden = false
             searchBar!.becomeFirstResponder()
-            searchBtn?.setImage(backImg, forState: .Normal)
-            searchText!.text = STR.navbar_back_btn
+            navbarBtn?.btnIcon?.image = backImg
+            navbarBtn?.btnText!.text = STR.navbar_back_btn
             
         }else{
             //hide
             searchBar!.hidden = true
             searchBar!.text = ""
-            searchBtn?.setImage(searchImg, forState: .Normal)
-            searchText!.text = STR.navbar_search_btn
+            navbarBtn?.btnIcon?.image = searchImg
+            navbarBtn?.btnText!.text = STR.navbar_search_btn
             searchResults = []
             searchTable.reloadData()
             searchBar?.resignFirstResponder()
             resizeTableHeight()
         }
+    }
+    
+    func toggleHomeBtn(){
+        if(homeBtn!.hidden){
+            //show
+            homeBtn!.hidden = false
+        }else{
+            //hide
+            homeBtn!.hidden = true
+        }
+    }
+    
+    func goToUserLocation(){
+        let location = self.map.userLocation
+        
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+        self.SPNavBar?.setTitle("")
+        self.map.setRegion(region, animated: false)
+        toggleHomeBtn()
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -155,6 +191,35 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
     }
     
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        let identifier = "MyPin"
+        
+        if annotation.isKindOfClass(MKUserLocation) {
+            let detailButton: UIButton = UIButton(type: UIButtonType.DetailDisclosure)
+            
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+            
+            if annotationView == nil
+            {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView!.canShowCallout = true
+                annotationView!.image = UIImage(named: "LocationArrowIcon")?.resizeWithWidth(D.MAP.USER_MARKER_WIDTH)
+                annotationView!.rightCalloutAccessoryView = detailButton
+            }
+            else
+            {
+                annotationView!.annotation = annotation
+            }
+            
+            return annotationView
+        }
+        else{
+            return nil
+        }
+        
+    }
+    
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
@@ -162,7 +227,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
-        print(started)
         
         if !started{
             self.map.setRegion(region, animated: false)
@@ -281,9 +345,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let searchResult = searchResults[indexPath.row]
         toggleSearchBar()
         
-        let region = MKCoordinateRegion(center: searchResult.placemark.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         
-        self.map.setRegion(region, animated: false)
-        generateParkingAvailabilities(searchResult.placemark.coordinate)
+        if(searchResult.placemark.name != nil){
+            let region = MKCoordinateRegion(center: searchResult.placemark.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+            self.SPNavBar!.setTitle(searchResult.placemark.title!)
+            self.map.setRegion(region, animated: false)
+            isCurrentLocation = false
+            generateParkingAvailabilities(searchResult.placemark.coordinate)
+            toggleHomeBtn()
+        }
+        
     }
 }
