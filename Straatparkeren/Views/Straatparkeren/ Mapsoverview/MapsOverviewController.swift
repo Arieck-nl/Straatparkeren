@@ -9,17 +9,22 @@
 import UIKit
 import MapKit
 
-class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    //Number of parking availabilities to render
+    static let NPA          : Int = 10
     var map                 : MKMapView!
     var locationManager     : CLLocationManager!
     var started = false
+    var autocompleteTimer   : NSTimer?
     
-    var searchBar           : UISearchBar?
+    var searchBar           : SPSearchBar?
     var searchBtn           : UIButton?
     var searchText          : UILabel?
     let searchImg           : UIImage = UIImage(named: "SearchIcon")!
-    let backImg           : UIImage = UIImage(named: "BackIcon")!
+    let backImg             : UIImage = UIImage(named: "BackIcon")!
+    var searchTable         : UITableView!
+    var searchResults       : [MKMapItem] = []
     
     override func viewDidLoad() {
         
@@ -54,7 +59,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func setSearchBar(){
-        
         searchBtn  = UIButton(frame: CGRect(x: D.SCREEN_WIDTH - D.NAVBAR.HEIGHT - D.SPACING.REGULAR, y: D.SPACING.REGULAR, w: D.NAVBAR.HEIGHT, h: D.NAVBAR.HEIGHT - (D.SPACING.REGULAR * 2)))
         searchBtn?.setImage(UIImage(named: "SearchIcon"), forState: .Normal)
         searchBtn?.imageEdgeInsets = UIEdgeInsetsMake(0, D.SPACING.REGULAR, D.SPACING.SMALL + D.FONT.XXLARGE, D.SPACING.REGULAR)
@@ -71,27 +75,69 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.view.addSubview(searchText!)
         
         
-        
         searchBar = SPSearchBar(frame: CGRect(x: 0, y: 0, w: (searchBtn?.frame.x)! - D.SPACING.REGULAR, h: D.NAVBAR.HEIGHT))
         searchBar!.hidden = true
+        searchBar?.delegate = self
+        
+        searchTable = UITableView(frame: CGRect(x: 0, y: D.NAVBAR.HEIGHT, w: searchBar!.frame.width, h: (D.SCREEN_HEIGHT / 2) - (self.navBar?.frame.height)!), style: .Plain)
+        searchTable.registerClass(MapSearchResultViewCell.self, forCellReuseIdentifier: "SearchResultTableCell")
+        searchTable.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
+        searchTable.delegate = self
+        searchTable.dataSource = self
+        searchTable.separatorColor = C.TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        searchTable.separatorStyle = .SingleLine
+        searchTable.resizeToFitHeight()
+        view.addSubview(searchTable!)
         view.addSubview(searchBar!)
+    }
+    
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        autocompleteTimer?.invalidate()
+        autocompleteTimer = nil
+        autocompleteTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(MapsOverviewController.startSearch), userInfo: nil, repeats: false)
+    }
+    
+    func startSearch(){
+        self.showSearchResultsFor((searchBar?.text)!)
+    }
+    
+    
+    func showSearchResultsFor(keyword : String){
+        searchResults = []
+        
+        MapSearchController.sharedInstance.getNearbyPlaces(keyword, region: self.map.region, success: {mapItems -> Void in
+            //limit results to 3 if greater than 3
+            self.searchResults = (mapItems.count > 3) ? Array(mapItems[0..<3]) : mapItems
+            if(self.searchResults.count == 0){
+                self.searchResults = [MKMapItem()]
+            }
+            self.searchTable.reloadData()
+            self.resizeTableHeight()
+        })
+        
+        print(keyword)
     }
     
     func toggleSearchBar(){
         if(searchBar!.hidden){
+            //show
             searchBar!.hidden = false
             searchBar!.becomeFirstResponder()
             searchBtn?.setImage(backImg, forState: .Normal)
             searchText!.text = STR.navbar_back_btn
+            
         }else{
+            //hide
             searchBar!.hidden = true
             searchBar!.text = ""
             searchBtn?.setImage(searchImg, forState: .Normal)
             searchText!.text = STR.navbar_search_btn
+            searchResults = []
+            searchTable.reloadData()
+            searchBar?.resignFirstResponder()
+            resizeTableHeight()
         }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -104,11 +150,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         
         //        if !started{
-        //            let parkingLanes : [ParkingAvailability] = generateParkingAvailabilities(userLocation.coordinate)
-        //            if parkingLanes.count > 0{
-        //                started = true
-        //                renderParkingPolylines(parkingLanes)
-        //            }
+        //                    generateParkingAvailabilities(userLocation.coordinate)
         //        }
         
     }
@@ -123,16 +165,13 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         print(started)
         
         if !started{
-            self.map.setRegion(region, animated: true)
-            let parkingLanes : [ParkingAvailability] = generateParkingAvailabilities(location!.coordinate)
-            if parkingLanes.count > 0{
-                started = true
-                renderParkingPolylines(parkingLanes)
-            }
+            self.map.setRegion(region, animated: false)
+            generateParkingAvailabilities(location!.coordinate)
         }
     }
     
-    func generateParkingAvailabilities(location : CLLocationCoordinate2D) -> [ParkingAvailability]{
+    
+    func generateParkingAvailabilities(location : CLLocationCoordinate2D){
         
         var parkingAvailabilities : [ParkingAvailability] = []
         
@@ -145,7 +184,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let dividerLong = 1000000.0
         
         
-        for _ in (0..<1){
+        for _ in (0..<MapsOverviewController.NPA){
             let endLatInt1 = (Double(arc4random_uniform(distanceLat)) - corrLat) / dividerLat
             let endLat1 = location.latitude - endLatInt1
             let endLongInt1 = (Double(arc4random_uniform(distanceLong)) - corrLong) / dividerLong
@@ -168,7 +207,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             
             parkingAvailabilities.append(parkingAvailability)
         }
-        return parkingAvailabilities
+        
+        if parkingAvailabilities.count > 0{
+            started = true
+            renderParkingPolylines(parkingAvailabilities)
+        }
     }
     
     func renderParkingPolylines(parkingAvailabilities : [ParkingAvailability]){
@@ -186,7 +229,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
-    
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         
         let polyline : SPPolyline = overlay as! SPPolyline
@@ -195,5 +237,53 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         polylineRenderer.lineWidth = 10
         
         return polylineRenderer
+    }
+    
+    
+    /* ----------- Search Table View ------------- */
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return searchResults.count
+    }
+    
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        let cellIdentifier = "SearchResultTableCell"
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MapSearchResultViewCell
+        
+        // Fetches the appropriate meal for the data source layout.
+        let searchResult = searchResults[indexPath.row]
+        
+        cell.titleLabel!.text = (searchResults.count == 1 && searchResult.placemark.title == nil) ? STR.search_no_results : searchResult.placemark.title!
+        
+        cell.titleLabel!.fitHeight()
+        cell.titleLabel!.frame = CGRect(x: cell.titleLabel!.frame.x, y: (D.SEARCH_CELL.HEIGHT - cell.titleLabel!.frame.height) / 2, w: searchTable!.frame.width - D.SPACING.REGULAR, h: cell.titleLabel!.frame.height)
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return D.SEARCH_CELL.HEIGHT
+    }
+    
+    func resizeTableHeight(){
+        var height = searchTable.contentSize.height
+        let maxHeight = searchTable.superview!.frame.size.height - searchTable.frame.origin.y
+        
+        if (height > maxHeight){
+            height = maxHeight
+        }
+        var frame : CGRect = searchTable.frame
+        frame.size.height = height
+        searchTable.frame = frame
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let searchResult = searchResults[indexPath.row]
+        toggleSearchBar()
+        
+        let region = MKCoordinateRegion(center: searchResult.placemark.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+        
+        self.map.setRegion(region, animated: false)
+        generateParkingAvailabilities(searchResult.placemark.coordinate)
     }
 }

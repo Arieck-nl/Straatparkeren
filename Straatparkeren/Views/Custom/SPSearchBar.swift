@@ -31,6 +31,7 @@ class SPSearchBar: UISearchBar {
         
         searchField.frame = CGRectMake(5.0, 5.0, frame.size.width - 10.0, frame.size.height - 10.0)
         searchField.clearButtonMode = .Never
+        searchField.tintColor = C.TEXT
         searchField.textColor = C.TEXT
         searchField.font = searchField.font!.fontWithSize(D.FONT.XXXLARGE)
         

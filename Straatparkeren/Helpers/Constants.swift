@@ -57,5 +57,6 @@ public struct K{
 public struct STR{
     public static let navbar_search_btn = "Zoeken"
     public static let navbar_back_btn = "Terug"
+    public static let search_no_results = "Geen resultaten"
 }
 

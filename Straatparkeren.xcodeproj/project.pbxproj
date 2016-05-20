@@ -16,6 +16,8 @@
 		1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */; };
 		1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */; };
 		1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */; };
+		1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A11CEDFCED0063893E /* MapSearchController.swift */; };
+		1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
 		1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C21CE0C67B00B697ED /* Helpers.swift */; };
@@ -39,6 +41,8 @@
 		1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingAvailabilty.swift; sourceTree = "<group>"; };
 		1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPolyline.swift; sourceTree = "<group>"; };
 		1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPSearchBar.swift; sourceTree = "<group>"; };
+		1D2042A11CEDFCED0063893E /* MapSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchController.swift; path = MapSearch/MapSearchController.swift; sourceTree = "<group>"; };
+		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchResultViewCell.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D97E8C21CE0C67B00B697ED /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -109,8 +113,17 @@
 				1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */,
 				1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */,
 				1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */,
+				1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		1D2042A01CEDFC9C0063893E /* MapSearch */ = {
+			isa = PBXGroup;
+			children = (
+				1D2042A11CEDFCED0063893E /* MapSearchController.swift */,
+			);
+			name = MapSearch;
 			sourceTree = "<group>";
 		};
 		1DEA932D1CE0A7FC003917CE = {
@@ -157,6 +170,7 @@
 		1DEA93561CE0AAAB003917CE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1D2042A01CEDFC9C0063893E /* MapSearch */,
 				1DF7F5B31CEB24EA0065502B /* GoogleAPI */,
 			);
 			path = Controllers;
@@ -349,7 +363,9 @@
 				1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */,
 				1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */,
 				1D97E8C51CE0C6E200B697ED /* Dimens.swift in Sources */,
+				1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */,
 				1D0C04781CE1FE1400CC167F /* CarplayWindowViewController.swift in Sources */,
+				1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */,
 				1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */,
 				1D0C04601CE1BEB300CC167F /* SpringboardAppCell.swift in Sources */,
 				1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */,

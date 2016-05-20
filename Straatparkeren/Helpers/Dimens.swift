@@ -15,6 +15,8 @@ public struct D{
     public static let SCREEN_WIDTH = D.SCREEN_WIDTH_ORIGINAL - D.CARPLAY.WIDTH
     public static let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.height
     
+    public static let DIVIDER : CGFloat = 1.0
+    
     public struct SPACING{
         public static let SMALL : CGFloat = 8.0
         public static let REGULAR : CGFloat = 16.0
@@ -50,6 +52,10 @@ public struct D{
     
     public struct SEARCHBAR{
         public static let ICON_HEIGHT : CGFloat = 44.0
+    }
+    
+    public struct SEARCH_CELL{
+        public static let HEIGHT : CGFloat = 88.0
     }
     
 }

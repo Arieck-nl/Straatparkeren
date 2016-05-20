@@ -29,13 +29,14 @@ class CarplayWindowViewController: UIViewController {
         currentTimeLabel?.font = currentTimeLabel?.font.fontWithSize(D.FONT.XXLARGE)
         currentTimeLabel?.textAlignment = .Center
         
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Hour,.Minute], fromDate: date)
-        let hour = components.hour
-        let minutes = components.minute
+        updateClock()
+        NSTimer.scheduledTimerWithTimeInterval(60.0,
+            target: self,
+            selector: #selector(CarplayWindowViewController.updateClock),
+            userInfo: nil,
+            repeats: true)
         
-        currentTimeLabel?.text = String(format: "%02d", hour) + ":" + String(format: "%02d", minutes)
+        
         carplayControl?.addSubview(currentTimeLabel!)
 
         
@@ -63,6 +64,16 @@ class CarplayWindowViewController: UIViewController {
         window!.addSubview(springboardNavVC!.view)
         addAsChildViewController(springboardNavVC!, toView: window!)
         springboardNavVC!.didMoveToParentViewController(self)
+    }
+    
+    func updateClock(){
+        let date = NSDate()
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Hour,.Minute], fromDate: date)
+        let hour = components.hour
+        let minutes = components.minute
+        
+        currentTimeLabel?.text = String(format: "%02d", hour) + ":" + String(format: "%02d", minutes)
     }
     
 }
