@@ -21,7 +21,7 @@ class SPOverlayView: UIView {
         self.dismissBtn.setTitle(btnText, forState: .Normal)
         self.dismissBtn.titleLabel!.font = self.dismissBtn.titleLabel!.font.fontWithSize(D.FONT.XXXLARGE)
         self.dismissBtn.titleLabel?.textAlignment =  .Center
-        self.dismissBtn.frame = CGRect(x: 0, y: D.SCREEN_HEIGHT - D.BTN.HEIGHT.REGULAR - D.SPACING.LARGE, w: D.SCREEN_WIDTH, h: D.BTN.HEIGHT.REGULAR)
+        self.dismissBtn.frame = CGRect(x: 0, y: D.SCREEN_HEIGHT - D.BTN.HEIGHT.REGULAR - D.SPACING.LARGE, w: D.SCREEN_WIDTH, h: D.BTN.HEIGHT.LARGE)
         
         self.dismissBtn.titleLabel?.textColor = C.TEXT
         self.dismissBtn.backgroundColor = C.TEXT.colorWithAlphaComponent(S.OPACITY.LIGHT)

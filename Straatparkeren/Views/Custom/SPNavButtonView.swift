@@ -17,7 +17,8 @@ class SPNavButtonView: UIView {
         super.init(frame: frame)
         
         btnIcon  = UIImageView(frame: CGRect(x: D.SPACING.REGULAR, y: D.SPACING.REGULAR, w: frame.width - (D.SPACING.REGULAR * 2), h: frame.height / 2))
-        btnIcon?.image = image
+        btnIcon?.image = image.imageWithRenderingMode(.AlwaysTemplate)
+        btnIcon?.tintColor = C.TEXT
         btnIcon?.contentMode = UIViewContentMode.ScaleAspectFit
         self.addSubview(btnIcon!)
         

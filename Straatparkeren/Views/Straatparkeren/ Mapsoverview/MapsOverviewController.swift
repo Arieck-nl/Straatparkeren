@@ -25,8 +25,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var searchBar           : SPSearchBar?
     var navbarBtn           : SPNavButtonView?
     var navbarBtnText       : UILabel?
-    let searchImg           : UIImage = UIImage(named: "SearchIcon")!
-    let backImg             : UIImage = UIImage(named: "BackIcon")!
+    let searchImg           : UIImage = UIImage(named: "SearchIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+    let backImg             : UIImage = UIImage(named: "BackIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     var searchTable         : UITableView!
     var homeBtn             : SPNavButtonView?
     
@@ -41,9 +41,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.showsUserLocation = true
         map.setUserTrackingMode(.FollowWithHeading, animated: false)
         map.clipsToBounds = true
+        map.userInteractionEnabled = false
         view.addSubview(map)
         
-        homeBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "LocationIcon")!, text: STR.map_home_btn)
+        homeBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.goToUserLocation))
         homeBtn!.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         view.addSubview(homeBtn!)
@@ -166,6 +167,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func goToUserLocation(){
+        self.map.removeAnnotations(self.map.annotations)
         let location = self.map.userLocation
         
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
@@ -193,19 +195,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
-        let identifier = "MyPin"
         
         if annotation.isKindOfClass(MKUserLocation) {
-            let detailButton: UIButton = UIButton(type: UIButtonType.DetailDisclosure)
-            
+            let identifier = "UserPin"
             var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
             
             if annotationView == nil
             {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView!.canShowCallout = true
                 annotationView!.image = UIImage(named: "LocationArrowIcon")?.resizeWithWidth(D.MAP.USER_MARKER_WIDTH)
-                annotationView!.rightCalloutAccessoryView = detailButton
             }
             else
             {
@@ -215,7 +213,21 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             return annotationView
         }
         else{
-            return nil
+            let identifier = "LocationPin"
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+            
+            if annotationView == nil
+            {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView!.image = UIImage(named: "LocationIcon")
+                annotationView?.centerOffset = CGPoint(x: 0, y: -((annotationView!.image?.size.height)! / 2))
+            }
+            else
+            {
+                annotationView!.annotation = annotation
+            }
+            
+            return annotationView
         }
         
     }
@@ -314,7 +326,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let cellIdentifier = "SearchResultTableCell"
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MapSearchResultViewCell
         
-        // Fetches the appropriate meal for the data source layout.
+        // Fetch searchresult corresponding to indexpath
         let searchResult = searchResults[indexPath.row]
         
         cell.titleLabel!.text = (searchResults.count == 1 && searchResult.placemark.title == nil) ? STR.search_no_results : searchResult.placemark.title!
@@ -350,6 +362,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             let region = MKCoordinateRegion(center: searchResult.placemark.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
             self.SPNavBar!.setTitle(searchResult.placemark.title!)
             self.map.setRegion(region, animated: false)
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = searchResult.placemark.coordinate
+            
+            self.map.addAnnotation(annotation)
             isCurrentLocation = false
             generateParkingAvailabilities(searchResult.placemark.coordinate)
             toggleHomeBtn()

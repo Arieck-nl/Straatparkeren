@@ -22,9 +22,9 @@ class SPSearchBar: UISearchBar {
         searchIconView.tintColor = C.TEXT
         
 //        let clearIconView = searchField.valueForKey("clearButton") as! UIButton
-//        clearIconView.setImage(UIImage(named: "clearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Normal)
-//        clearIconView.setImage(UIImage(named: "clearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Selected)
-//        clearIconView.setImage(UIImage(named: "clearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Focused)
+//        clearIconView.setImage(UIImage(named: "ClearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Normal)
+//        clearIconView.setImage(UIImage(named: "ClearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Selected)
+//        clearIconView.setImage(UIImage(named: "ClearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Focused)
 //        clearIconView.frame = CGRect(x: -20.0, y: -20.0, w: D.SEARCHBAR.ICON_HEIGHT, h: D.SEARCHBAR.ICON_HEIGHT)
 //        clearIconView.imageView?.size = CGSize(width: D.SEARCHBAR.ICON_HEIGHT, height: D.SEARCHBAR.ICON_HEIGHT)
 //        clearIconView.tintColor = C.TEXT
@@ -38,6 +38,8 @@ class SPSearchBar: UISearchBar {
         searchField.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
         
         self.tintColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        
+        self.keyboardAppearance = .Dark
         
         super.drawRect(rect)
     }
