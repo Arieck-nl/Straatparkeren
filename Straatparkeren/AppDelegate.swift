@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var themeCntrl : ThemeController?
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -19,6 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = CarplayWindowViewController()
         window?.makeKeyAndVisible()
+        
+        themeCntrl = ThemeController.sharedInstance
+        themeCntrl!.start()
+        
         
         UIApplication.sharedApplication().statusBarHidden = true
         return true

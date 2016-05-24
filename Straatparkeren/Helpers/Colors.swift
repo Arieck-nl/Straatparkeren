@@ -30,9 +30,13 @@ public struct C{
         public static let REGULAR = UIColorFromRGB("CC1919")
         public static let DARK = UIColorFromRGB("A60808")
     }
-
-    public static let BACKGROUND = UIColorFromRGB("000000")
-    public static let TEXT = UIColorFromRGB("FFFFFF")
+    
+    public static let LIGHT = UIColorFromRGB("FFFFFF")
+    public static let DARK = UIColorFromRGB("000000")
+    
+    
+    public static var BACKGROUND = C.DARK
+    public static var TEXT = C.LIGHT
     
     //OTHER
     
@@ -43,4 +47,35 @@ public struct C{
         public static let FULL = UIColor.redColor().colorWithAlphaComponent(S.OPACITY.REGULAR)
     }
     
+}
+
+public enum THEME : Int {
+    case DAY, NIGHT
+    
+    var TEXT: UIColor {
+        switch self {
+        case .DAY:
+            return C.DARK
+        case .NIGHT:
+            return C.LIGHT
+        }
+    }
+    
+    var BACKGROUND: UIColor {
+        switch self {
+        case .DAY:
+            return C.LIGHT
+        case .NIGHT:
+            return C.DARK
+        }
+    }
+    
+    var notificationKey : String{
+        switch self {
+        case .DAY:
+            return N.DAY_MODE
+        case .NIGHT:
+            return N.NIGHT_MODE
+        }
+    }
 }

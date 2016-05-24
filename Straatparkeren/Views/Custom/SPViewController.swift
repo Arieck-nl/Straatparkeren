@@ -8,11 +8,20 @@
 
 import UIKit
 
-class SPViewController: UIViewController {
+protocol InterfaceModeDelegate {
+    // Divide the interface into three categories, show or hide view according to the categories
+    func setMinimalMode()
+    func setMediumMode()
+    func setMaximumMode()
+}
+
+class SPViewController: UIViewController, ThemeDelegate, InterfaceModeDelegate {
     
     var SPNavBar : SPNavigationBar?
     
     override func viewDidLoad() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setDayMode), name: N.DAY_MODE, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setNightMode), name: N.NIGHT_MODE, object: nil)
         setToolbar()
     }
     
@@ -39,5 +48,29 @@ class SPViewController: UIViewController {
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
+    
+    // Implement protocol methods
+    
+    func setDayMode(){
+        fatalError("Must override method")
+    }
+    
+    func setNightMode(){
+        fatalError("Must override method")
+    }
+    
+    func setMinimalMode(){
+        fatalError("Must override method")
+    }
+    
+    func setMediumMode(){
+        fatalError("Must override method")
+    }
+    
+    func setMaximumMode(){
+        fatalError("Must override method")
+    }
+    
+    
 
 }

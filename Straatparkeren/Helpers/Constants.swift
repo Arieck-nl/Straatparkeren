@@ -8,10 +8,6 @@
 
 import UIKit
 
-//TODO: remove unused stuff
-
-// FONTS
-let FONT_REGULAR = "AzoSans-Regular"
 
 //STYLE RELATED
 public struct S{
@@ -42,6 +38,13 @@ public enum PARKING_STATE : Int {
 
 public struct USER_DEFAULTS{
     public static let FIRST_TIME = "FirstTimeUse"
+    public static let CURRENT_THEME = "CurrentTheme"
+}
+
+/* Notification keys */
+public struct N{
+    public static let DAY_MODE = "DayMode"
+    public static let NIGHT_MODE = "NightMode"
 }
 
 public struct API{
@@ -54,6 +57,7 @@ public struct API{
      */
 }
 
+/* KEYS */
 public struct K{
     public static let GOOGLE_MAPS_API = "GoogleMapsAPIKey"
 }

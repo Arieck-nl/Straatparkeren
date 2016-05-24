@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SpringboardViewController: SPViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+class SpringboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
     var vc : MapsOverviewController?
     
@@ -20,9 +20,7 @@ class SpringboardViewController: SPViewController, UICollectionViewDataSource, U
         self.view.backgroundColor = UIColor.blackColor()
         
         self.edgesForExtendedLayout = .None
-        
-        self.setCustomToolbarHidden(true)
-        
+                
         vc = MapsOverviewController()
         createCollectionView()
 

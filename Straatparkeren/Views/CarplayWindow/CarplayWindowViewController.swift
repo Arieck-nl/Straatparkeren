@@ -19,7 +19,6 @@ class CarplayWindowViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         carplayControl = UIView(frame: CGRect(x: 0, y: 0, w: D.CARPLAY.WIDTH, h: D.SCREEN_HEIGHT))
         carplayControl?.backgroundColor = UIColor.blackColor()
         view.addSubview(carplayControl!)

@@ -15,15 +15,21 @@ class MapSearchResultViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         titleLabel = UILabel(x: D.SPACING.REGULAR, y: (D.SEARCH_CELL.HEIGHT - D.FONT.XXLARGE) / 2, w: 100, h: self.frame.height, fontSize: D.FONT.XXLARGE)
-        titleLabel?.textColor = C.TEXT
+        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
         self.addSubview(titleLabel!)
         
-        self.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func resetColors(){
+        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+
     }
     
 

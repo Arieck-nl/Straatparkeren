@@ -46,7 +46,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         homeBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.goToUserLocation))
-        homeBtn!.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         view.addSubview(homeBtn!)
         homeBtn?.btnText?.fitWidth()
         homeBtn?.frame = CGRect(x: D.SCREEN_WIDTH - homeBtn!.btnText!.frame.width - (D.SPACING.REGULAR * 2), y: homeBtn!.frame.y, w: homeBtn!.btnText!.frame.width + (D.SPACING.REGULAR * 2), h: homeBtn!.frame.height)
@@ -100,7 +100,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         searchTable.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
         searchTable.delegate = self
         searchTable.dataSource = self
-        searchTable.separatorColor = C.TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        searchTable.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
         searchTable.separatorStyle = .SingleLine
         searchTable.resizeToFitHeight()
         view.addSubview(searchTable!)
@@ -371,6 +371,40 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             generateParkingAvailabilities(searchResult.placemark.coordinate)
             toggleHomeBtn()
         }
+        
+    }
+    
+    func toggleTheme() {
+        self.searchBar?.setNeedsDisplay()
+        self.navbarBtn?.resetColors()
+        self.SPNavBar!.resetColors()
+        self.homeBtn?.resetColors()
+        homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        searchTable.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        for i in 0..<searchResults.count{
+            let cell = self.searchTable.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
+            cell.resetColors()
+        }
+    }
+    
+    override func setDayMode(){
+        toggleTheme()
+    }
+    
+    override func setNightMode(){
+        toggleTheme()
+    }
+    
+    
+    override func setMinimalMode(){
+        
+    }
+    
+    override func setMediumMode(){
+        
+    }
+    
+    override func setMaximumMode(){
         
     }
 }

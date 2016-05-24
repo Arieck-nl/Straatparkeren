@@ -31,6 +31,7 @@
 		1DEA935C1CE0ABBD003917CE /* SpringboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA935B1CE0ABBD003917CE /* SpringboardViewController.swift */; };
 		1DF7F5B51CEB26550065502B /* GoogleAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7F5B41CEB26550065502B /* GoogleAPIController.swift */; };
 		1DF7F5B91CEB33CF0065502B /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF7F5B81CEB33CF0065502B /* Keys.plist */; };
+		1DFF63181CF47C070078A4B1 /* ThemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF63171CF47C070078A4B1 /* ThemeController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		1DEA935B1CE0ABBD003917CE /* SpringboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardViewController.swift; path = Springboard/SpringboardViewController.swift; sourceTree = "<group>"; };
 		1DF7F5B41CEB26550065502B /* GoogleAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GoogleAPIController.swift; path = GoogleAPI/GoogleAPIController.swift; sourceTree = "<group>"; };
 		1DF7F5B81CEB33CF0065502B /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
+		1DFF63171CF47C070078A4B1 /* ThemeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ThemeController.swift; path = Interface/ThemeController.swift; sourceTree = "<group>"; };
 		282CA78CB4334B1C2AA7444E /* Pods-Straatparkeren.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Straatparkeren.release.xcconfig"; path = "Pods/Target Support Files/Pods-Straatparkeren/Pods-Straatparkeren.release.xcconfig"; sourceTree = "<group>"; };
 		FEF178419434FE361397D735 /* Pods_Straatparkeren.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Straatparkeren.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -176,6 +178,7 @@
 		1DEA93561CE0AAAB003917CE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1DFF63161CF47BB90078A4B1 /* Interface */,
 				1D2042A01CEDFC9C0063893E /* MapSearch */,
 				1DF7F5B31CEB24EA0065502B /* GoogleAPI */,
 			);
@@ -228,6 +231,14 @@
 				1DF7F5B41CEB26550065502B /* GoogleAPIController.swift */,
 			);
 			name = GoogleAPI;
+			sourceTree = "<group>";
+		};
+		1DFF63161CF47BB90078A4B1 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				1DFF63171CF47C070078A4B1 /* ThemeController.swift */,
+			);
+			name = Interface;
 			sourceTree = "<group>";
 		};
 		7355DC93B8172AA324089CD6 /* Frameworks */ = {
@@ -373,6 +384,7 @@
 				1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */,
 				1D0C04781CE1FE1400CC167F /* CarplayWindowViewController.swift in Sources */,
 				1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */,
+				1DFF63181CF47C070078A4B1 /* ThemeController.swift in Sources */,
 				1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */,
 				1D0C04601CE1BEB300CC167F /* SpringboardAppCell.swift in Sources */,
 				1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */,

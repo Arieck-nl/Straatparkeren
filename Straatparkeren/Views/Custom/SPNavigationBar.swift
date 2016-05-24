@@ -14,9 +14,9 @@ class SPNavigationBar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         titleLabel = UILabel(x: D.SPACING.REGULAR, y: (frame.height - D.FONT.XXXLARGE) / 2, w: self.frame.width - D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), h: 100, fontSize: D.FONT.XXXLARGE)
-        titleLabel?.textColor = C.TEXT
+        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
         titleLabel?.fitHeight()
         self.addSubview(titleLabel!)
     }
@@ -33,6 +33,12 @@ class SPNavigationBar: UIView {
     func setTitle(title : String){
         self.titleLabel!.text = title
         self.titleLabel!.fitHeight()
+    }
+    
+    func resetColors(){
+        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+
     }
     
 }

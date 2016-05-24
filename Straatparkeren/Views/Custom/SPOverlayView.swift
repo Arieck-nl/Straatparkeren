@@ -23,8 +23,8 @@ class SPOverlayView: UIView {
         self.dismissBtn.titleLabel?.textAlignment =  .Center
         self.dismissBtn.frame = CGRect(x: 0, y: D.SCREEN_HEIGHT - D.BTN.HEIGHT.REGULAR - D.SPACING.LARGE, w: D.SCREEN_WIDTH, h: D.BTN.HEIGHT.LARGE)
         
-        self.dismissBtn.titleLabel?.textColor = C.TEXT
-        self.dismissBtn.backgroundColor = C.TEXT.colorWithAlphaComponent(S.OPACITY.LIGHT)
+        self.dismissBtn.titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.dismissBtn.backgroundColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.LIGHT)
         self.dismissBtn.addTapGesture { (gesture) -> () in
             self.removeFromSuperview()
         }
@@ -37,7 +37,7 @@ class SPOverlayView: UIView {
         self.textLabel.textAlignment = .Center
         self.textLabel.lineBreakMode = .ByWordWrapping
         self.textLabel.numberOfLines = 0
-        self.textLabel.textColor = C.TEXT
+        self.textLabel.textColor = ThemeController.sharedInstance.currentTheme().TEXT
         
         self.addSubview(textLabel)
         

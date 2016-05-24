@@ -18,16 +18,21 @@ class SPNavButtonView: UIView {
         
         btnIcon  = UIImageView(frame: CGRect(x: D.SPACING.REGULAR, y: D.SPACING.REGULAR, w: frame.width - (D.SPACING.REGULAR * 2), h: frame.height / 2))
         btnIcon?.image = image.imageWithRenderingMode(.AlwaysTemplate)
-        btnIcon?.tintColor = C.TEXT
+        btnIcon?.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
         btnIcon?.contentMode = UIViewContentMode.ScaleAspectFit
         self.addSubview(btnIcon!)
         
         btnText = UILabel(x: D.SPACING.REGULAR, y: frame.height - D.SPACING.REGULAR - D.FONT.XXLARGE, w: frame.width - (D.SPACING.REGULAR * 2), h: 100, fontSize: D.FONT.XXLARGE)
         btnText!.text = text
         btnText?.fitHeight()
-        btnText?.textColor = C.TEXT
+        btnText?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
         btnText!.textAlignment = .Center
         self.addSubview(btnText!)
+    }
+    
+    func resetColors(){
+        btnIcon?.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        btnText?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
     }
     
     required init?(coder aDecoder: NSCoder) {
