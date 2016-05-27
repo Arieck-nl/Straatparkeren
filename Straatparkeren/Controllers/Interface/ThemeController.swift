@@ -22,7 +22,7 @@ class ThemeController: NSObject {
     static let sharedInstance = ThemeController()
     
     func start(){
-        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
+//        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
     }
     
     @objc private func toggleTheme(){

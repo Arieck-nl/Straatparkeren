@@ -34,6 +34,18 @@
 		1DFF63181CF47C070078A4B1 /* ThemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF63171CF47C070078A4B1 /* ThemeController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1D12B2011CF4E72500F8CE71 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1B83B2FD8B0A644DAB2224D5 /* Pods-Straatparkeren.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Straatparkeren.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Straatparkeren/Pods-Straatparkeren.debug.xcconfig"; sourceTree = "<group>"; };
 		1D0C045F1CE1BEB300CC167F /* SpringboardAppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringboardAppCell.swift; sourceTree = "<group>"; };
@@ -126,6 +138,13 @@
 			path = Custom;
 			sourceTree = "<group>";
 		};
+		1D12AE591CF4E70600F8CE71 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
 		1D2042A01CEDFC9C0063893E /* MapSearch */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +174,7 @@
 		1DEA93381CE0A801003917CE /* Straatparkeren */ = {
 			isa = PBXGroup;
 			children = (
+				1D12AE591CF4E70600F8CE71 /* Libs */,
 				1DEA93551CE0AAAB003917CE /* Assets */,
 				1DEA93561CE0AAAB003917CE /* Controllers */,
 				1DEA93571CE0AAAB003917CE /* Helpers */,
@@ -262,6 +282,7 @@
 				1DEA93341CE0A7FC003917CE /* Resources */,
 				526C53E52D97BE256D2BCBAF /* Embed Pods Frameworks */,
 				A19E1DA4E1A582979AC850D4 /* Copy Pods Resources */,
+				1D12B2011CF4E72500F8CE71 /* CopyFiles */,
 			);
 			buildRules = (
 			);
