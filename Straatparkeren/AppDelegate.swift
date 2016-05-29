@@ -12,7 +12,8 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var themeCntrl : ThemeController?
+    var themeCntrl          : ThemeController?
+    var interfaceCntrl       : InterfaceModeController?
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -23,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         themeCntrl = ThemeController.sharedInstance
         themeCntrl!.start()
+        
+        interfaceCntrl = InterfaceModeController.sharedInstance
+        interfaceCntrl?.start()
         
         
         UIApplication.sharedApplication().statusBarHidden = true

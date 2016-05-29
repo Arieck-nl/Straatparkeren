@@ -39,12 +39,16 @@ public enum PARKING_STATE : Int {
 public struct USER_DEFAULTS{
     public static let FIRST_TIME = "FirstTimeUse"
     public static let CURRENT_THEME = "CurrentTheme"
+    public static let CURRENT_MODE = "CurrentMode"
 }
 
 /* Notification keys */
 public struct N{
     public static let DAY_MODE = "DayMode"
     public static let NIGHT_MODE = "NightMode"
+    public static let MINIMAL_MODE = "MinimalMode"
+    public static let MEDIUM_MODE = "MediumMode"
+    public static let MAXIMAL_MODE = "MaximalMode"
 }
 
 public struct API{

@@ -1,8 +1,8 @@
 //
-//  GoogleAPIController.swift
+//  HereAPIController.swift
 //  Straatparkeren
 //
-//  Created by Rick van 't Hof on 17/05/16.
+//  Created by Rick van 't Hof on 29-05-16.
 //  Copyright © 2016 Rick van 't Hof. All rights reserved.
 //
 
@@ -11,23 +11,14 @@ import MapKit
 import Alamofire
 import SwiftyJSON
 
-class GoogleAPIController: NSObject {
+class HereAPIController: NSObject {
     
     // Singleton instance
-    static let sharedInstance = GoogleAPIController()
+    static let sharedInstance = HereAPIController()
     
-    typealias polylineHandler = (polyline:[CLLocationCoordinate2D]) -> Void
+    typealias successHandler = (polyline:[CLLocationCoordinate2D]) -> Void
     
-    func snapToRoad(polylinePoints : [CLLocationCoordinate2D], success : polylineHandler){
-        
-        var polylineString = ""
-        var returnPoints : [CLLocationCoordinate2D] = []
-        
-        for polylinePoint in polylinePoints{
-            polylineString += polylinePoint.latitude.toString + "," + polylinePoint.longitude.toString + "|"
-        }
-        
-        polylineString = String(polylineString.characters.dropLast())        
+    func trafficFlowFor(location : CLLocationCoordinate2D, success : successHandler){
         
         Alamofire.request(.GET, API.GOOGLE_MAPS_ROADS, parameters: [
             "interpolate": "true",
@@ -36,16 +27,16 @@ class GoogleAPIController: NSObject {
             ])
             .validate()
             .responseJSON { response in
-//                print(response.request)  // original URL request
-//                print(response.response) // URL response
-//                print(response.data)     // server data
-//                print(response.result)   // result of response serialization
+                //                print(response.request)  // original URL request
+                //                print(response.response) // URL response
+                //                print(response.data)     // server data
+                //                print(response.result)   // result of response serialization
                 if (response.result.value == nil){
                     return
                 }
                 
                 if let json : JSON = JSON(response.result.value!) {
-//                    print("JSON: \(json)")
+                    //                    print("JSON: \(json)")
                     
                     let snappedPoints : JSON = json["snappedPoints"]
                     
@@ -66,5 +57,6 @@ class GoogleAPIController: NSObject {
         }
     }
 }
+
 
 

@@ -16,6 +16,37 @@ protocol ThemeDelegate{
     func setNightMode()
 }
 
+public enum THEME : Int {
+    case DAY, NIGHT
+    
+    var TEXT: UIColor {
+        switch self {
+        case .DAY:
+            return C.DARK
+        case .NIGHT:
+            return C.LIGHT
+        }
+    }
+    
+    var BACKGROUND: UIColor {
+        switch self {
+        case .DAY:
+            return C.LIGHT
+        case .NIGHT:
+            return C.DARK
+        }
+    }
+    
+    var notificationKey : String{
+        switch self {
+        case .DAY:
+            return N.DAY_MODE
+        case .NIGHT:
+            return N.NIGHT_MODE
+        }
+    }
+}
+
 class ThemeController: NSObject {
     
     // Singleton instance

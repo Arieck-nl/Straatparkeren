@@ -20,6 +20,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var autocompleteTimer   : NSTimer?
     var searchResults       : [MKMapItem] = []
     var isCurrentLocation   : Bool = true
+    var currentPAs          : [ParkingAvailability] = []
+    var currentAnns         : [MKAnnotation] = []
     
     // Views
     var searchBar           : SPSearchBar?
@@ -77,6 +79,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             NSUserDefaults.standardUserDefaults().synchronize()
             setFirstTimeOverlay()
         }
+        
+        self.setMinimalMode()
         
     }
     
@@ -290,18 +294,37 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
-    func renderParkingPolylines(parkingAvailabilities : [ParkingAvailability]){
+    func renderParkingPolylines(parkingAvailabilities : [ParkingAvailability], snapToRoad : Bool = true, minimal : Bool = false){
         for parkingAvailability in parkingAvailabilities{
             
-            GoogleAPIController.sharedInstance.snapToRoad(parkingAvailability.polylinePoints, success: {(polyline) -> Void in
-                var polylinePoints = polyline
+            if(snapToRoad){
+                GoogleAPIController.sharedInstance.snapToRoad(parkingAvailability.polylinePoints, success: {(polyline) -> Void in
+                    var polylinePoints = polyline
+                    parkingAvailability.polylinePoints = polylinePoints
+                    self.currentPAs.append(parkingAvailability)
+                    if polylinePoints.count > 1{
+                        let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
+                        polyOverlay.strokeColor = parkingAvailability.parkingState.color
+                        if(minimal && polyOverlay.strokeColor == C.PARKING_STATE.FREE){
+                            self.map.addOverlay(polyOverlay)
+                        } else if(!minimal){
+                            self.map.addOverlay(polyOverlay)
+                        }
+                    }
+                    
+                })
+            }else{
+                var polylinePoints = parkingAvailability.polylinePoints
                 if polylinePoints.count > 1{
                     let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
                     polyOverlay.strokeColor = parkingAvailability.parkingState.color
-                    self.map.addOverlay(polyOverlay)
+                    if(minimal && polyOverlay.strokeColor == C.PARKING_STATE.FREE){
+                        self.map.addOverlay(polyOverlay)
+                    } else if(!minimal){
+                        self.map.addOverlay(polyOverlay)
+                    }
                 }
-                
-            })
+            }
         }
     }
     
@@ -367,6 +390,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             annotation.coordinate = searchResult.placemark.coordinate
             
             self.map.addAnnotation(annotation)
+            self.currentAnns.append(annotation)
             isCurrentLocation = false
             generateParkingAvailabilities(searchResult.placemark.coordinate)
             toggleHomeBtn()
@@ -397,14 +421,37 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     
     override func setMinimalMode(){
+        print("minimal mode map activated")
+        searchBar?.hidden = true
         
+        map.removeOverlays(map.overlays)
+        print(self.currentAnns)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.map.addAnnotations(self.currentAnns)
+        })
+        
+        renderParkingPolylines(currentPAs, snapToRoad: false, minimal: true)
     }
     
     override func setMediumMode(){
+        print("minimal mode map activated")
+        searchBar?.hidden = true
         
+        map.removeOverlays(map.overlays)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.map.addAnnotations(self.currentAnns)
+        })
+        renderParkingPolylines(currentPAs, snapToRoad: false, minimal: false)
     }
     
-    override func setMaximumMode(){
+    override func setMaximalMode(){
+        print("minimal mode map activated")
+        searchBar?.hidden = false
         
+        map.removeOverlays(map.overlays)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.map.addAnnotations(self.currentAnns)
+        })
+        renderParkingPolylines(currentPAs, snapToRoad: false, minimal: true)
     }
 }
