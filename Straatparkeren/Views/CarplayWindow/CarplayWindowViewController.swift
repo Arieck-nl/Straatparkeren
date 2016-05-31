@@ -10,6 +10,9 @@ import UIKit
 
 class CarplayWindowViewController: UIViewController {
     
+    let dismissInterval         : Double = 20
+    var dismissTimer            : NSTimer?
+    
     var carplayControl          : UIView?
     var currentTimeLabel        : UILabel?
     var window                  : UIView?
@@ -55,14 +58,58 @@ class CarplayWindowViewController: UIViewController {
         
         window = UIView(frame: CGRect(x: (carplayControl?.bounds.width)!, y: 0, w: D.SCREEN_WIDTH, h: D.SCREEN_HEIGHT))
         window?.backgroundColor = UIColor.blackColor()
+        
         view.addSubview(window!)
         
         let springboardVC = SpringboardViewController()
         springboardNavVC = SPNavigationController.init(rootViewController: springboardVC)
         springboardVC.view.frame = (window?.frame)!
+        
         window!.addSubview(springboardNavVC!.view)
         addAsChildViewController(springboardNavVC!, toView: window!)
         springboardNavVC!.didMoveToParentViewController(self)
+        self.addGestures()
+    }
+    
+    // Gestures for debugging purposes
+    func addGestures(){
+        let interfaceController = InterfaceModeController.sharedInstance
+        
+        self.carplayControl!.addSwipeGesture(direction: .Down) { (Swiped) -> () in
+            if(interfaceController.currentMode() == I_MODE.MAXIMAL){
+                interfaceController.setMode(.MEDIUM)
+            }else if(interfaceController.currentMode() == I_MODE.MEDIUM){
+                interfaceController.setMode(.MINIMAL)
+            }
+        }
+        self.carplayControl!.addSwipeGesture(direction: .Up) { (Swiped) -> () in
+            if(interfaceController.currentMode() == I_MODE.MINIMAL){
+                interfaceController.setMode(.MEDIUM)
+            }else if(interfaceController.currentMode() == I_MODE.MEDIUM){
+                interfaceController.setMode(.MAXIMAL)
+            }
+        }
+        
+        let themeController = ThemeController.sharedInstance
+        
+        self.carplayControl!.addSwipeGesture(direction: .Left) { (Swiped) -> () in
+            themeController.setTheme(.NIGHT)
+        }
+        self.carplayControl!.addSwipeGesture(direction: .Right) { (Swiped) -> () in
+            themeController.setTheme(.DAY)
+        }
+    }
+    
+    func dismissCurrentVC(){
+        self.springboardNavVC!.popToRootViewControllerAnimated(true)
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        //dismiss VC after X amount of time
+        self.dismissTimer?.invalidate()
+        self.dismissTimer = nil
+        self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dismissCurrentVC), userInfo: nil, repeats: false)
+
     }
     
     func updateClock(){

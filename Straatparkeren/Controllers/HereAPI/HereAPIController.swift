@@ -16,28 +16,30 @@ class HereAPIController: NSObject {
     // Singleton instance
     static let sharedInstance = HereAPIController()
     
-    typealias successHandler = (polyline:[CLLocationCoordinate2D]) -> Void
+    typealias successHandler = (polylines:[CLLocationCoordinate2D]) -> Void
     
-    func trafficFlowFor(location : CLLocationCoordinate2D, success : successHandler){
+    func trafficFlowFor(topLeft : CLLocationCoordinate2D, bottomRight : CLLocationCoordinate2D, success : successHandler){
         
-        Alamofire.request(.GET, API.GOOGLE_MAPS_ROADS, parameters: [
-            "interpolate": "true",
-            "path": polylineString,
-            "key": getKeyFor(K.GOOGLE_MAPS_API)
+        var returnPoints : [CLLocationCoordinate2D] = []
+        
+        Alamofire.request(.GET, API.HERE_TRAFFIC, parameters: [
+            "bbox" : topLeft.latitude.toString + "," + topLeft.longitude.toString + ";" + bottomRight.latitude.toString + "," + bottomRight.longitude.toString,
+            "app_code"  : getKeyFor(K.HERE_APP_CODE),
+            "app_id"    : getKeyFor(K.HERE_APP_ID)
             ])
             .validate()
             .responseJSON { response in
-                //                print(response.request)  // original URL request
-                //                print(response.response) // URL response
-                //                print(response.data)     // server data
-                //                print(response.result)   // result of response serialization
+                                print(response.request)  // original URL request
+                                print(response.response) // URL response
+                                print(response.data)     // server data
+                                print(response.result)   // result of response serialization
                 if (response.result.value == nil){
                     return
                 }
                 
                 if let json : JSON = JSON(response.result.value!) {
-                    //                    print("JSON: \(json)")
-                    
+                                        print("JSON: \(json)")
+                    return
                     let snappedPoints : JSON = json["snappedPoints"]
                     
                     if snappedPoints != nil{
@@ -49,10 +51,10 @@ class HereAPIController: NSObject {
                             coordinates.append(coordinate)
                         }
                         
-                        returnPoints = coordinates
+                        returnPoints = []
                         
                     }
-                    success(polyline: returnPoints)
+                    success(polylines: returnPoints)
                 }
         }
     }

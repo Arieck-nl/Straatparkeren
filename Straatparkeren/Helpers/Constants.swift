@@ -52,18 +52,22 @@ public struct N{
 }
 
 public struct API{
-    public static let GOOGLE_MAPS_ROADS = "https://roads.googleapis.com/v1/snapToRoads"
     /* 
      PARAMETERS:
         path        : path
         key         : api key
         interpolate : interpolate (optional)
      */
+    public static let GOOGLE_MAPS_ROADS = "https://roads.googleapis.com/v1/snapToRoads"
+    
+    public static let HERE_TRAFFIC = "https://traffic.cit.api.here.com/traffic/6.1/flow.json"
 }
 
 /* KEYS */
 public struct K{
     public static let GOOGLE_MAPS_API = "GoogleMapsAPIKey"
+    public static let HERE_APP_CODE = "HereAppCode"
+    public static let HERE_APP_ID = "HereAppID"
 }
 
 public struct STR{

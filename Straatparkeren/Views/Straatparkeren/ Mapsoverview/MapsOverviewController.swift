@@ -12,11 +12,11 @@ import MapKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Number of parking availabilities to render
-    static let NPA          : Int = 1
+    static let NPA          : Int = 8
     
     var map                 : MKMapView!
     var locationManager     : CLLocationManager!
-    var started = false
+    var started             : Bool = false
     var autocompleteTimer   : NSTimer?
     var searchResults       : [MKMapItem] = []
     var isCurrentLocation   : Bool = true
@@ -80,7 +80,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             setFirstTimeOverlay()
         }
         
-        self.setMinimalMode()
+        self.setMediumMode()
         
     }
     
@@ -92,7 +92,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     func setSearchBar(){
         navbarBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: 0, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "SearchIcon")!, text: STR.navbar_search_btn)
         navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
-        self.view.addSubview(navbarBtn!)
+        self.SPNavBar!.addSubview(navbarBtn!)
         
         
         searchBar = SPSearchBar(frame: CGRect(x: 0, y: 0, w: (navbarBtn?.frame.x)!, h: D.NAVBAR.HEIGHT))
@@ -247,6 +247,17 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if !started{
             self.map.setRegion(region, animated: false)
             generateParkingAvailabilities(location!.coordinate)
+            
+//            let mapRect : MKMapRect = self.map.visibleMapRect
+//            let topLeftPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMinX(mapRect), y: MKMapRectGetMinY(mapRect))
+//            let topLeftCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(topLeftPoint)
+//            
+//            let bottomRightPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMaxX(mapRect), y: MKMapRectGetMaxY(mapRect))
+//            let bottomRightCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(bottomRightPoint)
+//            
+//            HereAPIController.sharedInstance.trafficFlowFor(topLeftCoordinate, bottomRight: bottomRightCoordinate,  success: {(polylines) -> Void in
+//                
+//                })
         }
     }
     
@@ -422,7 +433,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     override func setMinimalMode(){
         print("minimal mode map activated")
-        searchBar?.hidden = true
+        self.setCustomToolbarHidden(true)
         
         map.removeOverlays(map.overlays)
         print(self.currentAnns)
@@ -435,7 +446,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     override func setMediumMode(){
         print("minimal mode map activated")
-        searchBar?.hidden = true
+        self.setCustomToolbarHidden(true)
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
@@ -446,12 +457,12 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     override func setMaximalMode(){
         print("minimal mode map activated")
-        searchBar?.hidden = false
+        self.setCustomToolbarHidden(false)
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
             self.map.addAnnotations(self.currentAnns)
         })
-        renderParkingPolylines(currentPAs, snapToRoad: false, minimal: true)
+        renderParkingPolylines(currentPAs, snapToRoad: false, minimal: false)
     }
 }

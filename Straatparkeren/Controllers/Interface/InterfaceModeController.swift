@@ -11,7 +11,7 @@ import MapKit
 import CoreMotion
 
 protocol InterfaceModeDelegate {
-    // Divide the interface into three categories, show or hide view according to the categories
+    // Divide the interface into three categories, show or hide views according to the categories
     func setMinimalMode()
     func setMediumMode()
     func setMaximalMode()
@@ -36,8 +36,8 @@ class InterfaceModeController {
     
     private let interval : Double = 15.0
     
-    private let mediumTrigger : Double = 0.35
-    private let maximumTrigger : Double = 0.50
+    private let mediumTrigger : Double = 0.006
+    private let maximumTrigger : Double = 0.05
     
     private let peakTrigger = 15
     // Update every X times per second
@@ -63,7 +63,7 @@ class InterfaceModeController {
     
     init(){
         motionMgr.deviceMotionUpdateInterval = 1.0 / UpdateFrequency
-        self.setMode(.MINIMAL)
+        self.setMode(.MEDIUM)
     }
     
     func start(){
@@ -119,7 +119,10 @@ class InterfaceModeController {
                 
                 var mode : I_MODE!
                 
-                if((timeDiff > self.interval) && (self.stackX.count > self.peakTrigger)){
+                if((timeDiff > self.interval) && (self.stackX.count >= self.peakTrigger)){
+                    print(self.currentMode())
+                    print("avgX" + avgX.toString + "avgY" + avgY.toString + "avgZ" + avgZ.toString)
+                    
                     if(abs(avgX) > self.maximumTrigger || abs(avgY) > self.maximumTrigger || abs(avgZ) > self.maximumTrigger){
                         mode = .MINIMAL
                     }
