@@ -20,6 +20,7 @@
 		1D182D531CFB88CA003757A5 /* HereAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D182D521CFB88CA003757A5 /* HereAPIController.swift */; };
 		1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A11CEDFCED0063893E /* MapSearchController.swift */; };
 		1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */; };
+		1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */; };
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
@@ -35,6 +36,16 @@
 		1DF7F5B91CEB33CF0065502B /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DF7F5B81CEB33CF0065502B /* Keys.plist */; };
 		1DFF63181CF47C070078A4B1 /* ThemeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DFF63171CF47C070078A4B1 /* ThemeController.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1D669F1E1CFDC1BF00C63A53 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1DEA932E1CE0A7FC003917CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1DEA93351CE0A7FC003917CE;
+			remoteInfo = Straatparkeren;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		1D12B2011CF4E72500F8CE71 /* CopyFiles */ = {
@@ -62,6 +73,9 @@
 		1D182D521CFB88CA003757A5 /* HereAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HereAPIController.swift; path = HereAPI/HereAPIController.swift; sourceTree = "<group>"; };
 		1D2042A11CEDFCED0063893E /* MapSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchController.swift; path = MapSearch/MapSearchController.swift; sourceTree = "<group>"; };
 		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchResultViewCell.swift; sourceTree = "<group>"; };
+		1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StraatparkerenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraatparkerenTests.swift; sourceTree = "<group>"; };
+		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPOverlayView.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -83,6 +97,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1D669F161CFDC1BF00C63A53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1DEA93331CE0A7FC003917CE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -165,10 +186,20 @@
 			name = MapSearch;
 			sourceTree = "<group>";
 		};
+		1D669F1A1CFDC1BF00C63A53 /* StraatparkerenTests */ = {
+			isa = PBXGroup;
+			children = (
+				1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */,
+				1D669F1D1CFDC1BF00C63A53 /* Info.plist */,
+			);
+			path = StraatparkerenTests;
+			sourceTree = "<group>";
+		};
 		1DEA932D1CE0A7FC003917CE = {
 			isa = PBXGroup;
 			children = (
 				1DEA93381CE0A801003917CE /* Straatparkeren */,
+				1D669F1A1CFDC1BF00C63A53 /* StraatparkerenTests */,
 				1DEA93371CE0A7FD003917CE /* Products */,
 				045BEDCAAB99C6DCE1C3132C /* Pods */,
 				7355DC93B8172AA324089CD6 /* Frameworks */,
@@ -179,6 +210,7 @@
 			isa = PBXGroup;
 			children = (
 				1DEA93361CE0A7FD003917CE /* Straatparkeren.app */,
+				1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -286,6 +318,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1D669F181CFDC1BF00C63A53 /* StraatparkerenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D669F201CFDC1BF00C63A53 /* Build configuration list for PBXNativeTarget "StraatparkerenTests" */;
+			buildPhases = (
+				1D669F151CFDC1BF00C63A53 /* Sources */,
+				1D669F161CFDC1BF00C63A53 /* Frameworks */,
+				1D669F171CFDC1BF00C63A53 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1D669F1F1CFDC1BF00C63A53 /* PBXTargetDependency */,
+			);
+			name = StraatparkerenTests;
+			productName = StraatparkerenTests;
+			productReference = 1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		1DEA93351CE0A7FC003917CE /* Straatparkeren */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEA93481CE0A801003917CE /* Build configuration list for PBXNativeTarget "Straatparkeren" */;
@@ -317,6 +367,10 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Rick van 't Hof";
 				TargetAttributes = {
+					1D669F181CFDC1BF00C63A53 = {
+						CreatedOnToolsVersion = 7.3.1;
+						TestTargetID = 1DEA93351CE0A7FC003917CE;
+					};
 					1DEA93351CE0A7FC003917CE = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = LS2XT4329G;
@@ -337,11 +391,19 @@
 			projectRoot = "";
 			targets = (
 				1DEA93351CE0A7FC003917CE /* Straatparkeren */,
+				1D669F181CFDC1BF00C63A53 /* StraatparkerenTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1D669F171CFDC1BF00C63A53 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1DEA93341CE0A7FC003917CE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -402,6 +464,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1D669F151CFDC1BF00C63A53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1DEA93321CE0A7FC003917CE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -435,7 +505,39 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		1D669F1F1CFDC1BF00C63A53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1DEA93351CE0A7FC003917CE /* Straatparkeren */;
+			targetProxy = 1D669F1E1CFDC1BF00C63A53 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1D669F211CFDC1BF00C63A53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = StraatparkerenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nl.arieck.StraatparkerenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Straatparkeren.app/Straatparkeren";
+			};
+			name = Debug;
+		};
+		1D669F221CFDC1BF00C63A53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = StraatparkerenTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = nl.arieck.StraatparkerenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Straatparkeren.app/Straatparkeren";
+			};
+			name = Release;
+		};
 		1DEA93461CE0A801003917CE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -560,6 +662,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1D669F201CFDC1BF00C63A53 /* Build configuration list for PBXNativeTarget "StraatparkerenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D669F211CFDC1BF00C63A53 /* Debug */,
+				1D669F221CFDC1BF00C63A53 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		1DEA93311CE0A7FC003917CE /* Build configuration list for PBXProject "Straatparkeren" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
