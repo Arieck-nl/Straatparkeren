@@ -1,0 +1,2 @@
+/Users/rick/Library/Developer/Xcode/DerivedData/Straatparkeren-bmwhprlkpodkozcynxyuzckzrcwr/Build/Products/Debug-iphonesimulator/Straatparkeren.app
+iPhone Developer
