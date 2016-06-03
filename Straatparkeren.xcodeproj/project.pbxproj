@@ -22,6 +22,9 @@
 		1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */; };
 		1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */; };
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
+		1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; };
+		1D82264F1D01D2470029901F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1D899AF01D00328A006E4527 /* LocationDependentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D899AEF1D00328A006E4527 /* LocationDependentController.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
 		1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C21CE0C67B00B697ED /* Helpers.swift */; };
@@ -45,6 +48,27 @@
 			remoteGlobalIDString = 1DEA93351CE0A7FC003917CE;
 			remoteInfo = Straatparkeren;
 		};
+		1D8226471D01D2120029901F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
+		1D8226491D01D2120029901F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
+			remoteInfo = GPUImageTests;
+		};
+		1D82264B1D01D2190029901F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
+			remoteInfo = GPUImage;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +78,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1D82264F1D01D2470029901F /* GPUImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,10 +98,13 @@
 		1D182D521CFB88CA003757A5 /* HereAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HereAPIController.swift; path = HereAPI/HereAPIController.swift; sourceTree = "<group>"; };
 		1D2042A11CEDFCED0063893E /* MapSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchController.swift; path = MapSearch/MapSearchController.swift; sourceTree = "<group>"; };
 		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchResultViewCell.swift; sourceTree = "<group>"; };
+		1D2FCC111D01B629006A835C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StraatparkerenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraatparkerenTests.swift; sourceTree = "<group>"; };
 		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPOverlayView.swift; sourceTree = "<group>"; };
+		1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
+		1D899AEF1D00328A006E4527 /* LocationDependentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationDependentController.swift; path = LocationDependent/LocationDependentController.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D97E8C21CE0C67B00B697ED /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -108,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */,
 				11CD668630238D8147759EFD /* Pods_Straatparkeren.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,6 +195,7 @@
 		1D12AE591CF4E70600F8CE71 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				1D2FC8591D01B1EF006A835C /* GPUImage */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -186,6 +216,22 @@
 			name = MapSearch;
 			sourceTree = "<group>";
 		};
+		1D2FC8591D01B1EF006A835C /* GPUImage */ = {
+			isa = PBXGroup;
+			children = (
+				1D2FCC131D01B833006A835C /* framework */,
+			);
+			path = GPUImage;
+			sourceTree = "<group>";
+		};
+		1D2FCC131D01B833006A835C /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */,
+			);
+			path = framework;
+			sourceTree = "<group>";
+		};
 		1D669F1A1CFDC1BF00C63A53 /* StraatparkerenTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +239,23 @@
 				1D669F1D1CFDC1BF00C63A53 /* Info.plist */,
 			);
 			path = StraatparkerenTests;
+			sourceTree = "<group>";
+		};
+		1D8226431D01D2110029901F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D8226481D01D2120029901F /* GPUImage.framework */,
+				1D82264A1D01D2120029901F /* GPUImageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1D899AEC1D0031B4006E4527 /* LocationDependent */ = {
+			isa = PBXGroup;
+			children = (
+				1D899AEF1D00328A006E4527 /* LocationDependentController.swift */,
+			);
+			name = LocationDependent;
 			sourceTree = "<group>";
 		};
 		1DEA932D1CE0A7FC003917CE = {
@@ -242,6 +305,7 @@
 		1DEA93561CE0AAAB003917CE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1D899AEC1D0031B4006E4527 /* LocationDependent */,
 				1D182D511CFB87D9003757A5 /* HereAPI */,
 				1DFF63161CF47BB90078A4B1 /* Interface */,
 				1D2042A01CEDFC9C0063893E /* MapSearch */,
@@ -310,6 +374,7 @@
 		7355DC93B8172AA324089CD6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1D2FCC111D01B629006A835C /* OpenGLES.framework */,
 				FEF178419434FE361397D735 /* Pods_Straatparkeren.framework */,
 			);
 			name = Frameworks;
@@ -351,6 +416,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1D82264C1D01D2190029901F /* PBXTargetDependency */,
 			);
 			name = Straatparkeren;
 			productName = Straatparkeren;
@@ -388,6 +454,12 @@
 			mainGroup = 1DEA932D1CE0A7FC003917CE;
 			productRefGroup = 1DEA93371CE0A7FD003917CE /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1D8226431D01D2110029901F /* Products */;
+					ProjectRef = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1DEA93351CE0A7FC003917CE /* Straatparkeren */,
@@ -395,6 +467,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1D8226481D01D2120029901F /* GPUImage.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GPUImage.framework;
+			remoteRef = 1D8226471D01D2120029901F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1D82264A1D01D2120029901F /* GPUImageTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests.xctest;
+			remoteRef = 1D8226491D01D2120029901F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D669F171CFDC1BF00C63A53 /* Resources */ = {
@@ -482,6 +571,7 @@
 				1DB2C0A21CEEF8A100FB5BCC /* SPNavButtonView.swift in Sources */,
 				1D182D531CFB88CA003757A5 /* HereAPIController.swift in Sources */,
 				1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */,
+				1D899AF01D00328A006E4527 /* LocationDependentController.swift in Sources */,
 				1D0C04751CE1EB0200CC167F /* MapsOverviewController.swift in Sources */,
 				1DD505F01CE369EB00BC56A2 /* SPNavigationBar.swift in Sources */,
 				1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */,
@@ -510,6 +600,11 @@
 			isa = PBXTargetDependency;
 			target = 1DEA93351CE0A7FC003917CE /* Straatparkeren */;
 			targetProxy = 1D669F1E1CFDC1BF00C63A53 /* PBXContainerItemProxy */;
+		};
+		1D82264C1D01D2190029901F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = 1D82264B1D01D2190029901F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -637,6 +732,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = nl.arieck.Straatparkeren;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;

@@ -1,5 +1,5 @@
 //
-//  RoadSafetyController.swift
+//  InterfaceModeController
 //  Straatparkeren
 //
 //  Created by Rick van 't Hof on 28-05-16.

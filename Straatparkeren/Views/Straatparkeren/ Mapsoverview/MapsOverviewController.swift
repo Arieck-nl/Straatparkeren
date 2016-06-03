@@ -12,25 +12,26 @@ import MapKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Number of parking availabilities to render
-    static let NPA          : Int = 8
+    static let NPA              : Int = 8
     
-    var map                 : MKMapView!
-    var locationManager     : CLLocationManager!
-    var started             : Bool = false
-    var autocompleteTimer   : NSTimer?
-    var searchResults       : [MKMapItem] = []
-    var isCurrentLocation   : Bool = true
-    var currentPAs          : [ParkingAvailability] = []
-    var currentAnns         : [MKAnnotation] = []
+    var map                     : MKMapView!
+    var locationManager         : CLLocationManager!
+    var started                 : Bool = false
+    var autocompleteTimer       : NSTimer?
+    var searchResults           : [MKMapItem] = []
+    var isCurrentLocation       : Bool = true
+    var currentPAs              : [ParkingAvailability] = []
+    var currentAnnotations      : [MKAnnotation] = []
+    let locationDependentCntl   : LocationDependentController = LocationDependentController.sharedInstance
     
     // Views
-    var searchBar           : SPSearchBar?
-    var navbarBtn           : SPNavButtonView?
-    var navbarBtnText       : UILabel?
-    let searchImg           : UIImage = UIImage(named: "SearchIcon")!.imageWithRenderingMode(.AlwaysTemplate)
-    let backImg             : UIImage = UIImage(named: "BackIcon")!.imageWithRenderingMode(.AlwaysTemplate)
-    var searchTable         : UITableView!
-    var homeBtn             : SPNavButtonView?
+    var searchBar               : SPSearchBar?
+    var navbarBtn               : SPNavButtonView?
+    var navbarBtnText           : UILabel?
+    let searchImg               : UIImage = UIImage(named: "SearchIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+    let backImg                 : UIImage = UIImage(named: "BackIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+    var searchTable             : UITableView!
+    var homeBtn                 : SPNavButtonView?
     
     override func viewDidLoad() {
         
@@ -401,7 +402,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             annotation.coordinate = searchResult.placemark.coordinate
             
             self.map.addAnnotation(annotation)
-            self.currentAnns.append(annotation)
+            self.currentAnnotations.append(annotation)
             isCurrentLocation = false
             generateParkingAvailabilities(searchResult.placemark.coordinate)
             toggleHomeBtn()
@@ -436,9 +437,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.setCustomToolbarHidden(true)
         
         map.removeOverlays(map.overlays)
-        print(self.currentAnns)
+        print(self.currentAnnotations)
         dispatch_async(dispatch_get_main_queue(), {
-            self.map.addAnnotations(self.currentAnns)
+            self.map.addAnnotations(self.currentAnnotations)
         })
         
         renderParkingPolylines(currentPAs, snapToRoad: false, minimal: true)
@@ -450,7 +451,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
-            self.map.addAnnotations(self.currentAnns)
+            self.map.addAnnotations(self.currentAnnotations)
         })
         renderParkingPolylines(currentPAs, snapToRoad: false, minimal: false)
     }
@@ -461,7 +462,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
-            self.map.addAnnotations(self.currentAnns)
+            self.map.addAnnotations(self.currentAnnotations)
         })
         renderParkingPolylines(currentPAs, snapToRoad: false, minimal: false)
     }

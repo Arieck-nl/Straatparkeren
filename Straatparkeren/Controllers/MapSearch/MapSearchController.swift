@@ -33,6 +33,7 @@ class MapSearchController: NSObject {
             
             success(mapItems: response.mapItems)
         }
+        
     }
     
     

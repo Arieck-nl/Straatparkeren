@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import GPUImage
+import AVFoundation
 
 protocol ThemeDelegate{
     // Day mode should render dark text and controls on a light background
@@ -52,9 +54,28 @@ class ThemeController: NSObject {
     // Singleton instance
     static let sharedInstance = ThemeController()
     
+    var videoCamera : AverageLuminanceExtractor!
+    
+    var camera : Camera!
+    
     func start(){
 //        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
+        do {
+            camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
+            let filter = AverageLuminanceExtractor()
+            filter.extractedLuminanceCallback = {luminance in
+               print(luminance)
+            }
+            camera --> filter --> RenderView()
+
+            camera.startCapture()
+        } catch {
+            fatalError("Could not initialize rendering pipeline: \(error)")
+        }
+        
+        
     }
+    
     
     @objc private func toggleTheme(){
         if(self.currentTheme() == .NIGHT){
