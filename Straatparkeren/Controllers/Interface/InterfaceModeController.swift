@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreMotion
 
-protocol InterfaceModeDelegate {
+protocol InterfaceModeProtocol {
     // Divide the interface into three categories, show or hide views according to the categories
     func setMinimalMode()
     func setMediumMode()
@@ -63,7 +63,7 @@ class InterfaceModeController {
     
     init(){
         motionMgr.deviceMotionUpdateInterval = 1.0 / UpdateFrequency
-        self.setMode(.MEDIUM)
+        self.setMode(.MAXIMAL)
     }
     
     func start(){

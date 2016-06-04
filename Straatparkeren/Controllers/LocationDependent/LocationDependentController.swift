@@ -8,15 +8,24 @@
 
 import MapKit
 
+public enum MONITORING_TYPE : Int{
+    case ETA, REGION
+}
+
 class LocationDependentController : NSObject, CLLocationManagerDelegate {
     
     
     // Singleton instance
     static let sharedInstance = LocationDependentController()
     
-    static let ACCURACY : Double = 100.0
+    static let N_KEY            : String = N.LOCATION_TRIGGER
+    static let ACCURACY         : Double = 100.0 ///meters
     
-    var locationManager : CLLocationManager!
+    var locationManager         : CLLocationManager!
+    
+    var monitorDestination      : CLLocationCoordinate2D?
+    internal var monitorETAs    : [Int]?
+    var monitoringTimer         : NSTimer?
     
     
     override init(){
@@ -30,47 +39,100 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
             
         }
+        
+        self.resetMonitoringForRegions()
     }
     
     
     /// Sets monitoring for regions
     ///
-    /// - warning: distances should be a plurality of 100.0
+    /// - warning: distances should be a plurality of 0.1
     /// - parameter destination: precise destination for set regions
-    /// - parameter regionSpans: array of spans for regions
-    func setMonitoringForRegions(destination : CLLocation, regionSpans : [Double]){
+    /// - parameter regionSpans: array of spans for regions in kilometers
+    func setMonitoringForRegions(destination : CLLocationCoordinate2D, regionSpans : [Double]){
         
         for rs in regionSpans {
-            if rs % LocationDependentController.ACCURACY != 0 {
-                fatalError("span must be a plurality of 100.0")
+            if (rs * 1000) % LocationDependentController.ACCURACY != 0 {
+                fatalError("span must be a plurality of 0.1, span is now \(rs)")
             }
-            let region = CLCircularRegion(center: destination.coordinate, radius: rs, identifier: rs.toString)
+            
+            let region = CLCircularRegion(center: destination, radius: (rs * 1000), identifier: rs.toString)
+            region.notifyOnEntry = true
+            region.notifyOnExit = false
             
             locationManager.startMonitoringForRegion(region)
         }
     }
     
+    func stopMonitoringForRegions(){
+        self.resetMonitoringForRegions()
+    }
+    
+    func resetMonitoringForRegions(){
+        for region in locationManager.monitoredRegions{
+            locationManager.stopMonitoringForRegion(region)
+        }
+    }
+    
     // use destination and time to destination for notifications
-    func setMonitoringForETAsToDestination(destination : CLLocation, etas : [Double]){
-//        MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
-//        [request setSource:[MKMapItem mapItemForCurrentLocation]];
-//        [request setDestination:destination];
-//        [request setTransportType:MKDirectionsTransportTypeAutomobile];
-//        [request setRequestsAlternateRoutes:NO];
-//        MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
-//        [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
-//        if ( ! error && [response routes] > 0) {
-//        MKRoute *route = [[response routes] objectAtIndex:0];
-//        //route.distance  = The distance
-//        //route.expectedTravelTime = The ETA
-//        }
-//        }];
+    // etas in minutes
+    func setMonitoringForETAsToDestination(destination : CLLocationCoordinate2D, etas : [Int]){
+        var filteredETAs = Array(Set(etas))
+        filteredETAs = filteredETAs.sort({ $0 < $1 })
+        print(filteredETAs)
+        monitorETAs = filteredETAs
+        monitorDestination = destination
+        
+        NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(self.isETALessThanSpecified), userInfo: nil, repeats: true)
+        
+    }
+    
+    func stopMonitoringForETAsToDestination(){
+        monitoringTimer!.invalidate()
+        monitoringTimer = nil
+    }
+    
+    internal func isETALessThanSpecified(){
+        if monitorDestination != nil && monitorETAs?.count > 0{
+            let request : MKDirectionsRequest = MKDirectionsRequest()
+            request.source = MKMapItem.mapItemForCurrentLocation()
+            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: monitorDestination!, addressDictionary: nil))
+            request.transportType = .Automobile
+            request.requestsAlternateRoutes = false
+            
+            let directions : MKDirections = MKDirections(request: request)
+            directions.calculateETAWithCompletionHandler { (eta, error) in
+                if(error != nil){
+                    print(error)
+                }else{
+                    let seconds : Double = (eta?.expectedTravelTime)!
+                    for (i, eta) in self.monitorETAs!.enumerate(){
+                        if seconds < Double(eta*60){
+                            print("Reached this eta: \(eta)")
+                            self.monitorETAs!.removeRange(i...((self.monitorETAs?.count)! - 1))
+                            print("Array is now: \(self.monitorETAs!)")
+                            //send out notification
+                            self.sentLocationTrigger(.ETA, value: eta)
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func sentLocationTrigger(type : MONITORING_TYPE, value : AnyObject) {
+        
+        let userInfo = ["type" : type.hashValue, "value" : value]
+        NSNotificationCenter.defaultCenter().postNotificationName(N.LOCATION_TRIGGER, object: nil, userInfo: userInfo)
+        
     }
     
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print(region.identifier)
-        
+        self.sentLocationTrigger(.REGION, value: region.identifier)
     }
+    
     
     
     

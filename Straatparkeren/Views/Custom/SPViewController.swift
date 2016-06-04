@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SPViewController: UIViewController, ThemeDelegate, InterfaceModeDelegate {
+class SPViewController: UIViewController, ThemeProtocol, InterfaceModeProtocol {
     
     var SPNavBar : SPNavigationBar?
     

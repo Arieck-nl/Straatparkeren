@@ -22,6 +22,8 @@ class CarplayWindowViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: LocationDependentController.N_KEY, object: nil)
+        
         carplayControl = UIView(frame: CGRect(x: 0, y: 0, w: D.CARPLAY.WIDTH, h: D.SCREEN_HEIGHT))
         carplayControl?.backgroundColor = UIColor.blackColor()
         view.addSubview(carplayControl!)
@@ -33,14 +35,14 @@ class CarplayWindowViewController: UIViewController {
         
         updateClock()
         NSTimer.scheduledTimerWithTimeInterval(60.0,
-            target: self,
-            selector: #selector(CarplayWindowViewController.updateClock),
-            userInfo: nil,
-            repeats: true)
+                                               target: self,
+                                               selector: #selector(CarplayWindowViewController.updateClock),
+                                               userInfo: nil,
+                                               repeats: true)
         
         
         carplayControl?.addSubview(currentTimeLabel!)
-
+        
         
         
         homeBtn = UIImageView(frame: CGRect(x: (D.CARPLAY.WIDTH - D.CARPLAY.BTN_WIDTH) / 2, y: D.SCREEN_HEIGHT - D.CARPLAY.BTN_WIDTH - D.SPACING.REGULAR, w: D.CARPLAY.BTN_WIDTH, h: D.CARPLAY.BTN_WIDTH))
@@ -108,8 +110,22 @@ class CarplayWindowViewController: UIViewController {
         //dismiss VC after X amount of time
         self.dismissTimer?.invalidate()
         self.dismissTimer = nil
-        self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dismissCurrentVC), userInfo: nil, repeats: false)
-
+        
+        // TODO: use defaults for this
+        if false{
+            self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dismissCurrentVC), userInfo: nil, repeats: false)
+        }
+        
+    }
+    
+    func displayNotification(notification: NSNotification){
+        
+        let userInfo : NSDictionary = notification.userInfo!
+        
+        let type = MONITORING_TYPE(rawValue: userInfo["type"] as! Int)
+        
+        print("Location notification type: \(type)")
+        print("Location notification value: \(userInfo["value"])")
     }
     
     func updateClock(){

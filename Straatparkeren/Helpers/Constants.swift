@@ -49,6 +49,7 @@ public struct N{
     public static let MINIMAL_MODE = "MinimalMode"
     public static let MEDIUM_MODE = "MediumMode"
     public static let MAXIMAL_MODE = "MaximalMode"
+    public static let LOCATION_TRIGGER = "LocationTrigger"
 }
 
 public struct API{

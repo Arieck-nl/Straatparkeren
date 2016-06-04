@@ -11,7 +11,7 @@ import MapKit
 import GPUImage
 import AVFoundation
 
-protocol ThemeDelegate{
+protocol ThemeProtocol{
     // Day mode should render dark text and controls on a light background
     func setDayMode()
     // Night mode should render light text and controls on a dark background
@@ -60,18 +60,28 @@ class ThemeController: NSObject {
     
     func start(){
 //        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
+        
+        /*/// TODO: Remove this
+        renderView = RenderView(superView: self.view)
+        self.view.addSubview(renderView)
+        let filter = AverageLuminanceExtractor()
+        filter.extractedLuminanceCallback = {luminance in
+            print(luminance)
+        }
+        
         do {
-            camera = try Camera(sessionPreset:AVCaptureSessionPreset640x480)
-            let filter = AverageLuminanceExtractor()
-            filter.extractedLuminanceCallback = {luminance in
-               print(luminance)
+            camera = try Camera(sessionPreset: AVCaptureSessionPreset640x480, location: .FrontFacing)
+            camera --> filter --> renderView
+            
+            while (true) {
+                camera.startCapture()
+                
+                
             }
-            camera --> filter --> RenderView()
-
-            camera.startCapture()
         } catch {
             fatalError("Could not initialize rendering pipeline: \(error)")
         }
+        /// */
         
         
     }

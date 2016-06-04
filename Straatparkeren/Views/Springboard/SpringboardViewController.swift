@@ -16,8 +16,6 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
     
     var collectionView  : UICollectionView?
     var appCollection   : NSMutableArray?
-    var renderView      : RenderView!
-    var camera          : Camera!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,28 +25,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         
         vc = MapsOverviewController()
         createCollectionView()
-        
-        ///// TODO: Remove this
-        renderView = RenderView(superView: self.view)
-        self.view.addSubview(renderView)
-        let filter = AverageLuminanceExtractor()
-        filter.extractedLuminanceCallback = {luminance in
-            print(luminance)
-        }
-        
-        do {
-            camera = try Camera(sessionPreset: AVCaptureSessionPreset640x480, location: .FrontFacing)
-            camera --> filter --> renderView
-            
-            while (true) {
-                camera.startCapture()
 
-                
-            }
-        } catch {
-            fatalError("Could not initialize rendering pipeline: \(error)")
-        }
-        /////
 
         // Do any additional setup after loading the view.
     }

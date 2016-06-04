@@ -12,7 +12,7 @@ import MapKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Number of parking availabilities to render
-    static let NPA              : Int = 8
+    static let NPA              : Int = 1
     
     var map                     : MKMapView!
     var locationManager         : CLLocationManager!
@@ -81,7 +81,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             setFirstTimeOverlay()
         }
         
-        self.setMediumMode()
+        self.setMaximalMode()
+        
+        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
+        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
         
     }
     
@@ -243,10 +246,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+        self.map.setRegion(region, animated: true)
         
         if !started{
-            self.map.setRegion(region, animated: false)
             generateParkingAvailabilities(location!.coordinate)
             
 //            let mapRect : MKMapRect = self.map.visibleMapRect
