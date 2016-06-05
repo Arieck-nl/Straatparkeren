@@ -12,6 +12,7 @@ class SPNavigationController: UINavigationController {
     
     override func viewDidLoad() {
         setNavigationBarHidden(true, animated: false)
+        self.modalPresentationStyle = .OverCurrentContext
     }
 
 }

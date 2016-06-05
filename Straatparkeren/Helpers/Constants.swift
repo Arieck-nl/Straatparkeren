@@ -40,6 +40,9 @@ public struct USER_DEFAULTS{
     public static let FIRST_TIME = "FirstTimeUse"
     public static let CURRENT_THEME = "CurrentTheme"
     public static let CURRENT_MODE = "CurrentMode"
+    public static let SAFETY_MODE = "SafetyMode"
+    public static let AUTOMATIC_SHUTDOWN = "AutomaticShutdown"
+    public static let FAVORITES = "Favorites"
 }
 
 /* Notification keys */
@@ -78,5 +81,12 @@ public struct STR{
     public static let search_no_results = "Geen resultaten"
     public static let explanation_text = "In deze app kunt u de parkeerbezetting zien van de gewenste locatie. Groen geeft de meeste kans op voldoende parkeerplaatsen. \n Deze app toont functionaliteit afhankelijk van uw veiligheid."
     public static let explanation_btn = "Begrepen"
+    public static let settings_text = "Instellingen"
+    public static let favorites_text = "Favorieten"
+    public static let settings_safety_title = "Extra veilige modus"
+    public static let settings_safety_subtitle = "In de extra veilige modus bepaalt de app wanneer functionaliteiten van de app wel of niet veilig zijn om te gebruiken."
+    public static let settings_shutdown_title = "Automatisch afsluiten"
+    public static let settings_shutdown_subtitle = "De app sluit automatisch af gedurende langere tijd van inactiviteit."
+    public static let settings_favorites_title = "Favorieten wissen"
 }
 

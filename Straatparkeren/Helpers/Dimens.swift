@@ -57,7 +57,8 @@ public struct D{
     }
     
     public struct NAVBAR{
-        public static let HEIGHT                : CGFloat = 124.0
+        public static let HEIGHT                : CGFloat = 120.0
+        public static let BTN_WIDTH             : CGFloat = D.NAVBAR.HEIGHT * 1.5
     }
     
     public struct SEARCHBAR{
@@ -67,5 +68,9 @@ public struct D{
     public struct SEARCH_CELL{
         public static let HEIGHT                : CGFloat = 88.0
     }
-    
+
+    public struct SETTINGS{
+        public static let ROW_HEIGHT            : CGFloat = 160.0
+        public static let SWITCH_HEIGHT         : CGFloat = 80.0
+    }
 }

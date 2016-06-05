@@ -35,7 +35,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     override func viewDidLoad() {
         
-        view.backgroundColor = UIColor.blackColor()
+        view.backgroundColor = UIColor.clearColor()
         
         // Map init
         map = MKMapView(frame: CGRect(x: 0, y: 0, w: D.SCREEN_WIDTH, h: D.SCREEN_HEIGHT))
@@ -73,6 +73,20 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         super.viewDidLoad()
         setSearchBar()
         
+        
+        self.setMaximalMode()
+        
+        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
+        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
+        
+        let tabbar : SPTabbar = SPTabbar(frame: CGRectMake(self.view.frame.x, self.view.frame.y, D.SCREEN_WIDTH, self.view.frame.height))
+        tabbar.settingsBtn.addTapGesture { (UITapGestureRecognizer) in
+            print("tapped")
+            let settingsVC = SettingsViewController()
+            self.navigationController?.pushViewController(settingsVC, animated: false)
+        }
+        self.view.addSubview(tabbar)
+        
         // Only show explanation of app on first start
         let defaults = NSUserDefaults.standardUserDefaults()
         if !defaults.boolForKey(USER_DEFAULTS.FIRST_TIME) {
@@ -80,12 +94,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             NSUserDefaults.standardUserDefaults().synchronize()
             setFirstTimeOverlay()
         }
-        
-        self.setMaximalMode()
-        
-        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
-        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
-        
     }
     
     func setFirstTimeOverlay(){

@@ -10,7 +10,7 @@ import UIKit
 
 class CarplayWindowViewController: UIViewController {
     
-    let dismissInterval         : Double = 20
+    let dismissInterval         : Double = 180
     var dismissTimer            : NSTimer?
     
     var carplayControl          : UIView?
@@ -46,7 +46,7 @@ class CarplayWindowViewController: UIViewController {
         
         
         homeBtn = UIImageView(frame: CGRect(x: (D.CARPLAY.WIDTH - D.CARPLAY.BTN_WIDTH) / 2, y: D.SCREEN_HEIGHT - D.CARPLAY.BTN_WIDTH - D.SPACING.REGULAR, w: D.CARPLAY.BTN_WIDTH, h: D.CARPLAY.BTN_WIDTH))
-        homeBtn?.image = UIImage(named: "carplayHome")
+        homeBtn?.image = UIImage(named: "CarplayHome")
         homeBtn?.addTapGesture(action: { (UITapGestureRecognizer) in
             self.springboardNavVC!.popToRootViewControllerAnimated(true)
         })

@@ -15,11 +15,16 @@
 		1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C047C1CE23CE000CC167F /* SPViewController.swift */; };
 		1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */; };
 		1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */; };
+		1D11D7D61D0431C2005D1E9B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D11D7D51D0431C2005D1E9B /* SettingsViewController.swift */; };
+		1D11D7D81D0434C5005D1E9B /* SPTabbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D11D7D71D0434C5005D1E9B /* SPTabbar.swift */; };
+		1D11D7DA1D0466BB005D1E9B /* SettingsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D11D7D91D0466BB005D1E9B /* SettingsTableCell.swift */; };
+		1D11D7DC1D046917005D1E9B /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D11D7DB1D046917005D1E9B /* SettingsItem.swift */; };
 		1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */; };
 		1D182D501CF9F716003757A5 /* InterfaceModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D182D4F1CF9F716003757A5 /* InterfaceModeController.swift */; };
 		1D182D531CFB88CA003757A5 /* HereAPIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D182D521CFB88CA003757A5 /* HereAPIController.swift */; };
 		1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A11CEDFCED0063893E /* MapSearchController.swift */; };
 		1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */; };
+		1D3B77C01D0494F700669999 /* DefaultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3B77BF1D0494F700669999 /* DefaultsController.swift */; };
 		1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */; };
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
 		1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; };
@@ -86,26 +91,31 @@
 
 /* Begin PBXFileReference section */
 		1B83B2FD8B0A644DAB2224D5 /* Pods-Straatparkeren.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Straatparkeren.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Straatparkeren/Pods-Straatparkeren.debug.xcconfig"; sourceTree = "<group>"; };
-		1D0C045F1CE1BEB300CC167F /* SpringboardAppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringboardAppCell.swift; sourceTree = "<group>"; };
+		1D0C045F1CE1BEB300CC167F /* SpringboardAppCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardAppCell.swift; path = Springboard/SpringboardAppCell.swift; sourceTree = "<group>"; };
 		1D0C04741CE1EB0200CC167F /* MapsOverviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapsOverviewController.swift; path = "Straatparkeren/ Mapsoverview/MapsOverviewController.swift"; sourceTree = "<group>"; };
 		1D0C04771CE1FE1400CC167F /* CarplayWindowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarplayWindowViewController.swift; path = CarplayWindow/CarplayWindowViewController.swift; sourceTree = "<group>"; };
 		1D0C047A1CE23C2800CC167F /* SPNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNavigationController.swift; sourceTree = "<group>"; };
 		1D0C047C1CE23CE000CC167F /* SPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPViewController.swift; sourceTree = "<group>"; };
 		1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingAvailabilty.swift; sourceTree = "<group>"; };
 		1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPPolyline.swift; sourceTree = "<group>"; };
+		1D11D7D51D0431C2005D1E9B /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		1D11D7D71D0434C5005D1E9B /* SPTabbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPTabbar.swift; sourceTree = "<group>"; };
+		1D11D7D91D0466BB005D1E9B /* SettingsTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableCell.swift; sourceTree = "<group>"; };
+		1D11D7DB1D046917005D1E9B /* SettingsItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
 		1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPSearchBar.swift; sourceTree = "<group>"; };
 		1D182D4F1CF9F716003757A5 /* InterfaceModeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterfaceModeController.swift; path = Interface/InterfaceModeController.swift; sourceTree = "<group>"; };
 		1D182D521CFB88CA003757A5 /* HereAPIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HereAPIController.swift; path = HereAPI/HereAPIController.swift; sourceTree = "<group>"; };
 		1D2042A11CEDFCED0063893E /* MapSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchController.swift; path = MapSearch/MapSearchController.swift; sourceTree = "<group>"; };
-		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSearchResultViewCell.swift; sourceTree = "<group>"; };
+		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchResultViewCell.swift; path = "Straatparkeren/ Mapsoverview/MapSearchResultViewCell.swift"; sourceTree = "<group>"; };
 		1D2FCC111D01B629006A835C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		1D3B77BF1D0494F700669999 /* DefaultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultsController.swift; path = Defaults/DefaultsController.swift; sourceTree = "<group>"; };
 		1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StraatparkerenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraatparkerenTests.swift; sourceTree = "<group>"; };
 		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPOverlayView.swift; sourceTree = "<group>"; };
 		1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
 		1D899AEF1D00328A006E4527 /* LocationDependentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationDependentController.swift; path = LocationDependent/LocationDependentController.swift; sourceTree = "<group>"; };
-		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SpringboardApp.swift; path = ../Views/SpringboardApp.swift; sourceTree = "<group>"; };
+		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1D97E8C21CE0C67B00B697ED /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		1D97E8C41CE0C6E200B697ED /* Dimens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dimens.swift; sourceTree = "<group>"; };
@@ -156,6 +166,7 @@
 		1D0C04721CE1EA8100CC167F /* Straatparkeren */ = {
 			isa = PBXGroup;
 			children = (
+				1D11D7D41D04319D005D1E9B /* Settings */,
 				1D0C04731CE1EAC400CC167F /* MapsOverview */,
 			);
 			name = Straatparkeren;
@@ -164,6 +175,7 @@
 		1D0C04731CE1EAC400CC167F /* MapsOverview */ = {
 			isa = PBXGroup;
 			children = (
+				1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */,
 				1D0C04741CE1EB0200CC167F /* MapsOverviewController.swift */,
 			);
 			name = MapsOverview;
@@ -185,11 +197,21 @@
 				1DD505EF1CE369EB00BC56A2 /* SPNavigationBar.swift */,
 				1D0F33A21CE4D36900D5B336 /* SPPolyline.swift */,
 				1D16303D1CECADAC00C076F0 /* SPSearchBar.swift */,
-				1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */,
 				1DB2C0A11CEEF8A100FB5BCC /* SPNavButtonView.swift */,
 				1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */,
+				1D11D7D71D0434C5005D1E9B /* SPTabbar.swift */,
 			);
 			path = Custom;
+			sourceTree = "<group>";
+		};
+		1D11D7D41D04319D005D1E9B /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				1D11D7D91D0466BB005D1E9B /* SettingsTableCell.swift */,
+				1D11D7D51D0431C2005D1E9B /* SettingsViewController.swift */,
+			);
+			name = Settings;
+			path = Straatparkeren/Settings;
 			sourceTree = "<group>";
 		};
 		1D12AE591CF4E70600F8CE71 /* Libs */ = {
@@ -230,6 +252,14 @@
 				1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */,
 			);
 			path = framework;
+			sourceTree = "<group>";
+		};
+		1D3B77BD1D0494CB00669999 /* Defaults */ = {
+			isa = PBXGroup;
+			children = (
+				1D3B77BF1D0494F700669999 /* DefaultsController.swift */,
+			);
+			name = Defaults;
 			sourceTree = "<group>";
 		};
 		1D669F1A1CFDC1BF00C63A53 /* StraatparkerenTests */ = {
@@ -305,6 +335,7 @@
 		1DEA93561CE0AAAB003917CE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1D3B77BD1D0494CB00669999 /* Defaults */,
 				1D899AEC1D0031B4006E4527 /* LocationDependent */,
 				1D182D511CFB87D9003757A5 /* HereAPI */,
 				1DFF63161CF47BB90078A4B1 /* Interface */,
@@ -330,6 +361,7 @@
 			children = (
 				1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */,
 				1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */,
+				1D11D7DB1D046917005D1E9B /* SettingsItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -566,6 +598,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DEA935C1CE0ABBD003917CE /* SpringboardViewController.swift in Sources */,
+				1D3B77C01D0494F700669999 /* DefaultsController.swift in Sources */,
 				1DD505EC1CE31B1800BC56A2 /* Colors.swift in Sources */,
 				1DEA933A1CE0A801003917CE /* AppDelegate.swift in Sources */,
 				1DB2C0A21CEEF8A100FB5BCC /* SPNavButtonView.swift in Sources */,
@@ -584,10 +617,14 @@
 				1DFF63181CF47C070078A4B1 /* ThemeController.swift in Sources */,
 				1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */,
 				1D0C04601CE1BEB300CC167F /* SpringboardAppCell.swift in Sources */,
+				1D11D7DA1D0466BB005D1E9B /* SettingsTableCell.swift in Sources */,
+				1D11D7D81D0434C5005D1E9B /* SPTabbar.swift in Sources */,
 				1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */,
+				1D11D7DC1D046917005D1E9B /* SettingsItem.swift in Sources */,
 				1D97E8C31CE0C67B00B697ED /* Helpers.swift in Sources */,
 				1D0C047B1CE23C2800CC167F /* SPNavigationController.swift in Sources */,
 				1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */,
+				1D11D7D61D0431C2005D1E9B /* SettingsViewController.swift in Sources */,
 				1DF7F5B51CEB26550065502B /* GoogleAPIController.swift in Sources */,
 				1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */,
 			);
