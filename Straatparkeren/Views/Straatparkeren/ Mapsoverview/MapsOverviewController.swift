@@ -18,11 +18,16 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var locationManager         : CLLocationManager!
     var started                 : Bool = false
     var autocompleteTimer       : NSTimer?
-    var searchResults           : [MKMapItem] = []
+    var mapItems                : [NSMapItem] = []
+    var currentResultLocation   : NSMapItem?
     var isCurrentLocation       : Bool = true
     var currentPAs              : [ParkingAvailability] = []
     var currentAnnotations      : [MKAnnotation] = []
     let locationDependentCntl   : LocationDependentController = LocationDependentController.sharedInstance
+    let defaultsCntrl           : DefaultsController = DefaultsController.sharedInstance
+    var searchFrame             : CGRect!
+    var favoritesFrame          : CGRect!
+    var favoritesInTable        : Bool = false
     
     // Views
     var searchBar               : SPSearchBar?
@@ -30,7 +35,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var navbarBtnText           : UILabel?
     let searchImg               : UIImage = UIImage(named: "SearchIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     let backImg                 : UIImage = UIImage(named: "BackIcon")!.imageWithRenderingMode(.AlwaysTemplate)
-    var searchTable             : UITableView!
+    let favoriteImg             : UIImage = UIImage(named: "FavoriteIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+    var tableView               : UITableView!
     var homeBtn                 : SPNavButtonView?
     
     override func viewDidLoad() {
@@ -47,7 +53,12 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.userInteractionEnabled = false
         view.addSubview(map)
         
-        homeBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
+        homeBtn = SPNavButtonView(frame: CGRect(
+            x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2),
+            y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT,
+            w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2),
+            h: D.NAVBAR.HEIGHT
+            ), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.goToUserLocation))
         homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         view.addSubview(homeBtn!)
@@ -71,21 +82,35 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.map.setRegion(region, animated: true)
         
         super.viewDidLoad()
-        setSearchBar()
-        
-        
         self.setMaximalMode()
         
-        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
-        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
+        self.favoritesFrame = CGRect(
+            x: D.SCREEN_WIDTH / 4,
+            y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT,
+            w: D.SCREEN_WIDTH / 2,
+            h: 0
+        )
         
-        let tabbar : SPTabbar = SPTabbar(frame: CGRectMake(self.view.frame.x, self.view.frame.y, D.SCREEN_WIDTH, self.view.frame.height))
+        //        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
+        //        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
+        
+        let tabbar : SPTabbar = SPTabbar(frame: CGRectMake(
+            self.view.frame.x,
+            self.view.frame.y,
+            D.SCREEN_WIDTH,
+            self.view.frame.height
+            ))
+        
+        // Tabbar gestures
         tabbar.settingsBtn.addTapGesture { (UITapGestureRecognizer) in
             print("tapped")
             let settingsVC = SettingsViewController()
             self.navigationController?.pushViewController(settingsVC, animated: false)
         }
+        tabbar.searchBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
+        tabbar.favoritesBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleFavoritesList))
         self.view.addSubview(tabbar)
+        setSearchBar()
         
         // Only show explanation of app on first start
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -102,24 +127,43 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func setSearchBar(){
-        navbarBtn = SPNavButtonView(frame: CGRect(x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), y: 0, w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2), h: D.NAVBAR.HEIGHT), image: UIImage(named: "SearchIcon")!, text: STR.navbar_search_btn)
-        navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
+        navbarBtn = SPNavButtonView(frame: CGRect(
+            x: D.SCREEN_WIDTH - D.NAVBAR.BTN_WIDTH - D.SPACING.SMALL,
+            y: 0,
+            w: D.NAVBAR.BTN_WIDTH + D.SPACING.SMALL,
+            h: D.NAVBAR.HEIGHT
+            ), image: favoriteImg, text: STR.navbar_favorite_btn)
+        navbarBtn?.hidden = true
         self.SPNavBar!.addSubview(navbarBtn!)
+        self.view.bringSubviewToFront(SPNavBar!)
         
-        
-        searchBar = SPSearchBar(frame: CGRect(x: 0, y: 0, w: (navbarBtn?.frame.x)!, h: D.NAVBAR.HEIGHT))
+        searchBar = SPSearchBar(frame: CGRect(
+            x: 0,
+            y: 0,
+            w: D.SCREEN_WIDTH - D.NAVBAR.BTN_WIDTH - D.SPACING.SMALL,
+            h: D.NAVBAR.HEIGHT
+            ))
         searchBar!.hidden = true
         searchBar?.delegate = self
         
-        searchTable = UITableView(frame: CGRect(x: 0, y: D.NAVBAR.HEIGHT, w: searchBar!.frame.width, h: (D.SCREEN_HEIGHT / 2) - (self.navBar?.frame.height)!), style: .Plain)
-        searchTable.registerClass(MapSearchResultViewCell.self, forCellReuseIdentifier: "SearchResultTableCell")
-        searchTable.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
-        searchTable.delegate = self
-        searchTable.dataSource = self
-        searchTable.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
-        searchTable.separatorStyle = .SingleLine
-        searchTable.resizeToFitHeight()
-        view.addSubview(searchTable!)
+        searchFrame = CGRect(
+            x: 0,
+            y: D.NAVBAR.HEIGHT,
+            w: searchBar!.frame.width,
+            h: (D.SCREEN_HEIGHT / 2) - (self.navBar?.frame.height)!
+        )
+        
+        tableView = UITableView(frame: searchFrame, style: .Plain)
+        
+        tableView.registerClass(MapSearchResultViewCell.self, forCellReuseIdentifier: "SearchResultTableCell")
+        tableView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        tableView.separatorStyle = .SingleLine
+        tableView.resizeToFitHeight()
+        tableView.hidden = true
+        view.addSubview(tableView!)
         view.addSubview(searchBar!)
     }
     
@@ -131,45 +175,83 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func startSearch(){
-        self.showSearchResultsFor((searchBar?.text)!)
+        self.showmapItemsFor((searchBar?.text)!)
+    }
+    
+    func toggleFavoritesList(){
+        if(self.tableView.hidden){
+            self.favoritesInTable = true
+            self.mapItems = defaultsCntrl.getFavorites().reverse()
+            
+            if(self.mapItems.count == 0){
+                self.mapItems = [NSMapItem(title: "", lat: "", long: "")]
+            }
+            
+            self.tableView.frame = self.favoritesFrame
+            self.tableView.reloadData()
+            
+            self.resizeTableHeight()
+            print(self.tableView.frame)
+            self.tableView.frame = self.tableView.frame.offsetBy(dx: 0, dy: -self.tableView.contentSize.height)
+            
+            print(self.tableView.frame)
+        }
+        self.tableView.hidden = !self.tableView.hidden
     }
     
     
-    func showSearchResultsFor(keyword : String){
-        searchResults = []
+    func showmapItemsFor(keyword : String){
+        self.tableView.frame = self.searchFrame
         
-        MapSearchController.sharedInstance.getNearbyPlaces(keyword, region: self.map.region, success: {mapItems -> Void in
+        self.mapItems = []
+        MapSearchController.sharedInstance.getNearbyPlaces(keyword, region: self.map.region, success: {resultItems -> Void in
             //limit results to 3 if greater than 3
-            self.searchResults = (mapItems.count > 3) ? Array(mapItems[0..<3]) : mapItems
-            if(self.searchResults.count == 0){
-                self.searchResults = [MKMapItem()]
-            }
-            self.searchTable.reloadData()
+            self.mapItems = (resultItems.count > 3) ? Array(resultItems[0..<3]) : resultItems
+            
+            self.tableView.reloadData()
             self.resizeTableHeight()
+            self.favoritesInTable = false
+            self.tableView.hidden = false
         })
         
-        print(keyword)
+    }
+    
+    func addSearchToFavorites(){
+        if self.currentResultLocation != nil{
+            DefaultsController.sharedInstance.addFavorite(self.currentResultLocation!)
+        }
+        self.currentResultLocation = nil
+        navbarBtn?.btnIcon?.tintColor = C.FAVORITED
+        navbarBtn?.btnText?.textColor = C.FAVORITED
+        navbarBtn?.btnText?.text = STR.navbar_favorited_btn
+        navbarBtn?.btnText?.fitWidth()
     }
     
     func toggleSearchBar(){
+        removeGestureRecognizers(navbarBtn!)
+        navbarBtn?.resetColors()
         if(searchBar!.hidden){
             //show
             searchBar!.hidden = false
             searchBar!.becomeFirstResponder()
             navbarBtn?.btnIcon?.image = backImg
             navbarBtn?.btnText!.text = STR.navbar_back_btn
-            
+            navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
+            navbarBtn?.hidden = false
         }else{
             //hide
             searchBar!.hidden = true
             searchBar!.text = ""
-            navbarBtn?.btnIcon?.image = searchImg
-            navbarBtn?.btnText!.text = STR.navbar_search_btn
-            searchResults = []
-            searchTable.reloadData()
+            navbarBtn?.btnIcon?.image = favoriteImg
+            navbarBtn?.btnText!.text = STR.navbar_favorite_btn
+            navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.addSearchToFavorites))
+            navbarBtn?.hidden = false
+            mapItems = []
+            tableView.reloadData()
             searchBar?.resignFirstResponder()
             resizeTableHeight()
         }
+        tableView.hidden = true
     }
     
     func toggleHomeBtn(){
@@ -260,16 +342,16 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if !started{
             generateParkingAvailabilities(location!.coordinate)
             
-//            let mapRect : MKMapRect = self.map.visibleMapRect
-//            let topLeftPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMinX(mapRect), y: MKMapRectGetMinY(mapRect))
-//            let topLeftCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(topLeftPoint)
-//            
-//            let bottomRightPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMaxX(mapRect), y: MKMapRectGetMaxY(mapRect))
-//            let bottomRightCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(bottomRightPoint)
-//            
-//            HereAPIController.sharedInstance.trafficFlowFor(topLeftCoordinate, bottomRight: bottomRightCoordinate,  success: {(polylines) -> Void in
-//                
-//                })
+            //            let mapRect : MKMapRect = self.map.visibleMapRect
+            //            let topLeftPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMinX(mapRect), y: MKMapRectGetMinY(mapRect))
+            //            let topLeftCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(topLeftPoint)
+            //
+            //            let bottomRightPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMaxX(mapRect), y: MKMapRectGetMaxY(mapRect))
+            //            let bottomRightCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(bottomRightPoint)
+            //
+            //            HereAPIController.sharedInstance.trafficFlowFor(topLeftCoordinate, bottomRight: bottomRightCoordinate,  success: {(polylines) -> Void in
+            //
+            //                })
         }
     }
     
@@ -364,7 +446,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     /* ----------- Search Table View ------------- */
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return searchResults.count
+        return mapItems.count
     }
     
     
@@ -373,12 +455,12 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MapSearchResultViewCell
         
         // Fetch searchresult corresponding to indexpath
-        let searchResult = searchResults[indexPath.row]
+        let searchResult = mapItems[indexPath.row]
         
-        cell.titleLabel!.text = (searchResults.count == 1 && searchResult.placemark.title == nil) ? STR.search_no_results : searchResult.placemark.title!
+        cell.titleLabel!.text = (mapItems.count == 1 && searchResult.getTitle() == "") ? STR.search_no_results : searchResult.getTitle()
         
         cell.titleLabel!.fitHeight()
-        cell.titleLabel!.frame = CGRect(x: cell.titleLabel!.frame.x, y: (D.SEARCH_CELL.HEIGHT - cell.titleLabel!.frame.height) / 2, w: searchTable!.frame.width - D.SPACING.REGULAR, h: cell.titleLabel!.frame.height)
+        cell.titleLabel!.frame = CGRect(x: cell.titleLabel!.frame.x, y: (D.SEARCH_CELL.HEIGHT - cell.titleLabel!.frame.height) / 2, w: tableView.frame.width - D.SPACING.REGULAR, h: cell.titleLabel!.frame.height)
         
         return cell
     }
@@ -388,34 +470,37 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func resizeTableHeight(){
-        var height = searchTable.contentSize.height
-        let maxHeight = searchTable.superview!.frame.size.height - searchTable.frame.origin.y
-        
-        if (height > maxHeight){
-            height = maxHeight
-        }
-        var frame : CGRect = searchTable.frame
+        let height = tableView.contentSize.height
+
+        var frame : CGRect = tableView.frame
         frame.size.height = height
-        searchTable.frame = frame
+        tableView.frame = frame
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let searchResult = searchResults[indexPath.row]
-        toggleSearchBar()
+        let searchResult = mapItems[indexPath.row]
+        
+        if !favoritesInTable{
+            toggleSearchBar()
+        }else{
+            toggleFavoritesList()
+        }
         
         
-        if(searchResult.placemark.name != nil){
-            let region = MKCoordinateRegion(center: searchResult.placemark.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
-            self.SPNavBar!.setTitle(searchResult.placemark.title!)
+        if(searchResult.getTitle() != ""){
+            
+            let region = MKCoordinateRegion(center: searchResult.getCoordinate(), span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+            self.currentResultLocation = searchResult
+            self.SPNavBar!.setTitle(searchResult.getTitle())
             self.map.setRegion(region, animated: false)
             
             let annotation = MKPointAnnotation()
-            annotation.coordinate = searchResult.placemark.coordinate
+            annotation.coordinate = searchResult.getCoordinate()
             
             self.map.addAnnotation(annotation)
             self.currentAnnotations.append(annotation)
             isCurrentLocation = false
-            generateParkingAvailabilities(searchResult.placemark.coordinate)
+            generateParkingAvailabilities(searchResult.getCoordinate())
             toggleHomeBtn()
         }
         
@@ -427,9 +512,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.SPNavBar!.resetColors()
         self.homeBtn?.resetColors()
         homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-        searchTable.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
-        for i in 0..<searchResults.count{
-            let cell = self.searchTable.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
+        tableView.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        for i in 0..<mapItems.count{
+            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
             cell.resetColors()
         }
     }

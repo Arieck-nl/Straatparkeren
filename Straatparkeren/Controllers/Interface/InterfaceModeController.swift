@@ -145,6 +145,11 @@ class InterfaceModeController {
         
     }
     
+    func stop(){
+        motionMgr.stopDeviceMotionUpdates()
+        motionMgr.stopAccelerometerUpdates()
+    }
+    
     
     func currentMode() -> I_MODE {
         if let modeID = NSUserDefaults.standardUserDefaults().valueForKey(USER_DEFAULTS.CURRENT_MODE)?.integerValue {

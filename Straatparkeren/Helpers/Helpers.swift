@@ -37,5 +37,13 @@ func getKeyFor(id : String) -> String{
     return returnKey
 }
 
+func removeGestureRecognizers(view : UIView){
+    if let recognizers = view.gestureRecognizers{
+        for recognizer in recognizers{
+            view.removeGestureRecognizer(recognizer)
+        }
+    }
+}
+
 
 

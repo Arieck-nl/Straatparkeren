@@ -39,7 +39,7 @@ class SPSearchBar: UISearchBar {
         
         self.tintColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         
-        self.keyboardAppearance = .Dark
+        self.keyboardAppearance = ThemeController.sharedInstance.currentTheme().KEYBOARD
         
         super.drawRect(rect)
     }

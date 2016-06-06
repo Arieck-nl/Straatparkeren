@@ -88,5 +88,7 @@ public struct STR{
     public static let settings_shutdown_title = "Automatisch afsluiten"
     public static let settings_shutdown_subtitle = "De app sluit automatisch af gedurende langere tijd van inactiviteit."
     public static let settings_favorites_title = "Favorieten wissen"
+    public static let navbar_favorite_btn = "Voeg toe"
+    public static let navbar_favorited_btn = "Toegevoegd!"
 }
 

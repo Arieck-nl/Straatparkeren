@@ -25,6 +25,7 @@
 		1D2042A21CEDFCED0063893E /* MapSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A11CEDFCED0063893E /* MapSearchController.swift */; };
 		1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */; };
 		1D3B77C01D0494F700669999 /* DefaultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3B77BF1D0494F700669999 /* DefaultsController.swift */; };
+		1D3B77C21D04C75000669999 /* NSMapItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3B77C11D04C75000669999 /* NSMapItem.swift */; };
 		1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */; };
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
 		1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; };
@@ -109,6 +110,7 @@
 		1D2042A51CEE19200063893E /* MapSearchResultViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapSearchResultViewCell.swift; path = "Straatparkeren/ Mapsoverview/MapSearchResultViewCell.swift"; sourceTree = "<group>"; };
 		1D2FCC111D01B629006A835C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		1D3B77BF1D0494F700669999 /* DefaultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultsController.swift; path = Defaults/DefaultsController.swift; sourceTree = "<group>"; };
+		1D3B77C11D04C75000669999 /* NSMapItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMapItem.swift; sourceTree = "<group>"; };
 		1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StraatparkerenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraatparkerenTests.swift; sourceTree = "<group>"; };
 		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */,
 				1D0F33A01CE4A2D000D5B336 /* ParkingAvailabilty.swift */,
 				1D11D7DB1D046917005D1E9B /* SettingsItem.swift */,
+				1D3B77C11D04C75000669999 /* NSMapItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -618,6 +621,7 @@
 				1D16303E1CECADAC00C076F0 /* SPSearchBar.swift in Sources */,
 				1D0C04601CE1BEB300CC167F /* SpringboardAppCell.swift in Sources */,
 				1D11D7DA1D0466BB005D1E9B /* SettingsTableCell.swift in Sources */,
+				1D3B77C21D04C75000669999 /* NSMapItem.swift in Sources */,
 				1D11D7D81D0434C5005D1E9B /* SPTabbar.swift in Sources */,
 				1D0F33A31CE4D36900D5B336 /* SPPolyline.swift in Sources */,
 				1D11D7DC1D046917005D1E9B /* SettingsItem.swift in Sources */,

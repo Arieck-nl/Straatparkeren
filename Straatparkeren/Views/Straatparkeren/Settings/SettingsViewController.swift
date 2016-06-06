@@ -12,7 +12,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     
     var backBtn         : SPNavButtonView!
     var settingsTable   : UITableView!
-    var defaults        : DefaultsController!
+    var defaults        : DefaultsController = DefaultsController.sharedInstance
+    var interfaceCntrl  : InterfaceModeController = InterfaceModeController.sharedInstance
     
     var settingsItems   : [SettingsItem] = []
     
@@ -47,8 +48,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.separatorStyle = .SingleLine
         view.addSubview(settingsTable!)
         
-        defaults = DefaultsController.sharedInstance
-        
         addSettings()
         
     }
@@ -73,7 +72,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             subtitle: nil,
             switchHidden: true,
             switchValue: false,
-            tapEvent: nil
+            tapEvent: #selector(self.deleteFavorites)
             ))
         
         settingsTable.reloadData()
@@ -83,10 +82,20 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     
     func toggleSafetySetting(){
         defaults.toggleSafetyMode()
+        if defaults.isInSafetyMode() {
+            interfaceCntrl.start()
+        } else{
+            interfaceCntrl.stop()
+            interfaceCntrl.setMode(.MAXIMAL)
+        }
     }
     
     func toggleAutomaticShutdown(){
         defaults.toggleAutomaticShutdown()
+    }
+    
+    func deleteFavorites(){
+        defaults.deleteFavorites()
     }
     
     

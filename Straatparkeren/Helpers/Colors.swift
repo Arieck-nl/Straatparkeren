@@ -47,4 +47,6 @@ public struct C{
         public static let FULL = UIColor.redColor().colorWithAlphaComponent(S.OPACITY.REGULAR)
     }
     
+    public static var FAVORITED = UIColor.yellowColor()
+    
 }

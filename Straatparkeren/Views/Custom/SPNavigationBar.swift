@@ -15,7 +15,11 @@ class SPNavigationBar: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-        titleLabel = UILabel(x: D.SPACING.REGULAR, y: (frame.height - D.FONT.XXXLARGE) / 2, w: self.frame.width - D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2), h: 100, fontSize: D.FONT.XXXLARGE)
+        titleLabel = UILabel(
+            x: D.SPACING.REGULAR,
+            y: (frame.height - D.FONT.XXXLARGE) / 2,
+            w: self.frame.width - D.NAVBAR.BTN_WIDTH - (D.SPACING.SMALL * 2),
+            h: 100, fontSize: D.FONT.XXXLARGE)
         titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
         titleLabel?.fitHeight()
         self.addSubview(titleLabel!)

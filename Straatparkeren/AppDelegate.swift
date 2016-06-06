@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        let defaults = DefaultsController.sharedInstance
+        
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = CarplayWindowViewController()
         window?.makeKeyAndVisible()
@@ -27,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         themeCntrl!.start()
         
         interfaceCntrl = InterfaceModeController.sharedInstance
-//        interfaceCntrl?.start()
+        if defaults.isInSafetyMode(){ interfaceCntrl?.start() }
         
         locationDependentCntrl = LocationDependentController.sharedInstance
         

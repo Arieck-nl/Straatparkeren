@@ -16,7 +16,6 @@ class SPTabbar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         // Add background
         let background : UIView = UIView(frame:
             CGRectMake(

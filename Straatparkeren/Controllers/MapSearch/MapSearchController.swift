@@ -15,7 +15,7 @@ class MapSearchController: NSObject {
     // Singleton instance
     static let sharedInstance = MapSearchController()
     
-    typealias responseHandler = (mapItems:[MKMapItem]) -> Void
+    typealias responseHandler = (mapItems:[NSMapItem]) -> Void
     
     func getNearbyPlaces(keyword : String, region : MKCoordinateRegion, success : responseHandler) {
 
@@ -31,7 +31,17 @@ class MapSearchController: NSObject {
                 return
             }
             
-            success(mapItems: response.mapItems)
+            var mapItems : [NSMapItem] = []
+            
+            for mapItem in response.mapItems{
+                mapItems.append(NSMapItem(
+                    title: mapItem.placemark.title!,
+                    lat: mapItem.placemark.coordinate.latitude.toString,
+                    long: mapItem.placemark.coordinate.longitude.toString
+                ))
+            }
+            
+            success(mapItems: mapItems)
         }
         
     }

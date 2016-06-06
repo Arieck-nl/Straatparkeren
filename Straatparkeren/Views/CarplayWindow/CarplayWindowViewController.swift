@@ -106,16 +106,21 @@ class CarplayWindowViewController: UIViewController {
         self.springboardNavVC!.popToRootViewControllerAnimated(true)
     }
     
+    func dissmissCurrentVCFromTimer(){
+        if DefaultsController.sharedInstance.isAutomaticShutdownOn(){
+            self.dismissCurrentVC()
+        }
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         //dismiss VC after X amount of time
         self.dismissTimer?.invalidate()
         self.dismissTimer = nil
         
         // TODO: use defaults for this
-        if false{
-            self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dismissCurrentVC), userInfo: nil, repeats: false)
+        if DefaultsController.sharedInstance.isAutomaticShutdownOn(){
+            self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dissmissCurrentVCFromTimer), userInfo: nil, repeats: false)
         }
-        
     }
     
     func displayNotification(notification: NSNotification){
