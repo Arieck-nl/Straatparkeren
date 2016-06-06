@@ -55,16 +55,18 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         homeBtn = SPNavButtonView(frame: CGRect(
             x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2),
-            y: D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT,
+            y: (D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT) / 2,
             w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2),
             h: D.NAVBAR.HEIGHT
             ), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
+        
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.goToUserLocation))
         homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         view.addSubview(homeBtn!)
         homeBtn?.btnText?.fitWidth()
         homeBtn?.frame = CGRect(x: D.SCREEN_WIDTH - homeBtn!.btnText!.frame.width - (D.SPACING.REGULAR * 2), y: homeBtn!.frame.y, w: homeBtn!.btnText!.frame.width + (D.SPACING.REGULAR * 2), h: homeBtn!.frame.height)
         homeBtn?.btnIcon?.frame = CGRect(x: (homeBtn!.frame.width / 2)  - (homeBtn!.btnIcon!.frame.width / 2), y: homeBtn!.btnIcon!.frame.y, w: homeBtn!.btnIcon!.frame.width, h: homeBtn!.btnIcon!.frame.height)
+    
         toggleHomeBtn()
         
         if (CLLocationManager.locationServicesEnabled())
@@ -110,7 +112,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         tabbar.searchBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
         tabbar.favoritesBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleFavoritesList))
         self.view.addSubview(tabbar)
+        
+        self.view.bringSubviewToFront(homeBtn!)
         setSearchBar()
+        
+        self.SPNavBar?.hidden = true
         
         // Only show explanation of app on first start
         let defaults = NSUserDefaults.standardUserDefaults()
@@ -233,6 +239,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if(searchBar!.hidden){
             //show
             searchBar!.hidden = false
+            self.SPNavBar?.hidden = false
             searchBar!.becomeFirstResponder()
             navbarBtn?.btnIcon?.image = backImg
             navbarBtn?.btnText!.text = STR.navbar_back_btn
@@ -246,6 +253,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             navbarBtn?.btnText!.text = STR.navbar_favorite_btn
             navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.addSearchToFavorites))
             navbarBtn?.hidden = false
+            self.SPNavBar?.hidden = true
             mapItems = []
             tableView.reloadData()
             searchBar?.resignFirstResponder()
@@ -255,13 +263,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func toggleHomeBtn(){
-        if(homeBtn!.hidden){
-            //show
-            homeBtn!.hidden = false
-        }else{
-            //hide
-            homeBtn!.hidden = true
-        }
+        homeBtn!.hidden = !homeBtn!.hidden
     }
     
     func goToUserLocation(){
@@ -271,6 +273,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.SPNavBar?.setTitle("")
+        self.SPNavBar?.hidden = true
         self.map.setRegion(region, animated: false)
         toggleHomeBtn()
         
@@ -487,6 +490,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         
         
+        
         if(searchResult.getTitle() != ""){
             
             let region = MKCoordinateRegion(center: searchResult.getCoordinate(), span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
@@ -501,7 +505,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.currentAnnotations.append(annotation)
             isCurrentLocation = false
             generateParkingAvailabilities(searchResult.getCoordinate())
-            toggleHomeBtn()
+            self.SPNavBar?.hidden = false
+            homeBtn?.hidden = false
         }
         
     }

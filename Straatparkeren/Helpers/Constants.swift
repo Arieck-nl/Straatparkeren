@@ -42,6 +42,9 @@ public struct USER_DEFAULTS{
     public static let CURRENT_MODE = "CurrentMode"
     public static let SAFETY_MODE = "SafetyMode"
     public static let AUTOMATIC_SHUTDOWN = "AutomaticShutdown"
+    public static let LOCATION_NOTIFICATION = "LocationNotification"
+    public static let DESTINATION_NOTIFICATION = "DestinationNotification"
+    public static let CURRENT_DESTINATION = "CurrentDestination"
     public static let FAVORITES = "Favorites"
 }
 
@@ -83,12 +86,22 @@ public struct STR{
     public static let explanation_btn = "Begrepen"
     public static let settings_text = "Instellingen"
     public static let favorites_text = "Favorieten"
+    
+    //settings
     public static let settings_safety_title = "Extra veilige modus"
     public static let settings_safety_subtitle = "In de extra veilige modus bepaalt de app wanneer functionaliteiten van de app wel of niet veilig zijn om te gebruiken."
     public static let settings_shutdown_title = "Automatisch afsluiten"
     public static let settings_shutdown_subtitle = "De app sluit automatisch af gedurende langere tijd van inactiviteit."
     public static let settings_favorites_title = "Favorieten wissen"
+    public static let settings_location_title = "Toon parkeerbezetting op:"
+    public static let settings_location_subtitle = "Toon automatisch de parkeerbezetting op de gekozen afstanden tot de bestemming."
+    public static let settings_location_segmented_label = "KM afstand"
+    public static let settings_destination_title = "Toon meldingen"
+    public static let settings_destination_subtitle = "Toon meldingen als er onverwacht veranderingen zijn in de parkeerbezetting rondom uw bestemming."
+    
     public static let navbar_favorite_btn = "Voeg toe"
     public static let navbar_favorited_btn = "Toegevoegd!"
+    
+    
 }
 

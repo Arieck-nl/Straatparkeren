@@ -40,6 +40,50 @@ class DefaultsController : NSObject{
         defaults.synchronize()
     }
     
+    func isDestinationNotificationsOn() -> Bool{
+        let isOn = defaults.boolForKey(USER_DEFAULTS.DESTINATION_NOTIFICATION)
+        return isOn
+    }
+    
+    func toggleDestinationNotification(){
+        let isOn = isDestinationNotificationsOn()
+        defaults.setBool(!isOn, forKey: USER_DEFAULTS.DESTINATION_NOTIFICATION)
+        defaults.synchronize()
+    }
+    
+    func getLocationNotificationDistances() -> [Double]{
+        var items : [Double] = []
+        if let decodedObject : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_DEFAULTS.LOCATION_NOTIFICATION) as? NSData{
+            let distances = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as! [Double]
+            
+            items = distances
+        }
+        return items
+    }
+    
+    func setLocationNotificationDistances(distances : [Double]){
+        let encodedObject : NSData = NSKeyedArchiver.archivedDataWithRootObject(distances as NSArray)
+        
+        defaults.setObject(encodedObject, forKey: USER_DEFAULTS.LOCATION_NOTIFICATION)
+        defaults.synchronize()
+    }
+    
+    func setDestination(destination : NSMapItem){
+        let encodedObject : NSData = NSKeyedArchiver.archivedDataWithRootObject(destination)
+        
+        defaults.setObject(encodedObject, forKey: USER_DEFAULTS.CURRENT_DESTINATION)
+        defaults.synchronize()
+    }
+    
+    func getDestination() -> NSMapItem{
+        var destination : NSMapItem = NSMapItem(title: "", lat: "", long: "")
+        if let decodedObject : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_DEFAULTS.CURRENT_DESTINATION) as? NSData{
+            destination = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as! NSMapItem
+            
+        }
+        return destination
+    }
+    
     func addFavorite(favorite : NSMapItem){
         var favorites = getFavorites()
         
@@ -50,10 +94,7 @@ class DefaultsController : NSObject{
         let encodedObject : NSData = NSKeyedArchiver.archivedDataWithRootObject(favorites as NSArray)
         
         defaults.setObject(encodedObject, forKey: USER_DEFAULTS.FAVORITES)
-        
-        for favorite in getFavorites(){
-            print(favorite.title)
-        }
+        defaults.synchronize()
     }
     
     func getFavorites() -> [NSMapItem]{
@@ -68,6 +109,7 @@ class DefaultsController : NSObject{
     
     func deleteFavorites(){
         defaults.setObject(nil, forKey: USER_DEFAULTS.FAVORITES)
+        defaults.synchronize()
     }
     
     

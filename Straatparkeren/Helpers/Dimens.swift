@@ -72,5 +72,7 @@ public struct D{
     public struct SETTINGS{
         public static let ROW_HEIGHT            : CGFloat = 160.0
         public static let SWITCH_HEIGHT         : CGFloat = 80.0
+        public static let SEGMENTED_HEIGHT      : CGFloat = 80.0
+        public static let SCROLL_OFFSET         : CGFloat = 80.0
     }
 }

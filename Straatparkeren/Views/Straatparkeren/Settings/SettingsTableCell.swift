@@ -13,6 +13,7 @@ class SettingsTableCell: UITableViewCell {
     var titleLabel      : UILabel!
     var subtitleLabel   : UILabel!
     var switchView      : UISwitch!
+    var segmentedView   : SPMultiSegmentedView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,7 +52,18 @@ class SettingsTableCell: UITableViewCell {
         switchView.thumbTintColor = ThemeController.sharedInstance.currentTheme().TEXT
         switchView.transform = CGAffineTransformMakeScale(1.5, 1.5)
         
-        self.addSubview(switchView)       
+        self.addSubview(switchView)
+        
+        self.addSubview(subtitleLabel)
+        
+        segmentedView = SPMultiSegmentedView(frame: CGRect(
+            x: frame.width - D.SPACING.REGULAR - (D.FONT.XXXLARGE * 3),
+            y: 0,
+            w: (D.SETTINGS.SEGMENTED_HEIGHT * 3),
+            h: (D.SETTINGS.SEGMENTED_HEIGHT * 2)
+            ))
+        
+        self.addSubview(segmentedView)
         
     }
     
@@ -63,5 +75,5 @@ class SettingsTableCell: UITableViewCell {
         titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
         self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         
-    }    
+    }
 }
