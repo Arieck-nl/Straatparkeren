@@ -123,7 +123,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             w: D.BTN.HEIGHT.REGULAR,
             h: D.BTN.HEIGHT.REGULAR,
             image: infoImg)
-        self.infoBtn.tintColor = ThemeController.sharedInstance.currentTheme().BUTTON.colorWithAlphaComponent(S.OPACITY.REGULAR)
+        self.infoBtn.tintColor = ThemeController.sharedInstance.currentTheme().BUTTON.colorWithAlphaComponent(S.OPACITY.DARK)
         self.view.addSubview(self.infoBtn)
         self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
             self.showInfoView()
@@ -154,6 +154,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func showInfoView(){
+        if(self.infoView != nil){
+            self.infoView?.removeFromSuperview()
+            self.infoView = nil
+        }
         self.infoView = SPOverlayView(frame: CGRect(
             x: D.SCREEN_WIDTH * 0.125,
             y: D.SPACING.XXLARGE,

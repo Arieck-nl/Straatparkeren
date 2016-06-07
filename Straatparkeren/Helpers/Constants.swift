@@ -84,7 +84,7 @@ public struct STR{
     public static let map_home_btn = "Huidige Locatie"
     public static let navbar_back_btn = "Terug"
     public static let search_no_results = "Geen resultaten"
-    public static let explanation_text = "In deze app kunt u de parkeerbezetting zien van de gewenste locatie. Groen geeft de meeste kans op voldoende parkeerplaatsen. \n Deze app toont functionaliteit afhankelijk van uw veiligheid."
+    public static let explanation_text = "In deze app kunt u de parkeerbezetting zien van de gewenste locatie. Groen geeft de meeste kans op voldoende parkeerplaatsen."
     public static let explanation_btn = "Gereed"
     public static let disclaimer_text = "Het gebruik van deze applicatie is niet toegestaan tijdens het rijden.  Ieder gebruik van de applicatie is geheel op eigen risico. De makers kunnen niet aansprakelijk worden gesteld."
     public static let disclaimer_btn = "Akkoord"

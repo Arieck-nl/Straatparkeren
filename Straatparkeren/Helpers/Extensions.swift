@@ -14,6 +14,7 @@ extension UIView{
     
     func show(){
         if(self.hidden){
+            self.alpha = 0.0
             self.hidden = false
             
             self.animate(
@@ -31,6 +32,7 @@ extension UIView{
     
     func hide(completionHandler : Bool -> Void){
         if(!self.hidden){
+            self.alpha = 1.0
             self.animate(
                 duration: ANI.DUR.FAST,
                 animations: {
