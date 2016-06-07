@@ -30,10 +30,6 @@ class SPNavigationBar: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addTab(title: String, icon: String){
-        
-    }
-    
     func setTitle(title : String){
         self.titleLabel!.text = title
         self.titleLabel!.fitHeight()

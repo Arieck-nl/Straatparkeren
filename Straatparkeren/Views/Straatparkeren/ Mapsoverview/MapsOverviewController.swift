@@ -36,8 +36,12 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     let searchImg               : UIImage = UIImage(named: "SearchIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     let backImg                 : UIImage = UIImage(named: "BackIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     let favoriteImg             : UIImage = UIImage(named: "FavoriteIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+    let locationImg             : UIImage = UIImage(named: "CurrentLocationIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+    let destinationImg          : UIImage = UIImage(named: "LocationIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     var tableView               : UITableView!
     var homeBtn                 : SPNavButtonView?
+    var infoBtn                 : UIImageView!
+    var infoView                : SPOverlayView?
     
     override func viewDidLoad() {
         
@@ -54,18 +58,18 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         view.addSubview(map)
         
         homeBtn = SPNavButtonView(frame: CGRect(
-            x: D.SCREEN_WIDTH -  D.NAVBAR.HEIGHT - (D.SPACING.SMALL * 2),
-            y: (D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT) / 2,
-            w: D.NAVBAR.HEIGHT + (D.SPACING.SMALL * 2),
+            x: 0,
+            y: D.NAVBAR.HEIGHT,
+            w: D.NAVBAR.BTN_WIDTH + (D.SPACING.SMALL * 2),
             h: D.NAVBAR.HEIGHT
             ), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
         
-        homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.goToUserLocation))
-        homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.homeBtnPressed))
+        homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
         view.addSubview(homeBtn!)
         homeBtn?.btnText?.fitWidth()
-        homeBtn?.frame = CGRect(x: D.SCREEN_WIDTH - homeBtn!.btnText!.frame.width - (D.SPACING.REGULAR * 2), y: homeBtn!.frame.y, w: homeBtn!.btnText!.frame.width + (D.SPACING.REGULAR * 2), h: homeBtn!.frame.height)
-        homeBtn?.btnIcon?.frame = CGRect(x: (homeBtn!.frame.width / 2)  - (homeBtn!.btnIcon!.frame.width / 2), y: homeBtn!.btnIcon!.frame.y, w: homeBtn!.btnIcon!.frame.width, h: homeBtn!.btnIcon!.frame.height)
+        
+//        homeBtn?.btnIcon?.frame = CGRect(x: (homeBtn!.frame.width / 2)  - (homeBtn!.btnIcon!.frame.width / 2), y: homeBtn!.btnIcon!.frame.y, w: homeBtn!.btnIcon!.frame.width, h: homeBtn!.btnIcon!.frame.height)
     
         toggleHomeBtn()
         
@@ -93,7 +97,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             h: 0
         )
         
-        //        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
+        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
         //        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
         
         let tabbar : SPTabbar = SPTabbar(frame: CGRectMake(
@@ -105,13 +109,25 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         // Tabbar gestures
         tabbar.settingsBtn.addTapGesture { (UITapGestureRecognizer) in
-            print("tapped")
             let settingsVC = SettingsViewController()
             self.navigationController?.pushViewController(settingsVC, animated: false)
         }
         tabbar.searchBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
         tabbar.favoritesBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleFavoritesList))
         self.view.addSubview(tabbar)
+        
+        let infoImg = UIImage(named: "InfoIconReverse")!.imageWithRenderingMode(.AlwaysTemplate)
+        self.infoBtn = UIImageView(
+            x: D.SCREEN_WIDTH - D.BTN.HEIGHT.REGULAR - D.SPACING.REGULAR,
+            y: D.SCREEN_HEIGHT - D.BTN.HEIGHT.REGULAR - D.NAVBAR.HEIGHT - D.SPACING.REGULAR,
+            w: D.BTN.HEIGHT.REGULAR,
+            h: D.BTN.HEIGHT.REGULAR,
+            image: infoImg)
+        self.infoBtn.tintColor = ThemeController.sharedInstance.currentTheme().BUTTON.colorWithAlphaComponent(S.OPACITY.REGULAR)
+        self.view.addSubview(self.infoBtn)
+        self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
+            self.showInfoView()
+        }
         
         self.view.bringSubviewToFront(homeBtn!)
         setSearchBar()
@@ -128,8 +144,26 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func setFirstTimeOverlay(){
-        let overlay = SPOverlayView(frame: self.view.frame, text: STR.explanation_text, btnText: STR.explanation_btn)
-        self.view.addSubview(overlay)
+        let disclaimer = SPOverlayView(frame: CGRect(
+            x: self.view.frame.x,
+            y: self.view.frame.y,
+            w: D.SCREEN_WIDTH,
+            h: D.SCREEN_HEIGHT
+            ), text: STR.disclaimer_text, btnText: STR.disclaimer_btn, iconImg : UIImage(named: "WarningIcon")!)
+        self.view.addSubview(disclaimer)
+    }
+    
+    func showInfoView(){
+        self.infoView = SPOverlayView(frame: CGRect(
+            x: D.SCREEN_WIDTH * 0.125,
+            y: D.SPACING.XXLARGE,
+            w: D.SCREEN_WIDTH * 0.75,
+            h: D.SCREEN_HEIGHT * 0.7
+            ), text: STR.explanation_text, btnText: STR.explanation_btn)
+        self.infoView!.layer.cornerRadius = D.RADIUS.REGULAR
+        self.infoView!.hidden = true
+        self.view.addSubview(self.infoView!)
+        self.infoView!.show()
     }
     
     func setSearchBar(){
@@ -197,10 +231,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.tableView.reloadData()
             
             self.resizeTableHeight()
-            print(self.tableView.frame)
             self.tableView.frame = self.tableView.frame.offsetBy(dx: 0, dy: -self.tableView.contentSize.height)
-            
-            print(self.tableView.frame)
         }
         self.tableView.hidden = !self.tableView.hidden
     }
@@ -226,7 +257,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if self.currentResultLocation != nil{
             DefaultsController.sharedInstance.addFavorite(self.currentResultLocation!)
         }
-        self.currentResultLocation = nil
         navbarBtn?.btnIcon?.tintColor = C.FAVORITED
         navbarBtn?.btnText?.textColor = C.FAVORITED
         navbarBtn?.btnText?.text = STR.navbar_favorited_btn
@@ -245,6 +275,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             navbarBtn?.btnText!.text = STR.navbar_back_btn
             navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
             navbarBtn?.hidden = false
+            setHomeBtn()
+            
+            
         }else{
             //hide
             searchBar!.hidden = true
@@ -253,6 +286,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             navbarBtn?.btnText!.text = STR.navbar_favorite_btn
             navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.addSearchToFavorites))
             navbarBtn?.hidden = false
+            setHomeBtn()
             self.SPNavBar?.hidden = true
             mapItems = []
             tableView.reloadData()
@@ -266,17 +300,52 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         homeBtn!.hidden = !homeBtn!.hidden
     }
     
-    func goToUserLocation(){
-        self.map.removeAnnotations(self.map.annotations)
-        let location = self.map.userLocation
+    func setHomeBtn(){
         
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+        if self.SPNavBar!.hidden{
+            homeBtn?.frame = CGRect(
+                x: 0,
+                y: 0,
+                w: homeBtn!.btnText!.frame.width + (D.SPACING.REGULAR * 2),
+                h: homeBtn!.frame.height
+            )
+        }else{
+            homeBtn?.frame = CGRect(
+                x: 0,
+                y: D.NAVBAR.HEIGHT,
+                w: homeBtn!.btnText!.frame.width + (D.SPACING.REGULAR * 2),
+                h: homeBtn!.frame.height
+            )
+        }
+        
+        if isCurrentLocation{
+            homeBtn?.btnIcon?.image = self.destinationImg
+            homeBtn?.btnText?.text = STR.home_btn_destination
+        }else{
+            homeBtn?.btnIcon?.image = self.locationImg
+            homeBtn?.btnText?.text = STR.home_btn_location
+        }
+        
+        if self.currentResultLocation != nil{
+            homeBtn?.hidden = false
+        }
+    }
+    
+    func homeBtnPressed(){
+        var location : CLLocationCoordinate2D!
+        if(self.isCurrentLocation){
+            self.isCurrentLocation = false
+            location = defaultsCntrl.getDestination()!.getCoordinate()
+        }else{
+            self.isCurrentLocation = true
+            location = self.map.userLocation.coordinate
+        }
+        
+        let region = MKCoordinateRegion(center: location, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.SPNavBar?.setTitle("")
         self.SPNavBar?.hidden = true
         self.map.setRegion(region, animated: false)
-        toggleHomeBtn()
-        
+        setHomeBtn()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -340,7 +409,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
-        self.map.setRegion(region, animated: true)
+        if self.isCurrentLocation{
+            self.map.setRegion(region, animated: true)
+        }
         
         if !started{
             generateParkingAvailabilities(location!.coordinate)
@@ -410,7 +481,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
                     var polylinePoints = polyline
                     parkingAvailability.polylinePoints = polylinePoints
                     self.currentPAs.append(parkingAvailability)
-                    if polylinePoints.count > 1{
+                    if polylinePoints.count > 2{
                         let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
                         polyOverlay.strokeColor = parkingAvailability.parkingState.color
                         if(minimal && polyOverlay.strokeColor == C.PARKING_STATE.FREE){
@@ -485,6 +556,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         if !favoritesInTable{
             toggleSearchBar()
+            self.map.removeAnnotations(self.map.annotations)
         }else{
             toggleFavoritesList()
         }
@@ -500,13 +572,14 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = searchResult.getCoordinate()
+            defaultsCntrl.setDestination(searchResult)
             
             self.map.addAnnotation(annotation)
             self.currentAnnotations.append(annotation)
-            isCurrentLocation = false
+            self.isCurrentLocation = false
             generateParkingAvailabilities(searchResult.getCoordinate())
             self.SPNavBar?.hidden = false
-            homeBtn?.hidden = false
+            setHomeBtn()
         }
         
     }

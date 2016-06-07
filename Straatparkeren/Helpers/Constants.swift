@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 
 //STYLE RELATED
@@ -56,6 +57,7 @@ public struct N{
     public static let MEDIUM_MODE = "MediumMode"
     public static let MAXIMAL_MODE = "MaximalMode"
     public static let LOCATION_TRIGGER = "LocationTrigger"
+    public static let DESTINATION_TRIGGER = "DestinationTrigger"
 }
 
 public struct API{
@@ -83,7 +85,9 @@ public struct STR{
     public static let navbar_back_btn = "Terug"
     public static let search_no_results = "Geen resultaten"
     public static let explanation_text = "In deze app kunt u de parkeerbezetting zien van de gewenste locatie. Groen geeft de meeste kans op voldoende parkeerplaatsen. \n Deze app toont functionaliteit afhankelijk van uw veiligheid."
-    public static let explanation_btn = "Begrepen"
+    public static let explanation_btn = "Gereed"
+    public static let disclaimer_text = "Het gebruik van deze applicatie is niet toegestaan tijdens het rijden.  Ieder gebruik van de applicatie is geheel op eigen risico. De makers kunnen niet aansprakelijk worden gesteld."
+    public static let disclaimer_btn = "Akkoord"
     public static let settings_text = "Instellingen"
     public static let favorites_text = "Favorieten"
     
@@ -102,6 +106,23 @@ public struct STR{
     public static let navbar_favorite_btn = "Voeg toe"
     public static let navbar_favorited_btn = "Toegevoegd!"
     
+    public static let home_btn_destination = "Bestemming"
+    public static let home_btn_location = "Huidige locatie"
     
+    //notifications
+    public static let notification_default = "Op uw bestemming zijn nu voldoende vrije plaatsen."
+}
+
+public struct ANI{
+    public static let NOTIFICATION_DISMISS = 5.0
+    
+    public struct DUR{
+        public static let REGULAR = 0.5
+        public static let FAST = 0.3
+    }
+}
+
+public struct SOUND{
+    public static let APP : SystemSoundID = 1022
 }
 

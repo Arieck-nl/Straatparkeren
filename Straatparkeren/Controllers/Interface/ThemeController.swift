@@ -39,6 +39,10 @@ public enum THEME : Int {
         }
     }
     
+    var BUTTON: UIColor {
+        return C.BUTTON.DARK
+    }
+    
     var KEYBOARD : UIKeyboardAppearance{
         switch self {
         case .DAY:

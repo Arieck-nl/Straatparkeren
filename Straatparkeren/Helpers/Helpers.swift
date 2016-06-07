@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 func UIColorFromRGB(colorCode: String, alpha: Float = 1.0) -> UIColor {
     let scanner = NSScanner(string:colorCode)
@@ -43,6 +44,10 @@ func removeGestureRecognizers(view : UIView){
             view.removeGestureRecognizer(recognizer)
         }
     }
+}
+
+func playAppSound(){
+    AudioServicesPlaySystemSound(SOUND.APP)
 }
 
 

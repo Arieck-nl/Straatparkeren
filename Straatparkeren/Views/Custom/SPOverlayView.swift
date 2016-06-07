@@ -10,10 +10,12 @@ import UIKit
 
 class SPOverlayView: UIView {
 
+    
     let dismissBtn      : UIButton = UIButton()
     let textLabel       : UILabel = UILabel()
+    let iconView        : UIImageView = UIImageView()
 
-    init(frame: CGRect, text : String, btnText : String) {
+    init(frame: CGRect, text : String, btnText : String, iconImg : UIImage = UIImage(named: "InfoIcon")!) {
         super.init(frame: frame)
         
         self.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.XDARK)
@@ -21,23 +23,44 @@ class SPOverlayView: UIView {
         self.dismissBtn.setTitle(btnText, forState: .Normal)
         self.dismissBtn.titleLabel!.font = self.dismissBtn.titleLabel!.font.fontWithSize(D.FONT.XXXLARGE)
         self.dismissBtn.titleLabel?.textAlignment =  .Center
-        self.dismissBtn.frame = CGRect(x: 0, y: D.SCREEN_HEIGHT - D.BTN.HEIGHT.REGULAR - D.SPACING.LARGE, w: D.SCREEN_WIDTH, h: D.BTN.HEIGHT.LARGE)
+        self.dismissBtn.frame = CGRect(
+            x: self.frame.width - D.NAVBAR.BTN_WIDTH,
+            y: 0,
+            w: D.NAVBAR.BTN_WIDTH,
+            h: D.NAVBAR.HEIGHT
+        )
         
-        self.dismissBtn.titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
-        self.dismissBtn.backgroundColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.LIGHT)
+        self.dismissBtn.setTitleColor(ThemeController.sharedInstance.currentTheme().BUTTON, forState: .Normal)
         self.dismissBtn.addTapGesture { (gesture) -> () in
-            self.removeFromSuperview()
+            self.hide({ (Bool) in
+                self.removeFromSuperview()
+            })
         }
         self.addSubview(dismissBtn)
         
+        self.iconView.frame = CGRect(
+            x: (self.frame.width - D.ICON.HEIGHT.LARGE) / 2,
+            y: self.dismissBtn.frame.y + D.SPACING.XXXLARGE + self.dismissBtn.frame.height,
+            w: D.ICON.HEIGHT.LARGE,
+            h: D.ICON.HEIGHT.LARGE)
+        self.iconView.image = iconImg.imageWithRenderingMode(.AlwaysTemplate)
+        self.iconView.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.addSubview(self.iconView)
         
-        self.textLabel.frame = CGRect(x: self.frame.x + D.SPACING.XXLARGE, y: self.frame.y + D.SPACING.XXLARGE, w: D.SCREEN_WIDTH - (D.SPACING.XXLARGE * 2), h: self.dismissBtn.frame.y - D.SPACING.REGULAR)
+        
+        self.textLabel.frame = CGRect(
+            x: D.SPACING.XXXLARGE,
+            y: D.SPACING.XXXLARGE + self.iconView.frame.y + self.iconView.frame.height,
+            w: self.frame.width - (D.SPACING.XXXLARGE * 2),
+            h: self.frame.height - self.iconView.frame.height - self.iconView.frame.y - (D.SPACING.XXLARGE * 3))
+        
         self.textLabel.text = text
         self.textLabel.font = self.textLabel.font.fontWithSize(D.FONT.XXLARGE)
         self.textLabel.textAlignment = .Center
         self.textLabel.lineBreakMode = .ByWordWrapping
         self.textLabel.numberOfLines = 0
         self.textLabel.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.textLabel.fitHeight()
         
         self.addSubview(textLabel)
         

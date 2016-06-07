@@ -40,7 +40,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable = UITableView(frame: CGRect(
             x: D.SPACING.LARGE,
             y: backBtn.frame.height + D.SPACING.LARGE,
-            width: self.view.frame.width - D.BTN.HEIGHT.REGULAR - (D.SPACING.LARGE * 4),
+            width: D.SCREEN_WIDTH - D.BTN.HEIGHT.REGULAR - (D.SPACING.LARGE * 4),
             height: self.view.frame.height - backBtn.frame.height - D.SPACING.LARGE
             ), style: .Plain)
         settingsTable.registerClass(SettingsTableCell.self, forCellReuseIdentifier: "SettingsTableCell")
@@ -113,7 +113,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
                 switchHidden: true,
                 switchValue: defaults.isInSafetyMode(),
                 tapEvent: #selector(self.setLocationNotifications),
-                segmentedValues : ["5","20", "60"],
+                segmentedValues : ["1","3", "5"],
                 segmentedLabel: STR.settings_location_segmented_label
             ),
             SettingsItem(

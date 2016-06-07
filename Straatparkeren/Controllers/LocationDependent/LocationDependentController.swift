@@ -9,7 +9,7 @@
 import MapKit
 
 public enum MONITORING_TYPE : Int{
-    case ETA, REGION
+    case ETA, REGION, NOTIFICATION
 }
 
 class LocationDependentController : NSObject, CLLocationManagerDelegate {
@@ -50,7 +50,7 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     /// - parameter destination: precise destination for set regions
     /// - parameter regionSpans: array of spans for regions in kilometers
     func setMonitoringForRegions(destination : CLLocationCoordinate2D, regionSpans : [Double]){
-        
+        resetMonitoringForRegions()
         for rs in regionSpans {
             if (rs * 1000) % LocationDependentController.ACCURACY != 0 {
                 fatalError("span must be a plurality of 0.1, span is now \(rs)")
@@ -125,6 +125,17 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
         
         let userInfo = ["type" : type.hashValue, "value" : value]
         NSNotificationCenter.defaultCenter().postNotificationName(N.LOCATION_TRIGGER, object: nil, userInfo: userInfo)
+        playAppSound()
+        
+    }
+    
+    func sentDestinationTrigger(value : AnyObject) {
+        
+        if DefaultsController.sharedInstance.isDestinationNotificationsOn(){
+            let userInfo = ["value" : value]
+            NSNotificationCenter.defaultCenter().postNotificationName(N.DESTINATION_TRIGGER, object: nil, userInfo: userInfo)
+            playAppSound()
+        }
         
     }
     

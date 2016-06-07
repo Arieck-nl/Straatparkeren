@@ -18,11 +18,12 @@ class CarplayWindowViewController: UIViewController {
     var window                  : UIView?
     var homeBtn                 : UIImageView?
     var springboardNavVC        : SPNavigationController?
+    var notificationView        : SPNotificationView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: LocationDependentController.N_KEY, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: N.DESTINATION_TRIGGER, object: nil)
         
         carplayControl = UIView(frame: CGRect(x: 0, y: 0, w: D.CARPLAY.WIDTH, h: D.SCREEN_HEIGHT))
         carplayControl?.backgroundColor = UIColor.blackColor()
@@ -32,6 +33,10 @@ class CarplayWindowViewController: UIViewController {
         currentTimeLabel?.textColor = UIColor.whiteColor()
         currentTimeLabel?.font = currentTimeLabel?.font.fontWithSize(D.FONT.XXLARGE)
         currentTimeLabel?.textAlignment = .Center
+        
+        currentTimeLabel?.addTapGesture(action: { (UITapGestureRecognizer) in
+            LocationDependentController.sharedInstance.sentDestinationTrigger(STR.notification_default)
+        })
         
         updateClock()
         NSTimer.scheduledTimerWithTimeInterval(60.0,
@@ -71,6 +76,19 @@ class CarplayWindowViewController: UIViewController {
         addAsChildViewController(springboardNavVC!, toView: window!)
         springboardNavVC!.didMoveToParentViewController(self)
         self.addGestures()
+        
+        self.notificationView = SPNotificationView(frame: CGRect(
+            x: 0,
+            y: -D.NAVBAR.HEIGHT,
+            w: D.SCREEN_WIDTH,
+            h: D.NAVBAR.HEIGHT
+            ))
+        
+        self.notificationView.addTapGesture { (UITapGestureRecognizer) in
+            self.notificationView.internalHide()
+            LocationDependentController.sharedInstance.sentLocationTrigger(.NOTIFICATION, value: "")
+        }
+        self.window!.addSubview(notificationView)
     }
     
     // Gestures for debugging purposes
@@ -127,10 +145,11 @@ class CarplayWindowViewController: UIViewController {
         
         let userInfo : NSDictionary = notification.userInfo!
         
-        let type = MONITORING_TYPE(rawValue: userInfo["type"] as! Int)
+        if let title = userInfo["value"] as? String{
+            notificationView.internalShow(title)
+        }
         
-        print("Location notification type: \(type)")
-        print("Location notification value: \(userInfo["value"])")
+        
     }
     
     func updateClock(){
@@ -142,5 +161,4 @@ class CarplayWindowViewController: UIViewController {
         
         currentTimeLabel?.text = String(format: "%02d", hour) + ":" + String(format: "%02d", minutes)
     }
-    
 }

@@ -23,12 +23,24 @@ public struct D{
         }
     }
     
+    public struct ICON{
+        public struct HEIGHT{
+            public static let REGULAR           : CGFloat = 64.0
+            public static let LARGE             : CGFloat = 80.0
+        }
+    }
+    
+    public struct RADIUS{
+            public static let REGULAR           : CGFloat = 16.0
+    }
+    
     public struct SPACING{
         public static let SMALL                 : CGFloat = 8.0
         public static let REGULAR               : CGFloat = 16.0
         public static let LARGE                 : CGFloat = 24.0
         public static let XLARGE                : CGFloat = 32.0
         public static let XXLARGE               : CGFloat = 40.0
+        public static let XXXLARGE               : CGFloat = 48.0
     }
     
     
@@ -58,7 +70,7 @@ public struct D{
     
     public struct NAVBAR{
         public static let HEIGHT                : CGFloat = 120.0
-        public static let BTN_WIDTH             : CGFloat = D.NAVBAR.HEIGHT * 1.5
+        public static let BTN_WIDTH             : CGFloat = D.NAVBAR.HEIGHT * 1.75
     }
     
     public struct SEARCHBAR{

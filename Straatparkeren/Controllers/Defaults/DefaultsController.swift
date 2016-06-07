@@ -66,6 +66,15 @@ class DefaultsController : NSObject{
         
         defaults.setObject(encodedObject, forKey: USER_DEFAULTS.LOCATION_NOTIFICATION)
         defaults.synchronize()
+        
+        let savedDistances = getLocationNotificationDistances()
+        let destination = getDestination()
+        if savedDistances.count > 0 && destination != nil{
+            LocationDependentController.sharedInstance.setMonitoringForRegions((destination?.getCoordinate())!, regionSpans: savedDistances)
+        }
+        else{
+            LocationDependentController.sharedInstance.stopMonitoringForRegions()
+        }
     }
     
     func setDestination(destination : NSMapItem){
@@ -75,10 +84,10 @@ class DefaultsController : NSObject{
         defaults.synchronize()
     }
     
-    func getDestination() -> NSMapItem{
-        var destination : NSMapItem = NSMapItem(title: "", lat: "", long: "")
+    func getDestination() -> NSMapItem?{
+        var destination : NSMapItem?
         if let decodedObject : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_DEFAULTS.CURRENT_DESTINATION) as? NSData{
-            destination = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as! NSMapItem
+            destination = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as? NSMapItem
             
         }
         return destination

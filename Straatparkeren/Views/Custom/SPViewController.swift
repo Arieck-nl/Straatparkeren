@@ -32,7 +32,6 @@ class SPViewController: UIViewController, ThemeProtocol, InterfaceModeProtocol {
     }
     
     func itemSelected(){
-        print("this")
         self.popVC()
         self.pushVC(SpringboardViewController())
     }

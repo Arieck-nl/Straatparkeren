@@ -31,6 +31,8 @@
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
 		1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; };
 		1D82264F1D01D2470029901F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1D86712E1D06007D00209281 /* SPNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D86712D1D06007D00209281 /* SPNotificationView.swift */; };
+		1D8671311D06AC3B00209281 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8671301D06AC3B00209281 /* Extensions.swift */; };
 		1D899AF01D00328A006E4527 /* LocationDependentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D899AEF1D00328A006E4527 /* LocationDependentController.swift */; };
 		1D97E8BF1CE0BA6100B697ED /* SpringboardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */; };
 		1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D97E8C01CE0C36500B697ED /* Constants.swift */; };
@@ -118,6 +120,8 @@
 		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPOverlayView.swift; sourceTree = "<group>"; };
 		1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
+		1D86712D1D06007D00209281 /* SPNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNotificationView.swift; sourceTree = "<group>"; };
+		1D8671301D06AC3B00209281 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1D899AEF1D00328A006E4527 /* LocationDependentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationDependentController.swift; path = LocationDependent/LocationDependentController.swift; sourceTree = "<group>"; };
 		1D97E8BE1CE0BA6100B697ED /* SpringboardApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpringboardApp.swift; sourceTree = "<group>"; };
 		1D97E8C01CE0C36500B697ED /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -205,6 +209,7 @@
 				1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */,
 				1D11D7D71D0434C5005D1E9B /* SPTabbar.swift */,
 				1D413FED1D05B4EE00BABB4E /* SPMultiSegmentedView.swift */,
+				1D86712D1D06007D00209281 /* SPNotificationView.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -357,6 +362,7 @@
 				1D97E8C21CE0C67B00B697ED /* Helpers.swift */,
 				1D97E8C41CE0C6E200B697ED /* Dimens.swift */,
 				1DD505EB1CE31B1800BC56A2 /* Colors.swift */,
+				1D8671301D06AC3B00209281 /* Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -614,6 +620,7 @@
 				1D0C04751CE1EB0200CC167F /* MapsOverviewController.swift in Sources */,
 				1DD505F01CE369EB00BC56A2 /* SPNavigationBar.swift in Sources */,
 				1D0C047D1CE23CE000CC167F /* SPViewController.swift in Sources */,
+				1D86712E1D06007D00209281 /* SPNotificationView.swift in Sources */,
 				1D0F33A11CE4A2D000D5B336 /* ParkingAvailabilty.swift in Sources */,
 				1D97E8C51CE0C6E200B697ED /* Dimens.swift in Sources */,
 				1D2042A61CEE19200063893E /* MapSearchResultViewCell.swift in Sources */,
@@ -633,6 +640,7 @@
 				1D0C047B1CE23C2800CC167F /* SPNavigationController.swift in Sources */,
 				1D97E8C11CE0C36500B697ED /* Constants.swift in Sources */,
 				1D11D7D61D0431C2005D1E9B /* SettingsViewController.swift in Sources */,
+				1D8671311D06AC3B00209281 /* Extensions.swift in Sources */,
 				1DF7F5B51CEB26550065502B /* GoogleAPIController.swift in Sources */,
 				1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */,
 			);

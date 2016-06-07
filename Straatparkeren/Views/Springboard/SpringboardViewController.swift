@@ -25,11 +25,12 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         
         vc = MapsOverviewController()
         createCollectionView()
-
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.pushMapsOverviewVC), name: N.LOCATION_TRIGGER, object: nil)
+        
+        
         // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -86,11 +87,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         let url = NSURL(string: cellModel.url!)
         
         if(cellModel.url! == "straatparkeren"){
-            UIView.animateWithDuration(0.75, animations: { () -> Void in
-                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
-                self.navigationController?.pushViewController(self.vc!, animated: false)
-                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view!, cache: false)
-            })
+            self.pushMapsOverviewVC()
         }
         else if(UIApplication.sharedApplication().canOpenURL(url!)){
             UIApplication.sharedApplication().openURL(url!)
@@ -98,9 +95,19 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         
     }
     
+    func pushMapsOverviewVC(){
+        if !(self.navigationController?.visibleViewController is MapsOverviewController){
+            UIView.animateWithDuration(0.75, animations: { () -> Void in
+                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
+                self.navigationController?.pushViewController(self.vc!, animated: false)
+                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view!, cache: false)
+            })
+        }
+    }
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
-
-
+    
+    
 }
