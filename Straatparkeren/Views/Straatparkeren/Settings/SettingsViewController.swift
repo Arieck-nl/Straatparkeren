@@ -106,6 +106,15 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     }
     
     func addSettings(){
+        let distances = defaults.getLocationNotificationDistances()
+        let setDistances = ["1", "3", "5"]
+        var setValues = [false, false, false]
+        for (i, distance) in setDistances.enumerate(){
+            if  distances.contains(Double(distance)!){
+                setValues[i] = true
+            }
+        }
+        
         settingsItems = [
             SettingsItem(
                 title: STR.settings_location_title,
@@ -113,7 +122,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
                 switchHidden: true,
                 switchValue: defaults.isInSafetyMode(),
                 tapEvent: #selector(self.setLocationNotifications),
-                segmentedValues : ["1","3", "5"],
+                segmentedKeys: setDistances,
+                segmentedValues: setValues,
                 segmentedLabel: STR.settings_location_segmented_label
             ),
             SettingsItem(
@@ -244,8 +254,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             h: cell.frame.height
         )
         
-        if settingsItem.segmentedValues != nil && settingsItem.segmentedLabel != ""{
-            cell.segmentedView.setValues(settingsItem.segmentedValues!, rightText: settingsItem.segmentedLabel!, tapHandler: {
+        if settingsItem.segmentedKeys != nil && settingsItem.segmentedValues != nil && settingsItem.segmentedLabel != ""{
+            cell.segmentedView.setValues(settingsItem.segmentedKeys!, values: settingsItem.segmentedValues!, rightText: settingsItem.segmentedLabel!, tapHandler: {
                 self.currentSegmentedValues = cell.segmentedView.getSelectedValues()
                 self.performSelector(settingsItem.tapEvent!)
             })

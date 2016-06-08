@@ -16,17 +16,19 @@ class SettingsItem{
     var switchHidden    : Bool!
     var switchValue     : Bool?
     var tapEvent        : Selector?
-    var segmentedValues : [String]?
+    var segmentedKeys   : [String]?
+    var segmentedValues : [Bool]?
     var segmentedLabel  : String?
     
     
     
-    init(title : String, subtitle : String?, switchHidden : Bool, switchValue : Bool, tapEvent : Selector?, segmentedValues : [String]? = nil, segmentedLabel : String? = ""){
+    init(title : String, subtitle : String?, switchHidden : Bool, switchValue : Bool, tapEvent : Selector?, segmentedKeys : [String]? = nil, segmentedValues : [Bool]? = nil, segmentedLabel : String? = ""){
         self.title = title
         self.subtitle = subtitle
         self.switchHidden = switchHidden
         self.switchValue = switchValue
         self.tapEvent = tapEvent
+        self.segmentedKeys = segmentedKeys
         self.segmentedValues = segmentedValues
         self.segmentedLabel = segmentedLabel
     }

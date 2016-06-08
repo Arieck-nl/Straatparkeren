@@ -20,9 +20,9 @@ class SPTabbar: UIView {
         let background : UIView = UIView(frame:
             CGRectMake(
                 0,
-                frame.height - D.NAVBAR.HEIGHT,
+                0,
                 frame.width,
-                D.NAVBAR.HEIGHT
+                frame.height
             ))
         background.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         self.addSubview(background)

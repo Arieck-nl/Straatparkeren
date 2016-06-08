@@ -13,29 +13,34 @@ class SPMultiSegmentedView: UIView {
     static let selectedColor = ThemeController.sharedInstance.currentTheme().BACKGROUND
     static let unselectedColor = ThemeController.sharedInstance.currentTheme().TEXT
     
-    internal var values : [Double] = []
+    internal var iValues : [Double] = []
     
     var rightLabel : UILabel?
         
     internal func toggleValue(value : Double){
-        if(self.values.contains(value)){
-            self.values.removeObject(value)
+        if(self.iValues.contains(value)){
+            self.iValues.removeObject(value)
         }else{
-            self.values.append(value)
+            self.iValues.append(value)
         }
     }
     
-    func setValues(values : [String], rightText : String = "", tapHandler: () -> Void){
+    func setValues(keys : [String], values : [Bool], rightText : String = "", tapHandler: () -> Void){
+
         let btnWidth = self.frame.width / CGFloat(values.count)
         let btnHeight = self.frame.height / 2
-        
+        var keyCount = 0
         for (i,value) in values.enumerate(){
             let segment = SPMultiSegmentButton(frame: CGRect(
                 x: btnWidth * CGFloat(i),
                 y: 0,
                 w: btnWidth,
                 h: btnHeight))
-            segment.setTitle(value, forState: .Normal)
+            segment.setTitle(keys[i], forState: .Normal)
+            
+            if value {self.iValues.append(Double(keys[i])!)}
+            segment.selected = value
+            keyCount += 1
             
             
             segment.addTapGesture(action: { (UITapGestureRecognizer) in
@@ -66,7 +71,7 @@ class SPMultiSegmentedView: UIView {
     }
     
     func getSelectedValues() -> [Double]{
-        return self.values
+        return self.iValues
     }
     
 }
@@ -83,6 +88,7 @@ class SPMultiSegmentButton : UIButton{
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 1
         self.layer.borderColor = SPMultiSegmentedView.unselectedColor.CGColor
+        self.backgroundColor = SPMultiSegmentedView.selectedColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,7 +98,7 @@ class SPMultiSegmentButton : UIButton{
     override var selected: Bool {
         
         didSet {
-            if(selected){
+            if(super.selected){
                 self.layer.borderColor = SPMultiSegmentedView.selectedColor.CGColor
                 self.backgroundColor = SPMultiSegmentedView.unselectedColor
             }else{

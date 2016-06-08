@@ -75,6 +75,8 @@ class DefaultsController : NSObject{
         else{
             LocationDependentController.sharedInstance.stopMonitoringForRegions()
         }
+        
+        print(getLocationNotificationDistances())
     }
     
     func setDestination(destination : NSMapItem){
@@ -82,6 +84,8 @@ class DefaultsController : NSObject{
         
         defaults.setObject(encodedObject, forKey: USER_DEFAULTS.CURRENT_DESTINATION)
         defaults.synchronize()
+        
+        self.setLocationNotificationDistances(self.getLocationNotificationDistances())
     }
     
     func getDestination() -> NSMapItem?{

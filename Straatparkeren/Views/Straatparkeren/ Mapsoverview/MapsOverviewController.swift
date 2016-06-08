@@ -9,15 +9,16 @@
 import UIKit
 import MapKit
 
-class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     //Number of parking availabilities to render
-    static let NPA              : Int = 1
+    static let NPA              : Int = 3
     
     var map                     : MKMapView!
     var locationManager         : CLLocationManager!
     var started                 : Bool = false
     var autocompleteTimer       : NSTimer?
+    var regionDidChangeTimer    : NSTimer?
     var mapItems                : [NSMapItem] = []
     var currentResultLocation   : NSMapItem?
     var isCurrentLocation       : Bool = true
@@ -28,6 +29,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var searchFrame             : CGRect!
     var favoritesFrame          : CGRect!
     var favoritesInTable        : Bool = false
+    var currentHomeBtn          : HOME_BUTTON = .DESTINATION
     
     // Views
     var searchBar               : SPSearchBar?
@@ -42,6 +44,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var homeBtn                 : SPNavButtonView?
     var infoBtn                 : UIImageView!
     var infoView                : SPOverlayView?
+    var destinationView         : UIImageView!
+    
+    internal enum HOME_BUTTON{
+        case HOME, DESTINATION
+    }
     
     override func viewDidLoad() {
         
@@ -52,10 +59,21 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.delegate = self
         map.showsPointsOfInterest = false
         map.showsUserLocation = true
-        map.setUserTrackingMode(.FollowWithHeading, animated: false)
+        map.setUserTrackingMode(.FollowWithHeading, animated: true)
         map.clipsToBounds = true
-        map.userInteractionEnabled = false
+        map.userInteractionEnabled = true
+        map.scrollEnabled = true
+        map.pitchEnabled = true
+        map.zoomEnabled = true
+        map.rotateEnabled = false
+
+        map.multipleTouchEnabled = true
+        
+        let mapTapRecognizer : UIPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.didTapMap))
+        mapTapRecognizer.delegate = self
+        map.addGestureRecognizer(mapTapRecognizer)
         view.addSubview(map)
+        self.view.bringSubviewToFront(map)
         
         homeBtn = SPNavButtonView(frame: CGRect(
             x: 0,
@@ -66,12 +84,23 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.homeBtnPressed))
         homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
+        homeBtn?.hidden = true
         view.addSubview(homeBtn!)
         homeBtn?.btnText?.fitWidth()
         
 //        homeBtn?.btnIcon?.frame = CGRect(x: (homeBtn!.frame.width / 2)  - (homeBtn!.btnIcon!.frame.width / 2), y: homeBtn!.btnIcon!.frame.y, w: homeBtn!.btnIcon!.frame.width, h: homeBtn!.btnIcon!.frame.height)
-    
-        toggleHomeBtn()
+        
+        
+        self.destinationView = UIImageView(
+            x: (D.SCREEN_WIDTH - D.ICON.HEIGHT.LARGE) / 2,
+            y: (D.SCREEN_HEIGHT / 2) - D.ICON.HEIGHT.LARGE,
+            w: D.ICON.HEIGHT.LARGE,
+            h: D.ICON.HEIGHT.LARGE,
+            image: destinationImg.imageWithRenderingMode(.AlwaysTemplate))
+        self.destinationView.contentMode = .ScaleAspectFit
+        self.destinationView.tintColor = C.MARKER
+        self.destinationView.hidden = true
+        self.view.addSubview(self.destinationView)
         
         if (CLLocationManager.locationServicesEnabled())
         {
@@ -101,10 +130,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         //        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
         
         let tabbar : SPTabbar = SPTabbar(frame: CGRectMake(
-            self.view.frame.x,
-            self.view.frame.y,
+            0,
+            D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT,
             D.SCREEN_WIDTH,
-            self.view.frame.height
+            D.NAVBAR.HEIGHT
             ))
         
         // Tabbar gestures
@@ -305,7 +334,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func setHomeBtn(){
-        
+        if self.SPNavBar == nil{
+            return
+        }
         if self.SPNavBar!.hidden{
             homeBtn?.frame = CGRect(
                 x: 0,
@@ -322,34 +353,36 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             )
         }
         
-        if isCurrentLocation{
-            homeBtn?.btnIcon?.image = self.destinationImg
-            homeBtn?.btnText?.text = STR.home_btn_destination
-        }else{
-            homeBtn?.btnIcon?.image = self.locationImg
-            homeBtn?.btnText?.text = STR.home_btn_location
-        }
-        
-        if self.currentResultLocation != nil{
-            homeBtn?.hidden = false
-        }
+        homeBtn?.show()
     }
     
     func homeBtnPressed(){
         var location : CLLocationCoordinate2D!
-        if(self.isCurrentLocation){
+        if currentHomeBtn == .DESTINATION{
             self.isCurrentLocation = false
             location = defaultsCntrl.getDestination()!.getCoordinate()
+            self.currentHomeBtn = .HOME
+            homeBtn?.btnIcon?.image = self.locationImg
+            homeBtn?.btnText?.text = STR.home_btn_location
+            self.destinationView.show()
         }else{
+            self.destinationView.hide({ (Bool) in
+            })
             self.isCurrentLocation = true
             location = self.map.userLocation.coordinate
+            self.map.addAnnotations(self.currentAnnotations)
+            self.currentHomeBtn = .DESTINATION
+            homeBtn?.btnIcon?.image = self.destinationImg
+            homeBtn?.btnText?.text = STR.home_btn_destination
+            self.destinationView.show()
         }
+        
+        setHomeBtn()
         
         let region = MKCoordinateRegion(center: location, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.SPNavBar?.setTitle("")
         self.SPNavBar?.hidden = true
         self.map.setRegion(region, animated: false)
-        setHomeBtn()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -393,7 +426,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             if annotationView == nil
             {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView!.image = UIImage(named: "LocationIcon")
+                annotationView!.image = UIImage.blankImage()
                 annotationView?.centerOffset = CGPoint(x: 0, y: -((annotationView!.image?.size.height)! / 2))
             }
             else
@@ -405,6 +438,24 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         
     }
+    
+    
+    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        self.map.removeAnnotations(self.map.annotations)
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = mapView.centerCoordinate
+        
+        if !isCurrentLocation{
+            self.map.addAnnotation(annotation)
+            self.currentAnnotations.append(annotation)
+        }
+        
+//        regionDidChangeTimer?.invalidate()
+//        regionDidChangeTimer = nil
+//        regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(MapsOverviewController.generateParkingAvailabilitiesForCenter), userInfo: nil, repeats: false)
+    }
+    
     
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -433,11 +484,20 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
+    func generateParkingAvailabilitiesForCenter(){
+        defaultsCntrl.setDestination(NSMapItem(title: "", lat: self.map.centerCoordinate.latitude.toString, long: self.map.centerCoordinate.longitude.toString))
+        self.generateParkingAvailabilities(nil)
+    }
     
-    func generateParkingAvailabilities(location : CLLocationCoordinate2D){
+    func generateParkingAvailabilities(location : CLLocationCoordinate2D?){
+        var goToLocation = location
+        if location == nil{
+            goToLocation = self.map.centerCoordinate
+        }
         
         var parkingAvailabilities : [ParkingAvailability] = []
         
+        print("delta: \(self.map.region.span.latitudeDelta)")
         let distanceLat : UInt32 = 3500
         let corrLat : Double = 1750.0
         let dividerLat = 1000000.0
@@ -449,18 +509,18 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         for _ in (0..<MapsOverviewController.NPA){
             let endLatInt1 = (Double(arc4random_uniform(distanceLat)) - corrLat) / dividerLat
-            let endLat1 = location.latitude - endLatInt1
+            let endLat1 = goToLocation!.latitude - endLatInt1
             let endLongInt1 = (Double(arc4random_uniform(distanceLong)) - corrLong) / dividerLong
-            let endLong1 = location.longitude - endLongInt1
+            let endLong1 = goToLocation!.longitude - endLongInt1
             let endLatInt2 = (Double(arc4random_uniform(distanceLat)) - corrLat) / dividerLat
-            let endLat2 = location.latitude - endLatInt2
+            let endLat2 = goToLocation!.latitude - endLatInt2
             let endLongInt2 = (Double(arc4random_uniform(distanceLong)) - corrLong) / dividerLong
-            let endLong2 = location.longitude - endLongInt2
+            let endLong2 = goToLocation!.longitude - endLongInt2
             
             let parkingAvailability = ParkingAvailability(polylinePoints: [
                 CLLocationCoordinate2DMake(endLat1, endLong1),
                 CLLocationCoordinate2DMake(endLat2, endLong2),
-                ], parkingState: PARKING_STATE(rawValue: Int(arc4random_uniform(3)))!)
+                ], parkingState: PARKING_STATE(rawValue: Int(arc4random_uniform(2)))!)
             //
             //            for coordinate in parkingAvailability.polylinePoints{
             //                let ann = MKPointAnnotation()
@@ -484,6 +544,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
                 GoogleAPIController.sharedInstance.snapToRoad(parkingAvailability.polylinePoints, success: {(polyline) -> Void in
                     var polylinePoints = polyline
                     parkingAvailability.polylinePoints = polylinePoints
+                    self.currentPAs = []
                     self.currentPAs.append(parkingAvailability)
                     if polylinePoints.count > 2{
                         let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
@@ -511,7 +572,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         
         let polyline : SPPolyline = overlay as! SPPolyline
         let polylineRenderer = MKPolylineRenderer(overlay: overlay)
@@ -557,6 +618,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let searchResult = mapItems[indexPath.row]
+        self.destinationView.show()
         
         if !favoritesInTable{
             toggleSearchBar()
@@ -572,7 +634,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             let region = MKCoordinateRegion(center: searchResult.getCoordinate(), span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
             self.currentResultLocation = searchResult
             self.SPNavBar!.setTitle(searchResult.getTitle())
-            self.map.setRegion(region, animated: false)
+            self.map.setRegion(region, animated: true)
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = searchResult.getCoordinate()
@@ -581,7 +643,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.map.addAnnotation(annotation)
             self.currentAnnotations.append(annotation)
             self.isCurrentLocation = false
-            generateParkingAvailabilities(searchResult.getCoordinate())
+            if favoritesInTable{
+                renderParkingPolylines(self.currentPAs)
+            }else{
+                generateParkingAvailabilities(searchResult.getCoordinate())
+            }
             self.SPNavBar?.hidden = false
             setHomeBtn()
         }
@@ -599,6 +665,31 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
             cell.resetColors()
         }
+    }
+    
+    func didTapMap(gesture : UIGestureRecognizer){
+        if gesture.state == .Began{
+            self.destinationView.show()
+            self.currentHomeBtn = .HOME
+            self.isCurrentLocation = false
+            homeBtn?.btnIcon?.image = self.locationImg
+            homeBtn?.btnText?.text = STR.home_btn_location
+            setHomeBtn()
+        } else if(gesture.state == .Ended){
+            regionDidChangeTimer?.invalidate()
+            regionDidChangeTimer = nil
+            regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(MapsOverviewController.saveCurrentLocation), userInfo: nil, repeats: false)
+            
+        }
+    }
+    
+    func saveCurrentLocation(){
+        generateParkingAvailabilitiesForCenter()
+        defaultsCntrl.setDestination(NSMapItem(title: "", lat: self.map.centerCoordinate.latitude.toString, long: self.map.centerCoordinate.longitude.toString))
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     override func setDayMode(){

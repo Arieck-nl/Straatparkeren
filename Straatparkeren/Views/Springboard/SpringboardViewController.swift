@@ -96,7 +96,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     func pushMapsOverviewVC(){
-        if !(self.navigationController?.visibleViewController is MapsOverviewController){
+        if !(self.navigationController?.visibleViewController is MapsOverviewController && self.navigationController != nil){
             UIView.animateWithDuration(0.75, animations: { () -> Void in
                 UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
                 self.navigationController?.pushViewController(self.vc!, animated: false)

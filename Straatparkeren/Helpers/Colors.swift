@@ -53,5 +53,6 @@ public struct C{
     }
     
     public static var FAVORITED = UIColor.yellowColor()
+    public static var MARKER = UIColor.redColor()
     
 }

@@ -25,13 +25,12 @@ public struct S{
 public enum PARKING_STATE : Int {
     case FREE
     case SEMI_FULL
-    case FULL
     
     var color: UIColor {
         switch self {
         case .FREE: return C.PARKING_STATE.FREE
         case .SEMI_FULL: return C.PARKING_STATE.SEMI_FULL
-        case .FULL: return C.PARKING_STATE.FULL
+//        case .FULL: return C.PARKING_STATE.FULL
         }
     }
     
