@@ -12,7 +12,7 @@ import MapKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Number of parking availabilities to render
-    static let NPA          : Int = 8
+    static let NPA          : Int = 5
     
     var map                 : MKMapView!
     var locationManager     : CLLocationManager!
@@ -313,7 +313,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
                     var polylinePoints = polyline
                     parkingAvailability.polylinePoints = polylinePoints
                     self.currentPAs.append(parkingAvailability)
-                    if polylinePoints.count > 1{
+                    if polylinePoints.count > 2{
                         let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
                         polyOverlay.strokeColor = parkingAvailability.parkingState.color
                         if(minimal && polyOverlay.strokeColor == C.PARKING_STATE.FREE){
