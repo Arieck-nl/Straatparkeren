@@ -164,10 +164,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.SPNavBar?.hidden = true
         
         // Only show explanation of app on first start
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if !defaults.boolForKey(USER_DEFAULTS.FIRST_TIME) {
-            defaults.setBool(true, forKey: USER_DEFAULTS.FIRST_TIME)
-            NSUserDefaults.standardUserDefaults().synchronize()
+
+        if  !defaultsCntrl.isFirstTimeUse() {
+            defaultsCntrl.setFirstTimeUse(true)
             setFirstTimeOverlay()
         }
     }

@@ -17,6 +17,16 @@ class DefaultsController : NSObject{
     static let maxFavorites = 5
     let defaults = NSUserDefaults.standardUserDefaults()
     
+    func isFirstTimeUse() -> Bool{
+        return defaults.boolForKey(USER_DEFAULTS.FIRST_TIME)
+    }
+    
+    func setFirstTimeUse(value : Bool){
+        defaults.setBool(value, forKey: USER_DEFAULTS.FIRST_TIME)
+        defaults.synchronize()
+        
+    }
+    
     
     func isInSafetyMode() -> Bool{
         let safetyMode = defaults.boolForKey(USER_DEFAULTS.SAFETY_MODE)
