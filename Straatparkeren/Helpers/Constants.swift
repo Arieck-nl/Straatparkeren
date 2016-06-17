@@ -13,6 +13,7 @@ import AVFoundation
 // Style related
 public struct S{
     public struct OPACITY{
+        public static let XLIGHT : CGFloat = 0.1
         public static let LIGHT : CGFloat = 0.25
         public static let REGULAR : CGFloat = 0.5
         public static let DARK : CGFloat = 0.75

@@ -19,6 +19,10 @@ class SettingsTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
         
+        let background = UIView()
+        background.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.XLIGHT)
+        self.selectedBackgroundView = background
+        
         titleLabel = UILabel(
             x: D.SPACING.REGULAR,
             y: D.SPACING.REGULAR,

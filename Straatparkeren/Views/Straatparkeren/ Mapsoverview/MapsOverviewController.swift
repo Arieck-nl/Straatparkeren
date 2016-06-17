@@ -630,18 +630,23 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func toggleTheme() {
-        self.searchBar?.setNeedsDisplay()
-        self.navbarBtn?.resetColors()
-        self.SPNavBar!.resetColors()
-        self.homeBtn?.resetColors()
-        homeBtn!.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
         
-        // Tell each cell to reset colors
-        for i in 0..<mapItems.count{
-            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
-            cell.resetColors()
+        for subview in self.view.subviews{
+            subview.resetColor()
         }
+        
+//        self.searchBar?.setNeedsDisplay()
+//        self.navbarBtn?.resetColors()
+//        self.SPNavBar!.resetColors()
+//        self.homeBtn?.resetColors()
+//        homeBtn!.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+//        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+//        
+//        // Tell each cell to reset colors
+//        for i in 0..<mapItems.count{
+//            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
+//            cell.resetColors()
+//        }
     }
     
     //check if map interaction ended to restart collection of parking availabilities
