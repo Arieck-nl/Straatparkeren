@@ -28,13 +28,13 @@ class SPNotificationView: UIView {
             ))
         self.addSubview(self.iconView!)
         
-        self.backgroundColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         titleLabel = UILabel(
             x: self.iconView!.frame.width + self.iconView!.frame.x + D.SPACING.REGULAR,
             y: (frame.height - D.FONT.XXXLARGE) / 2,
             w: frame.width - self.iconView!.frame.width - (D.SPACING.SMALL * 2),
             h: 100, fontSize: D.FONT.XXXLARGE)
-        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().BACKGROUND
+        titleLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND
         titleLabel?.fitHeight()
         self.addSubview(titleLabel!)
     }
@@ -82,8 +82,8 @@ class SPNotificationView: UIView {
     }
     
     func resetColors(){
-        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        titleLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         
     }
     

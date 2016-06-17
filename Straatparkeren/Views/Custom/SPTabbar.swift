@@ -24,7 +24,7 @@ class SPTabbar: UIView {
                 frame.width,
                 frame.height
             ))
-        background.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        background.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         self.addSubview(background)
         
         // Settings button

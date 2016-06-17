@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 
+// Convert RGB values to UIColor
 func UIColorFromRGB(colorCode: String, alpha: Float = 1.0) -> UIColor {
     let scanner = NSScanner(string:colorCode)
     var color:UInt32 = 0;
@@ -22,7 +23,7 @@ func UIColorFromRGB(colorCode: String, alpha: Float = 1.0) -> UIColor {
     return UIColor(red: r, green: g, blue: b, alpha: CGFloat(alpha))
 }
 
-/* return key for string used in Keys.plist */
+// return key for string used in Keys.plist
 func getKeyFor(id : String) -> String{
     var keys: NSDictionary?
     var returnKey = ""
@@ -38,6 +39,7 @@ func getKeyFor(id : String) -> String{
     return returnKey
 }
 
+// Remove all gestures from view to prevent missing gestures
 func removeGestureRecognizers(view : UIView){
     if let recognizers = view.gestureRecognizers{
         for recognizer in recognizers{
@@ -46,7 +48,9 @@ func removeGestureRecognizers(view : UIView){
     }
 }
 
-func playAppSound(){
+// Play system sound for notifications
+// TODO: make generic to receive sound id
+func playNotificationSound(){
     AudioServicesPlaySystemSound(SOUND.APP)
 }
 

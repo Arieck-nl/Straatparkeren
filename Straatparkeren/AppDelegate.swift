@@ -18,13 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
         let defaults = DefaultsController.sharedInstance
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = CarplayWindowViewController()
         window?.makeKeyAndVisible()
         
+        
+        // Start interface controllers for monitoring
         themeCntrl = ThemeController.sharedInstance
         themeCntrl!.start()
         
@@ -59,6 +60,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Reset first time use when terminating app for demo purposes
         DefaultsController.sharedInstance.setFirstTimeUse(false)
     }
 

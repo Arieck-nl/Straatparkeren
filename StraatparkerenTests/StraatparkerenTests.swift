@@ -76,7 +76,7 @@ class StraatparkerenTests: XCTestCase {
                 innerExpectation!.fulfill()
                 
                 //Also check to see if current theme is in fact day mode
-                XCTAssert(ThemeController.sharedInstance.currentTheme() == .DAY)
+                XCTAssert(DefaultsController.sharedInstance.getCurrentTheme() == .DAY)
             }
         }
         

@@ -10,7 +10,9 @@ import UIKit
 
 class CarplayWindowViewController: UIViewController {
     
-    let dismissInterval         : Double = 180
+    
+    // If automatic shutdown is turned on, shutdown after this time of inactivity
+    static let dismissInterval  : Double = 180
     var dismissTimer            : NSTimer?
     
     var carplayControl          : UIView?
@@ -23,6 +25,7 @@ class CarplayWindowViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Listen to visible notification calls
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: N.DESTINATION_TRIGGER, object: nil)
         
         carplayControl = UIView(frame: CGRect(x: 0, y: 0, w: D.CARPLAY.WIDTH, h: D.SCREEN_HEIGHT))
@@ -39,6 +42,7 @@ class CarplayWindowViewController: UIViewController {
         })
         
         updateClock()
+        // Update CarPlay time every 60 seconds
         NSTimer.scheduledTimerWithTimeInterval(60.0,
                                                target: self,
                                                selector: #selector(CarplayWindowViewController.updateClock),
@@ -47,8 +51,6 @@ class CarplayWindowViewController: UIViewController {
         
         
         carplayControl?.addSubview(currentTimeLabel!)
-        
-        
         
         homeBtn = UIImageView(frame: CGRect(x: (D.CARPLAY.WIDTH - D.CARPLAY.BTN_WIDTH) / 2, y: D.SCREEN_HEIGHT - D.CARPLAY.BTN_WIDTH - D.SPACING.REGULAR, w: D.CARPLAY.BTN_WIDTH, h: D.CARPLAY.BTN_WIDTH))
         homeBtn?.image = UIImage(named: "CarplayHome")
@@ -94,22 +96,23 @@ class CarplayWindowViewController: UIViewController {
     // Gestures for debugging purposes
     func addGestures(){
         let interfaceController = InterfaceModeController.sharedInstance
+        let defaults = DefaultsController.sharedInstance
         
         self.carplayControl!.addSwipeGesture(direction: .Down) { (Swiped) -> () in
-            if(interfaceController.currentMode() == I_MODE.MAXIMAL){
+            if(defaults.getInterfaceMode() == I_MODE.MAXIMAL){
                 interfaceController.setMode(.MEDIUM)
-            }else if(interfaceController.currentMode() == I_MODE.MEDIUM){
+            }else if(defaults.getInterfaceMode() == I_MODE.MEDIUM){
                 interfaceController.setMode(.MINIMAL)
             }
         }
         self.carplayControl!.addSwipeGesture(direction: .Up) { (Swiped) -> () in
-            if(interfaceController.currentMode() == I_MODE.MINIMAL){
+            if(defaults.getInterfaceMode() == I_MODE.MINIMAL){
                 interfaceController.setMode(.MEDIUM)
-            }else if(interfaceController.currentMode() == I_MODE.MEDIUM){
+            }else if(defaults.getInterfaceMode() == I_MODE.MEDIUM){
                 interfaceController.setMode(.MAXIMAL)
             }
         }
-        
+    
         let themeController = ThemeController.sharedInstance
         
         self.carplayControl!.addSwipeGesture(direction: .Left) { (Swiped) -> () in
@@ -130,17 +133,18 @@ class CarplayWindowViewController: UIViewController {
         }
     }
     
+    // Override for detecting inactivity to automatically shutdown app
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         //dismiss VC after X amount of time
         self.dismissTimer?.invalidate()
         self.dismissTimer = nil
         
-        // TODO: use defaults for this
         if DefaultsController.sharedInstance.isAutomaticShutdownOn(){
-            self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(self.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dissmissCurrentVCFromTimer), userInfo: nil, repeats: false)
+            self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(CarplayWindowViewController.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dissmissCurrentVCFromTimer), userInfo: nil, repeats: false)
         }
     }
     
+    // Display visual notification
     func displayNotification(notification: NSNotification){
         
         let userInfo : NSDictionary = notification.userInfo!

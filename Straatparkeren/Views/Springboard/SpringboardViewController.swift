@@ -25,22 +25,18 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         
         vc = MapsOverviewController()
         createCollectionView()
+        
+        // Listen to automatically opening of app notification
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.pushMapsOverviewVC), name: N.LOCATION_TRIGGER, object: nil)
-        
-        
-        // Do any additional setup after loading the view.
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewWillAppear(animated: Bool) {
     }
     
     func createCollectionView() {
         
+        // Add apps to imitation springboard
         appCollection = NSMutableArray()
         appCollection?.addObject(SpringboardApp(title: "Phone", icon: "PhoneIcon", url: "tel:"))
         appCollection?.addObject(SpringboardApp(title: "Messages", icon: "MessagesIcon", url: "sms://"))
@@ -86,6 +82,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         
         let url = NSURL(string: cellModel.url!)
         
+        // If user tapped straatparkeren, open corresponding viewcontroller
         if(cellModel.url! == "straatparkeren"){
             self.pushMapsOverviewVC()
         }

@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+// Dimension Constants
 public struct D{
     
     //DEFAULTS
@@ -40,7 +42,7 @@ public struct D{
         public static let LARGE                 : CGFloat = 24.0
         public static let XLARGE                : CGFloat = 32.0
         public static let XXLARGE               : CGFloat = 40.0
-        public static let XXXLARGE               : CGFloat = 48.0
+        public static let XXXLARGE              : CGFloat = 48.0
     }
     
     
@@ -86,5 +88,10 @@ public struct D{
         public static let SWITCH_HEIGHT         : CGFloat = 80.0
         public static let SEGMENTED_HEIGHT      : CGFloat = 80.0
         public static let SCROLL_OFFSET         : CGFloat = 80.0
+    }
+    
+    // Parking availability
+    public struct PA{
+        public static let THICKNESS             : CGFloat = 10.0
     }
 }

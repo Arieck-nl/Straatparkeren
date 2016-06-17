@@ -8,11 +8,13 @@
 
 import UIKit
 
+// Default project viewcontroller
 class SPViewController: UIViewController, ThemeProtocol, InterfaceModeProtocol {
     
     var SPNavBar : SPNavigationBar?
     
     override func viewDidLoad() {
+        // Require every viewcontroller to listen to interface changing controllers
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setDayMode), name: N.DAY_MODE, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setNightMode), name: N.NIGHT_MODE, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setMinimalMode), name: N.MINIMAL_MODE, object: nil)
@@ -23,11 +25,6 @@ class SPViewController: UIViewController, ThemeProtocol, InterfaceModeProtocol {
     
     func setToolbar(){
         SPNavBar = SPNavigationBar(frame: CGRectMake(0, 0, D.SCREEN_WIDTH, D.NAVBAR.HEIGHT))
-        
-//        let nextView : UIButton = UIButton(x: 0, y: 0, w: 50, h: 50, target: self, action: #selector(SPViewController.itemSelected))
-//        nextView.backgroundColor = C.PRIMARY.REGULAR
-//        SPNavBar.addSubview(nextView)
-        
         view.addSubview(SPNavBar!)
     }
     
@@ -44,8 +41,7 @@ class SPViewController: UIViewController, ThemeProtocol, InterfaceModeProtocol {
         return true
     }
     
-    // Implement protocol methods
-    
+    // Require children to implement protocol methods
     func setDayMode(){
         fatalError("Must override method")
     }

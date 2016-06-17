@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 
-//STYLE RELATED
+// Style related
 public struct S{
     public struct OPACITY{
         public static let LIGHT : CGFloat = 0.25
@@ -18,10 +18,9 @@ public struct S{
         public static let DARK : CGFloat = 0.75
         public static let XDARK : CGFloat = 0.85
     }
-    
-    
 }
 
+// Parking availability related
 public enum PARKING_STATE : Int {
     case FREE
     case SEMI_FULL
@@ -30,12 +29,12 @@ public enum PARKING_STATE : Int {
         switch self {
         case .FREE: return C.PARKING_STATE.FREE
         case .SEMI_FULL: return C.PARKING_STATE.SEMI_FULL
-//        case .FULL: return C.PARKING_STATE.FULL
         }
     }
     
 }
 
+// User defaults keys
 public struct USER_DEFAULTS{
     public static let FIRST_TIME = "FirstTimeUse"
     public static let CURRENT_THEME = "CurrentTheme"
@@ -48,7 +47,7 @@ public struct USER_DEFAULTS{
     public static let FAVORITES = "Favorites"
 }
 
-/* Notification keys */
+// NSNotification keys
 public struct N{
     public static let DAY_MODE = "DayMode"
     public static let NIGHT_MODE = "NightMode"
@@ -59,6 +58,8 @@ public struct N{
     public static let DESTINATION_TRIGGER = "DestinationTrigger"
 }
 
+
+// API URLs
 public struct API{
     /* 
      PARAMETERS:
@@ -71,13 +72,16 @@ public struct API{
     public static let HERE_TRAFFIC = "https://traffic.cit.api.here.com/traffic/6.1/flow.json"
 }
 
-/* KEYS */
+// API key and app id's
 public struct K{
     public static let GOOGLE_MAPS_API = "GoogleMapsAPIKey"
     public static let HERE_APP_CODE = "HereAppCode"
     public static let HERE_APP_ID = "HereAppID"
 }
 
+
+// Strings 
+// TODO: make this into string file
 public struct STR{
     public static let navbar_search_btn = "Zoeken"
     public static let map_home_btn = "Huidige Locatie"
@@ -112,6 +116,7 @@ public struct STR{
     public static let notification_default = "Op uw bestemming zijn nu voldoende vrije plaatsen."
 }
 
+// Animation related
 public struct ANI{
     public static let NOTIFICATION_DISMISS = 5.0
     
@@ -121,6 +126,7 @@ public struct ANI{
     }
 }
 
+// Sounds
 public struct SOUND{
     public static let APP : SystemSoundID = 1022
 }

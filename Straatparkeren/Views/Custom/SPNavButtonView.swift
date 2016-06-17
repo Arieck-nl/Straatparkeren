@@ -32,7 +32,7 @@ class SPNavButtonView: UIView {
                 ))
         }
         btnIcon?.image = image.imageWithRenderingMode(.AlwaysTemplate)
-        btnIcon?.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        btnIcon?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         btnIcon?.contentMode = UIViewContentMode.ScaleAspectFit
         
         if iconLeft {btnIcon?.resizeToFitWidth()}
@@ -56,7 +56,7 @@ class SPNavButtonView: UIView {
         }
         btnText!.text = text
         iconLeft ? btnText?.fitWidth() : btnText?.fitHeight()
-        btnText?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        btnText?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         btnText!.textAlignment = iconLeft ? .Left : .Center
         
         self.addSubview(btnText!)
@@ -65,8 +65,8 @@ class SPNavButtonView: UIView {
     }
     
     func resetColors(){
-        btnIcon?.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
-        btnText?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        btnIcon?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        btnText?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
     }
     
     required init?(coder aDecoder: NSCoder) {

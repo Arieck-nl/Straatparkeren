@@ -30,7 +30,7 @@ class SPOverlayView: UIView {
             h: D.NAVBAR.HEIGHT
         )
         
-        self.dismissBtn.setTitleColor(ThemeController.sharedInstance.currentTheme().BUTTON, forState: .Normal)
+        self.dismissBtn.setTitleColor(DefaultsController.sharedInstance.getCurrentTheme().BUTTON, forState: .Normal)
         self.dismissBtn.addTapGesture { (gesture) -> () in
             self.hide({ (Bool) in
                 self.removeFromSuperview()
@@ -44,7 +44,7 @@ class SPOverlayView: UIView {
             w: D.ICON.HEIGHT.LARGE,
             h: D.ICON.HEIGHT.LARGE)
         self.iconView.image = iconImg.imageWithRenderingMode(.AlwaysTemplate)
-        self.iconView.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.iconView.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         self.addSubview(self.iconView)
         
         
@@ -59,7 +59,7 @@ class SPOverlayView: UIView {
         self.textLabel.textAlignment = .Center
         self.textLabel.lineBreakMode = .ByWordWrapping
         self.textLabel.numberOfLines = 0
-        self.textLabel.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        self.textLabel.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         self.textLabel.fitHeight()
         
         self.addSubview(textLabel)

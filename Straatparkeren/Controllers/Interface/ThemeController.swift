@@ -11,6 +11,7 @@ import MapKit
 import GPUImage
 import AVFoundation
 
+// implement protocol along with notification listeners
 protocol ThemeProtocol{
     // Day mode should render dark text and controls on a light background
     func setDayMode()
@@ -18,6 +19,8 @@ protocol ThemeProtocol{
     func setNightMode()
 }
 
+
+// Day/night theme variables
 public enum THEME : Int {
     case DAY, NIGHT
     
@@ -74,7 +77,7 @@ class ThemeController: NSObject {
     func start(){
 //        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
         
-        /*/// TODO: Remove this
+        /*/// TODO: Remove this and change toggle theme to set theme
         renderView = RenderView(superView: self.view)
         self.view.addSubview(renderView)
         let filter = AverageLuminanceExtractor()
@@ -99,26 +102,17 @@ class ThemeController: NSObject {
         
     }
     
-    
+    // Switch themes
     @objc private func toggleTheme(){
-        if(self.currentTheme() == .NIGHT){
+        if(DefaultsController.sharedInstance.getCurrentTheme() == .NIGHT){
             setTheme(.DAY)
         }else{
             setTheme(.NIGHT)
         }
     }
     
-    func currentTheme() -> THEME {
-        if let themeID = NSUserDefaults.standardUserDefaults().valueForKey(USER_DEFAULTS.CURRENT_THEME)?.integerValue {
-            return  THEME(rawValue: themeID)!
-        } else {
-            return .NIGHT
-        }
-    }
-    
     func setTheme(theme: THEME) {
-        NSUserDefaults.standardUserDefaults().setValue(theme.rawValue, forKey: USER_DEFAULTS.CURRENT_THEME)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        DefaultsController.sharedInstance.setTheme(theme)
         
         //callout to all setDay / Night methods
         print(theme.notificationKey)

@@ -21,7 +21,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     var currentSegmentedValues      : [Double] = []
     
     override func viewDidLoad() {
-        self.view.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.XDARK)
+        self.view.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.XDARK)
         
         // Back button
         backBtn = SPNavButtonView(frame: CGRectMake(
@@ -36,7 +36,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         self.view.addSubview(backBtn)
         
         // Table view
-        
         settingsTable = UITableView(frame: CGRect(
             x: D.SPACING.LARGE,
             y: backBtn.frame.height + D.SPACING.LARGE,
@@ -47,7 +46,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.backgroundColor = UIColor.clearColor()
         settingsTable.delegate = self
         settingsTable.dataSource = self
-        settingsTable.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        settingsTable.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
         settingsTable.separatorStyle = .SingleLine
         view.addSubview(settingsTable!)
         
@@ -58,7 +57,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             h: D.BTN.HEIGHT.REGULAR
             ))
         upBtn.setImage(UIImage(named: "UpButton")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        upBtn.imageView?.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        upBtn.imageView?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         upBtn.addTapGesture { (UITapGestureRecognizer) in
             var offset = CGPoint(
                 x: self.settingsTable.contentOffset.x,
@@ -83,7 +82,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             h: D.BTN.HEIGHT.REGULAR
             ))
         downBtn.setImage(UIImage(named: "DownButton")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        downBtn.imageView?.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        downBtn.imageView?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         downBtn.addTapGesture { (UITapGestureRecognizer) in
             
             var offset = CGPoint(
@@ -105,6 +104,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         
     }
     
+    // Provide settings for tableview
     func addSettings(){
         let distances = defaults.getLocationNotificationDistances()
         let setDistances = ["1", "3", "5"]
@@ -161,6 +161,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         
     }
     
+    /** Selector functions */
     func setLocationNotifications(){
         defaults.setLocationNotificationDistances(self.currentSegmentedValues)
     }
@@ -217,49 +218,21 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         
         // Fetch settingsitem corresponding to indexpath
         let settingsItem = settingsItems[indexPath.row]
-        let segmentedWidth = settingsItem.segmentedValues != nil ? (D.SETTINGS.SEGMENTED_HEIGHT * 3) : 0
         
         
         cell.titleLabel.text = settingsItem.title
-        cell.titleLabel.frame = CGRect(
-            x: cell.titleLabel.frame.x,
-            y: cell.titleLabel.frame.y,
-            w: tableView.frame.width - (D.SPACING.REGULAR * 2) - D.SETTINGS.SWITCH_HEIGHT - segmentedWidth,
-            h: cell.titleLabel.frame.height
-        )
-        cell.titleLabel.fitSize()
-        
         cell.subtitleLabel.text = settingsItem.subtitle != nil ? settingsItem.subtitle : ""
         
-        
-        cell.subtitleLabel.frame = CGRect(
-            x: cell.subtitleLabel.frame.x,
-            y: cell.subtitleLabel.frame.y,
-            w: tableView.frame.width - (D.SPACING.REGULAR * 2) - D.SETTINGS.SWITCH_HEIGHT - segmentedWidth,
-            h: cell.subtitleLabel.frame.height
-        )
-        cell.subtitleLabel.fitHeight()
-        
-        cell.switchView.frame = CGRect(
-            x: tableView.frame.width - D.SPACING.REGULAR - D.SETTINGS.SWITCH_HEIGHT,
-            y: cell.switchView.frame.y,
-            w: cell.switchView.frame.width,
-            h: cell.switchView.frame.height
-        )
-        
-        cell.segmentedView.frame = CGRect(
-            x: tableView.frame.width - D.SPACING.REGULAR - (D.SETTINGS.SEGMENTED_HEIGHT * 3),
-            y: ((cell.frame.height - (D.SETTINGS.SEGMENTED_HEIGHT * 2)) / 2) + D.SPACING.REGULAR,
-            w: (D.SETTINGS.SEGMENTED_HEIGHT * 3),
-            h: cell.frame.height
-        )
-        
+        // Initiate custom segmented view
         if settingsItem.segmentedKeys != nil && settingsItem.segmentedValues != nil && settingsItem.segmentedLabel != ""{
             cell.segmentedView.setValues(settingsItem.segmentedKeys!, values: settingsItem.segmentedValues!, rightText: settingsItem.segmentedLabel!, tapHandler: {
                 self.currentSegmentedValues = cell.segmentedView.getSelectedValues()
                 self.performSelector(settingsItem.tapEvent!)
             })
         }
+        
+        // Reset view frames
+        cell.resetViews()
         
         if settingsItem.switchHidden! || settingsItem.segmentedValues != nil {cell.switchView.hidden = true}
         if settingsItem.switchValue != nil {cell.switchView.on = settingsItem.switchValue!}

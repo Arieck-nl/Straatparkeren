@@ -13,33 +13,25 @@ class SPSearchBar: UISearchBar {
     
     override func drawRect(rect: CGRect) {
         
-        // Text field in search bar.
+        // Find text field in search bar
         let searchField = self.valueForKey("searchField") as! UITextField
         
         let searchIconView = searchField.leftView as! UIImageView
         searchIconView.image = UIImage(named:"SearchIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         searchIconView.frame = CGRect(x: searchIconView.frame.x, y: searchIconView.frame.y, w: D.SEARCHBAR.ICON_HEIGHT, h: D.SEARCHBAR.ICON_HEIGHT)
-        searchIconView.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
-        
-//        let clearIconView = searchField.valueForKey("clearButton") as! UIButton
-//        clearIconView.setImage(UIImage(named: "ClearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Normal)
-//        clearIconView.setImage(UIImage(named: "ClearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Selected)
-//        clearIconView.setImage(UIImage(named: "ClearIcon")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate), forState: .Focused)
-//        clearIconView.frame = CGRect(x: -20.0, y: -20.0, w: D.SEARCHBAR.ICON_HEIGHT, h: D.SEARCHBAR.ICON_HEIGHT)
-//        clearIconView.imageView?.size = CGSize(width: D.SEARCHBAR.ICON_HEIGHT, height: D.SEARCHBAR.ICON_HEIGHT)
-//        clearIconView.tintColor = C.TEXT
+        searchIconView.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         
         searchField.frame = CGRectMake(D.SPACING.SMALL, D.SPACING.SMALL, frame.size.width - (D.SPACING.SMALL * 2), frame.size.height - (D.SPACING.SMALL * 2))
         searchField.clearButtonMode = .Never
-        searchField.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
-        searchField.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        searchField.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        searchField.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         searchField.font = searchField.font!.fontWithSize(D.FONT.XXXLARGE)
         
-        searchField.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
+        searchField.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
         
-        self.tintColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        self.tintColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         
-        self.keyboardAppearance = ThemeController.sharedInstance.currentTheme().KEYBOARD
+        self.keyboardAppearance = DefaultsController.sharedInstance.getCurrentTheme().KEYBOARD
         
         super.drawRect(rect)
     }

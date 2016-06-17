@@ -8,6 +8,7 @@
 
 import MapKit
 
+/// Monitoring types used for sending out notifications
 public enum MONITORING_TYPE : Int{
     case ETA, REGION, NOTIFICATION
 }
@@ -18,11 +19,12 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     // Singleton instance
     static let sharedInstance = LocationDependentController()
     
+    // Notification key
     static let N_KEY            : String = N.LOCATION_TRIGGER
+    
     static let ACCURACY         : Double = 100.0 ///meters
     
     var locationManager         : CLLocationManager!
-    
     var monitorDestination      : CLLocationCoordinate2D?
     internal var monitorETAs    : [Int]?
     var monitoringTimer         : NSTimer?
@@ -30,6 +32,8 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     
     override init(){
         super.init()
+        
+        // Start updating gps locations
         if (CLLocationManager.locationServicesEnabled())
         {
             locationManager = CLLocationManager()
@@ -40,15 +44,16 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
             
         }
         
+        // erase all region monitoring on start up
         self.resetMonitoringForRegions()
     }
     
     
-    /// Sets monitoring for regions
-    ///
-    /// - warning: distances should be a plurality of 0.1
-    /// - parameter destination: precise destination for set regions
-    /// - parameter regionSpans: array of spans for regions in kilometers
+    // Sets monitoring for regions
+    //
+    // - warning: distances should be a plurality of 0.1
+    // - parameter destination: precise destination for set regions
+    // - parameter regionSpans: array of spans for regions in kilometers
     func setMonitoringForRegions(destination : CLLocationCoordinate2D, regionSpans : [Double]){
         resetMonitoringForRegions()
         for rs in regionSpans {
@@ -75,14 +80,17 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     }
     
     // use destination and time to destination for notifications
-    // etas in minutes
+    // - parameter etas: etas in minutes
     func setMonitoringForETAsToDestination(destination : CLLocationCoordinate2D, etas : [Int]){
+        
+        // sort etas as to receive closest eta first, then dismiss others
         var filteredETAs = Array(Set(etas))
         filteredETAs = filteredETAs.sort({ $0 < $1 })
-        print(filteredETAs)
         monitorETAs = filteredETAs
         monitorDestination = destination
         
+        
+        // check every minute if current ETA is less than specified ETAs
         NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(self.isETALessThanSpecified), userInfo: nil, repeats: true)
         
     }
@@ -94,6 +102,8 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     
     internal func isETALessThanSpecified(){
         if monitorDestination != nil && monitorETAs?.count > 0{
+            
+            // fetch current eta to destination
             let request : MKDirectionsRequest = MKDirectionsRequest()
             request.source = MKMapItem.mapItemForCurrentLocation()
             request.destination = MKMapItem(placemark: MKPlacemark(coordinate: monitorDestination!, addressDictionary: nil))
@@ -106,11 +116,12 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
                     print(error)
                 }else{
                     let seconds : Double = (eta?.expectedTravelTime)!
+                    
                     for (i, eta) in self.monitorETAs!.enumerate(){
                         if seconds < Double(eta*60){
-                            print("Reached this eta: \(eta)")
+                            // If this eta is less than current eta, remove larger etas from current destination range
                             self.monitorETAs!.removeRange(i...((self.monitorETAs?.count)! - 1))
-                            print("Array is now: \(self.monitorETAs!)")
+                            
                             //send out notification
                             self.sentLocationTrigger(.ETA, value: eta)
                             break
@@ -121,26 +132,33 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
         }
     }
     
+    // sent out internal notification to listening classes
+    // - parameter type: define what kind of location trigger this is
+    // - parameter value: provide additional data
     func sentLocationTrigger(type : MONITORING_TYPE, value : AnyObject) {
         
         let userInfo = ["type" : type.hashValue, "value" : value]
         NSNotificationCenter.defaultCenter().postNotificationName(N.LOCATION_TRIGGER, object: nil, userInfo: userInfo)
-        playAppSound()
+        // independent of receiving class, play notification sound
+        playNotificationSound()
         
     }
     
+    
+    // used for demonstration puposes only
     func sentDestinationTrigger(value : AnyObject) {
         
         if DefaultsController.sharedInstance.isDestinationNotificationsOn(){
             let userInfo = ["value" : value]
             NSNotificationCenter.defaultCenter().postNotificationName(N.DESTINATION_TRIGGER, object: nil, userInfo: userInfo)
-            playAppSound()
+            // independent of receiving class, play notification sound
+            playNotificationSound()
         }
         
     }
     
+    // When user enters preset region sent out notification
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print(region.identifier)
         self.sentLocationTrigger(.REGION, value: region.identifier)
     }
     

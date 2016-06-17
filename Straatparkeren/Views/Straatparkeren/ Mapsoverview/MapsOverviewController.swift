@@ -11,7 +11,7 @@ import MapKit
 
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
-    //Number of parking availabilities to render
+    //Number of parking availabilities to render (demo only)
     static let NPA              : Int = 3
     
     var map                     : MKMapView!
@@ -66,7 +66,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.pitchEnabled = true
         map.zoomEnabled = true
         map.rotateEnabled = false
-
         map.multipleTouchEnabled = true
         
         let mapTapRecognizer : UIPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.didTapMap))
@@ -83,13 +82,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             ), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
         
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.homeBtnPressed))
-        homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
+        homeBtn!.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
         homeBtn?.hidden = true
         view.addSubview(homeBtn!)
         homeBtn?.btnText?.fitWidth()
-        
-//        homeBtn?.btnIcon?.frame = CGRect(x: (homeBtn!.frame.width / 2)  - (homeBtn!.btnIcon!.frame.width / 2), y: homeBtn!.btnIcon!.frame.y, w: homeBtn!.btnIcon!.frame.width, h: homeBtn!.btnIcon!.frame.height)
-        
         
         self.destinationView = UIImageView(
             x: (D.SCREEN_WIDTH - D.ICON.HEIGHT.LARGE) / 2,
@@ -111,9 +107,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             locationManager.startUpdatingLocation()
         }
         
-        let center = CLLocationCoordinate2DMake(51.9270289, 4.4598485)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
         
+        // Init map with location (later override this with user location)
+        let center = CLLocationCoordinate2DMake(51.9270289, 4.4598485)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.map.setRegion(region, animated: true)
         
         super.viewDidLoad()
@@ -126,6 +123,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             h: 0
         )
         
+        // TODO: Remove this, debugging and demo purposes only
         LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
         //        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
         
@@ -152,7 +150,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             w: D.BTN.HEIGHT.REGULAR,
             h: D.BTN.HEIGHT.REGULAR,
             image: infoImg)
-        self.infoBtn.tintColor = ThemeController.sharedInstance.currentTheme().BUTTON.colorWithAlphaComponent(S.OPACITY.DARK)
+        self.infoBtn.tintColor = DefaultsController.sharedInstance.getCurrentTheme().BUTTON.colorWithAlphaComponent(S.OPACITY.DARK)
         self.view.addSubview(self.infoBtn)
         self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
             self.showInfoView()
@@ -164,7 +162,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.SPNavBar?.hidden = true
         
         // Only show explanation of app on first start
-
         if  !defaultsCntrl.isFirstTimeUse() {
             defaultsCntrl.setFirstTimeUse(true)
             setFirstTimeOverlay()
@@ -231,7 +228,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         tableView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.0)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
         tableView.separatorStyle = .SingleLine
         tableView.resizeToFitHeight()
         tableView.hidden = true
@@ -241,6 +238,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        // if text did change in search bar, wait 0.3 seconds for another change, otherwise start search call
         autocompleteTimer?.invalidate()
         autocompleteTimer = nil
         autocompleteTimer = NSTimer.scheduledTimerWithTimeInterval(0.3, target: self, selector: #selector(MapsOverviewController.startSearch), userInfo: nil, repeats: false)
@@ -268,7 +266,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.tableView.hidden = !self.tableView.hidden
     }
     
-    
+    // Autocomplete item search
     func showmapItemsFor(keyword : String){
         self.tableView.frame = self.searchFrame
         
@@ -385,22 +383,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     override func viewWillDisappear(animated: Bool) {
+        // Animation when view will dissapear
+        // TODO: change this animation
         UIView.animateWithDuration(0.75, animations: { () -> Void in
             UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
             UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, forView: self.navigationController!.view, cache: false)
         })
     }
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
-        
-        //        if !started{
-        //                    generateParkingAvailabilities(userLocation.coordinate)
-        //        }
-        
-    }
-    
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
-        
         
         if annotation.isKindOfClass(MKUserLocation) {
             let identifier = "UserPin"
@@ -438,7 +429,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
     }
     
-    
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         self.map.removeAnnotations(self.map.annotations)
         
@@ -449,37 +439,20 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.map.addAnnotation(annotation)
             self.currentAnnotations.append(annotation)
         }
-        
-//        regionDidChangeTimer?.invalidate()
-//        regionDidChangeTimer = nil
-//        regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(MapsOverviewController.generateParkingAvailabilitiesForCenter), userInfo: nil, repeats: false)
     }
-    
-    
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
         
         
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         if self.isCurrentLocation{
             self.map.setRegion(region, animated: true)
         }
         
         if !started{
             generateParkingAvailabilities(location!.coordinate)
-            
-            //            let mapRect : MKMapRect = self.map.visibleMapRect
-            //            let topLeftPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMinX(mapRect), y: MKMapRectGetMinY(mapRect))
-            //            let topLeftCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(topLeftPoint)
-            //
-            //            let bottomRightPoint : MKMapPoint = MKMapPoint(x: MKMapRectGetMaxX(mapRect), y: MKMapRectGetMaxY(mapRect))
-            //            let bottomRightCoordinate : CLLocationCoordinate2D = MKCoordinateForMapPoint(bottomRightPoint)
-            //
-            //            HereAPIController.sharedInstance.trafficFlowFor(topLeftCoordinate, bottomRight: bottomRightCoordinate,  success: {(polylines) -> Void in
-            //
-            //                })
         }
     }
     
@@ -488,15 +461,18 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.generateParkingAvailabilities(nil)
     }
     
+    // Randomly generate parking availability for demo purposes
     func generateParkingAvailabilities(location : CLLocationCoordinate2D?){
         var goToLocation = location
+        
+        // If no location is provided, use center coordinate of map
         if location == nil{
             goToLocation = self.map.centerCoordinate
         }
         
         var parkingAvailabilities : [ParkingAvailability] = []
         
-        print("delta: \(self.map.region.span.latitudeDelta)")
+        // Static values for demo purposes
         let distanceLat : UInt32 = 3500
         let corrLat : Double = 1750.0
         let dividerLat = 1000000.0
@@ -506,6 +482,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let dividerLong = 1000000.0
         
         
+        // Generate random polylines within visisble map region
         for _ in (0..<MapsOverviewController.NPA){
             let endLatInt1 = (Double(arc4random_uniform(distanceLat)) - corrLat) / dividerLat
             let endLat1 = goToLocation!.latitude - endLatInt1
@@ -520,12 +497,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
                 CLLocationCoordinate2DMake(endLat1, endLong1),
                 CLLocationCoordinate2DMake(endLat2, endLong2),
                 ], parkingState: PARKING_STATE(rawValue: Int(arc4random_uniform(2)))!)
-            //
-            //            for coordinate in parkingAvailability.polylinePoints{
-            //                let ann = MKPointAnnotation()
-            //                ann.coordinate = coordinate
-            //                self.map.addAnnotation(ann)
-            //            }
             
             parkingAvailabilities.append(parkingAvailability)
         }
@@ -536,47 +507,50 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
+    // Generic funtion to render polylines on map
+    // - parameter parkingAvailabilties: list of polylines with color
+    // - parameter snapToRoad: if true, provides polylines are accurately drawn along roads
+    // - parameter minimal: if true, only free parking availabilties are drawn
     func renderParkingPolylines(parkingAvailabilities : [ParkingAvailability], snapToRoad : Bool = true, minimal : Bool = false){
+        self.currentPAs = []
+        
         for parkingAvailability in parkingAvailabilities{
             
             if(snapToRoad){
+                // Convert polylines
                 GoogleAPIController.sharedInstance.snapToRoad(parkingAvailability.polylinePoints, success: {(polyline) -> Void in
-                    var polylinePoints = polyline
-                    parkingAvailability.polylinePoints = polylinePoints
-                    self.currentPAs = []
+                    parkingAvailability.polylinePoints = polyline
                     self.currentPAs.append(parkingAvailability)
-                    if polylinePoints.count > 2{
-                        let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
-                        polyOverlay.strokeColor = parkingAvailability.parkingState.color
-                        if(minimal && polyOverlay.strokeColor == C.PARKING_STATE.FREE){
-                            self.map.addOverlay(polyOverlay)
-                        } else if(!minimal){
-                            self.map.addOverlay(polyOverlay)
-                        }
-                    }
+                    
+                    self.addParkingAvailabilityOverlay(parkingAvailability, minimal: minimal)
                     
                 })
             }else{
-                var polylinePoints = parkingAvailability.polylinePoints
-                if polylinePoints.count > 1{
-                    let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
-                    polyOverlay.strokeColor = parkingAvailability.parkingState.color
-                    if(minimal && polyOverlay.strokeColor == C.PARKING_STATE.FREE){
-                        self.map.addOverlay(polyOverlay)
-                    } else if(!minimal){
-                        self.map.addOverlay(polyOverlay)
-                    }
-                }
+                self.addParkingAvailabilityOverlay(parkingAvailability, minimal: minimal)
+            }
+        }
+    }
+    
+    func addParkingAvailabilityOverlay(parkingAvailability : ParkingAvailability, minimal : Bool){
+        var polylinePoints = parkingAvailability.polylinePoints
+        
+        // Filter out polylines that are most likely faulty (only 2 points means a straight line)
+        if polylinePoints.count > 2{
+            let polyOverlay = SPPolyline(coordinates: &polylinePoints[0], count: parkingAvailability.polylinePoints.count)
+            polyOverlay.strokeColor = parkingAvailability.parkingState.color
+            if(polyOverlay.strokeColor == C.PARKING_STATE.FREE) || !minimal{
+                self.map.addOverlay(polyOverlay)
             }
         }
     }
     
     func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
         
+        // Define what parking polyline should look like
         let polyline : SPPolyline = overlay as! SPPolyline
         let polylineRenderer = MKPolylineRenderer(overlay: overlay)
         polylineRenderer.strokeColor = polyline.strokeColor
-        polylineRenderer.lineWidth = 10
+        polylineRenderer.lineWidth = D.PA.THICKNESS
         
         return polylineRenderer
     }
@@ -586,7 +560,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return mapItems.count
     }
-    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         let cellIdentifier = "SearchResultTableCell"
@@ -626,10 +599,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             toggleFavoritesList()
         }
         
-        
-        
         if(searchResult.getTitle() != ""){
             
+            // Center map on selected table row
             let region = MKCoordinateRegion(center: searchResult.getCoordinate(), span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
             self.currentResultLocation = searchResult
             self.SPNavBar!.setTitle(searchResult.getTitle())
@@ -637,11 +609,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = searchResult.getCoordinate()
+            
+            // Set as new destination
             defaultsCntrl.setDestination(searchResult)
             
             self.map.addAnnotation(annotation)
             self.currentAnnotations.append(annotation)
             self.isCurrentLocation = false
+            
+            // Retrieve parking availabilities for current map region
             if favoritesInTable{
                 renderParkingPolylines(self.currentPAs)
             }else{
@@ -658,14 +634,17 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.navbarBtn?.resetColors()
         self.SPNavBar!.resetColors()
         self.homeBtn?.resetColors()
-        homeBtn!.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-        tableView.separatorColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        homeBtn!.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        
+        // Tell each cell to reset colors
         for i in 0..<mapItems.count{
             let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
             cell.resetColors()
         }
     }
     
+    //check if map interaction ended to restart collection of parking availabilities
     func didTapMap(gesture : UIGestureRecognizer){
         if gesture.state == .Began{
             self.destinationView.show()
@@ -677,16 +656,17 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         } else if(gesture.state == .Ended){
             regionDidChangeTimer?.invalidate()
             regionDidChangeTimer = nil
-            regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(MapsOverviewController.saveCurrentLocation), userInfo: nil, repeats: false)
+            regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(MapsOverviewController.saveCurrentLocationAsDestination), userInfo: nil, repeats: false)
             
         }
     }
     
-    func saveCurrentLocation(){
+    func saveCurrentLocationAsDestination(){
         generateParkingAvailabilitiesForCenter()
         defaultsCntrl.setDestination(NSMapItem(title: "", lat: self.map.centerCoordinate.latitude.toString, long: self.map.centerCoordinate.longitude.toString))
     }
     
+    // Allow other gestureRecognizers to also recognize gestures of specific element
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }

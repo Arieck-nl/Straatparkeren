@@ -10,6 +10,8 @@ import Foundation
 
 import UIKit
 
+
+// Color constants
 public struct C{
     
     //DEFAULTS
@@ -45,7 +47,7 @@ public struct C{
     
     //OTHER
     
-    /* Parking State colors */
+    // Parking State colors
     public struct PARKING_STATE{
         public static let FREE = UIColor.greenColor().colorWithAlphaComponent(S.OPACITY.REGULAR)
         public static let SEMI_FULL = UIColor.orangeColor().colorWithAlphaComponent(S.OPACITY.REGULAR)

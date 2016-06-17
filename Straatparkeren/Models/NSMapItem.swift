@@ -8,6 +8,7 @@
 
 import MapKit
 
+// Class to replace NSMapItem, so as to provide encoding and decoding for user defaults
 class NSMapItem : NSObject, NSCoding{
     
     var title   : NSString?

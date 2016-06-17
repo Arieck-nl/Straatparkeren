@@ -17,6 +17,10 @@ class MapSearchController: NSObject {
     
     typealias responseHandler = (mapItems:[NSMapItem]) -> Void
     
+    // Get places for given keyword
+    // - parameter keyword: location keyword to search for
+    // - parameter region: provide region to search in (this doesn't actually work internally)
+    // - parameter success: handler for results
     func getNearbyPlaces(keyword : String, region : MKCoordinateRegion, success : responseHandler) {
 
         let request = MKLocalSearchRequest()

@@ -11,6 +11,8 @@ import MapKit
 import Alamofire
 import SwiftyJSON
 
+
+// TODO: remove class if remains unused
 class HereAPIController: NSObject {
     
     // Singleton instance

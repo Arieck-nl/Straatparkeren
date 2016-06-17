@@ -10,10 +10,11 @@ import UIKit
 
 class SPMultiSegmentedView: UIView {
     
-    static let selectedColor = ThemeController.sharedInstance.currentTheme().BACKGROUND
-    static let unselectedColor = ThemeController.sharedInstance.currentTheme().TEXT
+    static let selectedColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND
+    static let unselectedColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
     
     internal var iValues : [Double] = []
+    internal var kValues : [String] = []
     
     var rightLabel : UILabel?
         
@@ -27,6 +28,7 @@ class SPMultiSegmentedView: UIView {
     
     func setValues(keys : [String], values : [Bool], rightText : String = "", tapHandler: () -> Void){
 
+        self.kValues = keys
         let btnWidth = self.frame.width / CGFloat(values.count)
         let btnHeight = self.frame.height / 2
         var keyCount = 0
@@ -62,12 +64,16 @@ class SPMultiSegmentedView: UIView {
             )
             rightLabel!.text = rightText
             rightLabel!.textAlignment = .Center
-            rightLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+            rightLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
             rightLabel!.fitHeight()
             
             self.addSubview(rightLabel!)
         }
 
+    }
+    
+    func getValues() -> [String]{
+        return self.kValues
     }
     
     func getSelectedValues() -> [Double]{
@@ -97,6 +103,7 @@ class SPMultiSegmentButton : UIButton{
     
     override var selected: Bool {
         
+        // Act to setting selected
         didSet {
             if(super.selected){
                 self.layer.borderColor = SPMultiSegmentedView.selectedColor.CGColor

@@ -17,9 +17,11 @@ protocol InterfaceModeProtocol {
     func setMaximalMode()
 }
 
+// Define interface modes
 public enum I_MODE : Int {
     case MINIMAL, MEDIUM, MAXIMAL
     
+    // return notification key for each mode
     var notificationKey : String{
         switch self {
         case .MINIMAL:
@@ -34,6 +36,9 @@ public enum I_MODE : Int {
 
 class InterfaceModeController {
     
+    
+    // interval for cooldown period
+    // if interface has switched, wait till cooldown period is over to be able to switch again
     private let interval : Double = 15.0
     
     private let mediumTrigger : Double = 0.006
@@ -66,22 +71,21 @@ class InterfaceModeController {
         self.setMode(.MAXIMAL)
     }
     
+    // start monitoring accelerometer
     func start(){
         if (motionMgr.deviceMotionAvailable) {
             let handler:CMDeviceMotionHandler = {(data: CMDeviceMotion?, error: NSError?) -> Void in
                 
                 let timeDiff = NSDate().timeIntervalSinceDate(self.startDate)
                 
-                if(timeDiff > self.interval){
-                    self.lowerStarted = false
-                }
-
-                
                 let accX = (data?.userAcceleration.x)!
                 let accY = (data?.userAcceleration.y)!
                 let accZ = (data?.userAcceleration.z)!
                 
-                
+                // for each axis do as follows:
+                // remove first item of stack if greater than predefined value
+                // add value to stack
+                // calculate average of current stack
                 if(self.stackX.count >= self.peakTrigger){
                     self.stackX.removeAtIndex(0)
                 }
@@ -119,10 +123,12 @@ class InterfaceModeController {
                 
                 var mode : I_MODE!
                 
+                // If cooldown period is over, interface switching should be enabled again
                 if((timeDiff > self.interval) && (self.stackX.count >= self.peakTrigger)){
-                    print(self.currentMode())
+                    
                     print("avgX" + avgX.toString + "avgY" + avgY.toString + "avgZ" + avgZ.toString)
                     
+                    // If any of the axis averages exceeds predefined values, trigger interface switching
                     if(abs(avgX) > self.maximumTrigger || abs(avgY) > self.maximumTrigger || abs(avgZ) > self.maximumTrigger){
                         mode = .MINIMAL
                     }
@@ -134,6 +140,7 @@ class InterfaceModeController {
                     }
                     
                     self.setMode(mode)
+                    //reset for new timediff
                     self.startDate = NSDate()
 
                     
@@ -150,25 +157,13 @@ class InterfaceModeController {
         motionMgr.stopAccelerometerUpdates()
     }
     
-    
-    func currentMode() -> I_MODE {
-        if let modeID = NSUserDefaults.standardUserDefaults().valueForKey(USER_DEFAULTS.CURRENT_MODE)?.integerValue {
-            return  I_MODE(rawValue: modeID)!
-        } else {
-            // fall back to most safe a.k.a. minimal mode
-            return .MINIMAL
-        }
-    }
-    
+    // Notify listening classes of interface change
     func setMode(mode: I_MODE) {
-        if(self.currentMode() != mode){
+        if(DefaultsController.sharedInstance.getInterfaceMode() != mode){
             
-        NSUserDefaults.standardUserDefaults().setValue(mode.rawValue, forKey: USER_DEFAULTS.CURRENT_MODE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        DefaultsController.sharedInstance.setInterfaceMode(mode)
         
         //callout to all interface mode methods
-        
-        print(mode.notificationKey)
         NSNotificationCenter.defaultCenter().postNotificationName(mode.notificationKey, object: self)
         }
         

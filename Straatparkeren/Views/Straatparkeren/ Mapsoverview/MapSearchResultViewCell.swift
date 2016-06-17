@@ -15,10 +15,10 @@ class MapSearchResultViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         titleLabel = UILabel(x: D.SPACING.REGULAR, y: (D.SEARCH_CELL.HEIGHT - D.FONT.XXLARGE) / 2, w: 100, h: self.frame.height, fontSize: D.FONT.XXLARGE)
-        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        titleLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         self.addSubview(titleLabel!)
         
-        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        self.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         
     }
     
@@ -27,16 +27,8 @@ class MapSearchResultViewCell: UITableViewCell {
     }
     
     func resetColors(){
-        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
-        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        titleLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        self.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
 
     }
-    
-
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

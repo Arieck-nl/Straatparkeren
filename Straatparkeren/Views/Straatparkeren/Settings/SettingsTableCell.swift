@@ -1,5 +1,5 @@
 //
-//  SettingsTableCell.swift
+//  SettingsTableself.swift
 //  Straatparkeren
 //
 //  Created by Rick van 't Hof on 05-06-16.
@@ -26,7 +26,7 @@ class SettingsTableCell: UITableViewCell {
             h: 100,
             fontSize: D.FONT.XXXLARGE
         )
-        titleLabel.textColor = ThemeController.sharedInstance.currentTheme().TEXT
+        titleLabel.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         self.addSubview(titleLabel)
         
         subtitleLabel = UILabel(
@@ -36,7 +36,7 @@ class SettingsTableCell: UITableViewCell {
             h: 100,
             fontSize: D.FONT.XLARGE
         )
-        subtitleLabel.textColor = ThemeController.sharedInstance.currentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        subtitleLabel.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
         subtitleLabel.numberOfLines = 0
         subtitleLabel.lineBreakMode = .ByWordWrapping
         
@@ -48,8 +48,8 @@ class SettingsTableCell: UITableViewCell {
             w: D.SETTINGS.SWITCH_HEIGHT,
             h: D.SETTINGS.SWITCH_HEIGHT
             ))
-        switchView.tintColor = ThemeController.sharedInstance.currentTheme().TEXT
-        switchView.thumbTintColor = ThemeController.sharedInstance.currentTheme().TEXT
+        switchView.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        switchView.thumbTintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
         switchView.transform = CGAffineTransformMakeScale(1.5, 1.5)
         
         self.addSubview(switchView)
@@ -67,13 +67,48 @@ class SettingsTableCell: UITableViewCell {
         
     }
     
+    func resetViews(){
+        let segmentedWidth = D.SETTINGS.SEGMENTED_HEIGHT * CGFloat(self.segmentedView.getValues().count)
+        
+        self.segmentedView.frame = CGRect(
+            x: self.frame.width - D.SPACING.REGULAR - segmentedWidth,
+            y: ((self.frame.height - (D.SETTINGS.SEGMENTED_HEIGHT * 2)) / 2) + D.SPACING.REGULAR,
+            w: self.segmentedView.frame.width,
+            h: self.frame.height
+        )
+        
+        self.titleLabel.frame = CGRect(
+            x: self.titleLabel.frame.x,
+            y: self.titleLabel.frame.y,
+            w: self.frame.width - (D.SPACING.REGULAR * 2) - D.SETTINGS.SWITCH_HEIGHT - segmentedWidth,
+            h: self.titleLabel.frame.height
+        )
+        self.titleLabel.fitSize()
+        
+        self.subtitleLabel.frame = CGRect(
+            x: self.subtitleLabel.frame.x,
+            y: self.subtitleLabel.frame.y,
+            w: self.frame.width - (D.SPACING.REGULAR * 2) - D.SETTINGS.SWITCH_HEIGHT - segmentedWidth,
+            h: self.subtitleLabel.frame.height
+        )
+        self.subtitleLabel.fitHeight()
+        
+        self.switchView.frame = CGRect(
+            x: self.frame.width - D.SPACING.REGULAR - D.SETTINGS.SWITCH_HEIGHT,
+            y: self.switchView.frame.y,
+            w: self.switchView.frame.width,
+            h: self.switchView.frame.height
+        )
+    }
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func resetColors(){
-        titleLabel?.textColor = ThemeController.sharedInstance.currentTheme().TEXT
-        self.backgroundColor = ThemeController.sharedInstance.currentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        titleLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        self.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
         
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-
+// UIView extension to prive default hide and show with animation
 extension UIView{
     
     func show(){
@@ -30,6 +30,7 @@ extension UIView{
         
     }
     
+    // Pass along completionHandler
     func hide(completionHandler : Bool -> Void){
         if(!self.hidden){
             self.alpha = 1.0
