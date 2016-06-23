@@ -28,6 +28,7 @@ class SPMultiSegmentedView: UIView {
     
     func setValues(keys : [String], values : [Bool], rightText : String = "", tapHandler: () -> Void){
 
+        self.removeSubviews()
         self.kValues = keys
         let btnWidth = self.frame.width / CGFloat(values.count)
         let btnHeight = self.frame.height / 2
@@ -64,10 +65,11 @@ class SPMultiSegmentedView: UIView {
             )
             rightLabel!.text = rightText
             rightLabel!.textAlignment = .Center
-            rightLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+            rightLabel?.colorType = .TEXT
             rightLabel!.fitHeight()
             
             self.addSubview(rightLabel!)
+            self.resetColor()
         }
 
     }
@@ -88,13 +90,15 @@ class SPMultiSegmentButton : UIButton{
         super.init(frame: frame)
         
         self.titleLabel!.font = self.titleLabel!.font.fontWithSize(D.FONT.XXLARGE)
-        self.setTitleColor(SPMultiSegmentedView.unselectedColor, forState: .Normal)
-        self.setTitleColor(SPMultiSegmentedView.selectedColor, forState: .Selected)
+        self.titleLabel?.colorType = .TEXT
+        self.putColor()
         
-        self.layer.cornerRadius = 5
-        self.layer.borderWidth = 1
-        self.layer.borderColor = SPMultiSegmentedView.unselectedColor.CGColor
-        self.backgroundColor = SPMultiSegmentedView.selectedColor
+        self.layer.cornerRadius = 6
+        self.layer.borderWidth = 3
+        self.layer.borderColor = C.BUTTON.LIGHT.CGColor
+        self.colorType = .TEXT
+        self.opacity = S.OPACITY.LIGHT
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -106,11 +110,9 @@ class SPMultiSegmentButton : UIButton{
         // Act to setting selected
         didSet {
             if(super.selected){
-                self.layer.borderColor = SPMultiSegmentedView.selectedColor.CGColor
-                self.backgroundColor = SPMultiSegmentedView.unselectedColor
+                self.layer.borderColor = C.BUTTON.DARK.CGColor
             }else{
-                self.layer.borderColor = SPMultiSegmentedView.unselectedColor.CGColor
-                self.backgroundColor = SPMultiSegmentedView.selectedColor
+                self.layer.borderColor = UIColor.clearColor().CGColor
             }
         }
     }

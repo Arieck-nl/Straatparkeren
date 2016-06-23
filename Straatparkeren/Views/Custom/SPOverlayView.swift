@@ -18,7 +18,8 @@ class SPOverlayView: UIView {
     init(frame: CGRect, text : String, btnText : String, iconImg : UIImage = UIImage(named: "InfoIcon")!) {
         super.init(frame: frame)
         
-        self.backgroundColor = C.BACKGROUND.colorWithAlphaComponent(S.OPACITY.XDARK)
+        self.colorType = .BACKGROUND
+        self.opacity = S.OPACITY.XDARK
         
         self.dismissBtn.setTitle(btnText, forState: .Normal)
         self.dismissBtn.titleLabel!.font = self.dismissBtn.titleLabel!.font.fontWithSize(D.FONT.XXXLARGE)
@@ -44,7 +45,7 @@ class SPOverlayView: UIView {
             w: D.ICON.HEIGHT.LARGE,
             h: D.ICON.HEIGHT.LARGE)
         self.iconView.image = iconImg.imageWithRenderingMode(.AlwaysTemplate)
-        self.iconView.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        self.iconView.colorType = .TEXT
         self.addSubview(self.iconView)
         
         
@@ -59,12 +60,12 @@ class SPOverlayView: UIView {
         self.textLabel.textAlignment = .Center
         self.textLabel.lineBreakMode = .ByWordWrapping
         self.textLabel.numberOfLines = 0
-        self.textLabel.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        self.textLabel.colorType = .TEXT
         self.textLabel.fitHeight()
         
         self.addSubview(textLabel)
         
-        
+        self.resetColor()
     }
     
     required init?(coder aDecoder: NSCoder) {

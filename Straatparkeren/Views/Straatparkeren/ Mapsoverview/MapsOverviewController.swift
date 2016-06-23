@@ -45,6 +45,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var infoBtn                 : UIImageView!
     var infoView                : SPOverlayView?
     var destinationView         : UIImageView!
+    var tabbar                  : SPTabbar!
     
     internal enum HOME_BUTTON{
         case HOME, DESTINATION
@@ -82,7 +83,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             ), image: UIImage(named: "CurrentLocationIcon")!, text: STR.map_home_btn)
         
         homeBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.homeBtnPressed))
-        homeBtn!.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.REGULAR)
+        homeBtn!.colorType = .BACKGROUND
+        homeBtn!.opacity = S.OPACITY.REGULAR
         homeBtn?.hidden = true
         view.addSubview(homeBtn!)
         homeBtn?.btnText?.fitWidth()
@@ -127,7 +129,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
         //        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
         
-        let tabbar : SPTabbar = SPTabbar(frame: CGRectMake(
+        self.tabbar = SPTabbar(frame: CGRectMake(
             0,
             D.SCREEN_HEIGHT - D.NAVBAR.HEIGHT,
             D.SCREEN_WIDTH,
@@ -166,6 +168,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             defaultsCntrl.setFirstTimeUse(true)
             setFirstTimeOverlay()
         }
+        
+        self.view.resetColor()
     }
     
     func setFirstTimeOverlay(){
@@ -295,7 +299,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func toggleSearchBar(){
         removeGestureRecognizers(navbarBtn!)
-        navbarBtn?.resetColors()
         if(searchBar!.hidden){
             //show
             searchBar!.hidden = false
@@ -629,26 +632,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
     }
     
-    func toggleTheme() {
-        
-        for subview in self.view.subviews{
-            subview.resetColor()
-        }
-        
-//        self.searchBar?.setNeedsDisplay()
-//        self.navbarBtn?.resetColors()
-//        self.SPNavBar!.resetColors()
-//        self.homeBtn?.resetColors()
-//        homeBtn!.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-//        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
-//        
-//        // Tell each cell to reset colors
-//        for i in 0..<mapItems.count{
-//            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! MapSearchResultViewCell
-//            cell.resetColors()
-//        }
-    }
-    
     //check if map interaction ended to restart collection of parking availabilities
     func didTapMap(gesture : UIGestureRecognizer){
         if gesture.state == .Began{
@@ -677,11 +660,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     override func setDayMode(){
-        toggleTheme()
+        self.view.resetColor()
+        self.searchBar?.setNeedsDisplay()
+        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
     }
     
     override func setNightMode(){
-        toggleTheme()
+        self.view.resetColor()
+        self.searchBar?.setNeedsDisplay()
+        tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
     }
     
     
@@ -690,7 +677,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.setCustomToolbarHidden(true)
         
         map.removeOverlays(map.overlays)
-        print(self.currentAnnotations)
         dispatch_async(dispatch_get_main_queue(), {
             self.map.addAnnotations(self.currentAnnotations)
         })

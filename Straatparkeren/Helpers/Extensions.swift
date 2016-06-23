@@ -9,6 +9,19 @@
 import Foundation
 import UIKit
 
+
+public enum COLOR_TYPE : Int{
+    case TEXT, BACKGROUND, BUTTON, SWITCH
+    
+    var color: UIColor {
+        let theme = DefaultsController.sharedInstance.getCurrentTheme()
+        return theme.getColorForType(self)
+    }
+}
+
+private var storedColorType : UInt8 = 0
+private var storedOpacity : UInt8 = 0
+
 extension UIView{
     
     // UIView extension to provide default hide and show with animation
@@ -46,54 +59,132 @@ extension UIView{
         }
     }
     
-    func resetColor(){
-        let defaults = DefaultsController.sharedInstance
-        
-        if self.backgroundColor != nil{
-            
-            let alpha = CIColor(color: (self.backgroundColor)!).alpha
-            print(alpha)
-            self.backgroundColor = self.backgroundColor?.colorWithAlphaComponent(1.0)
-            
-            if self.backgroundColor!.isEqual(defaults.getCurrentTheme().BACKGROUND){
-                self.backgroundColor = defaults.getCurrentTheme().TEXT.colorWithAlphaComponent(alpha)
-            }else if self.backgroundColor!.isEqual(defaults.getCurrentTheme().TEXT){
-                self.backgroundColor = defaults.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(alpha)
+    // Extension helpers for theme changing
+    var colorType : COLOR_TYPE? {
+        get {
+            if let getColorType = objc_getAssociatedObject(self, &storedColorType) {
+                return COLOR_TYPE(rawValue: getColorType.integerValue)
+            }else{
+                return nil
             }
         }
-        
-        
-        if self.tintColor != nil{
-            
-            let alpha = CIColor(color: (self.tintColor)!).alpha
-            self.tintColor = self.tintColor?.colorWithAlphaComponent(1.0)
-            
-            if self.tintColor!.isEqual(defaults.getCurrentTheme().BACKGROUND){
-                self.tintColor = defaults.getCurrentTheme().TEXT.colorWithAlphaComponent(alpha)
-            }else if self.tintColor!.isEqual(defaults.getCurrentTheme().TEXT){
-                self.tintColor = defaults.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(alpha)
+        set(newValue) {
+            objc_setAssociatedObject(self, &storedColorType, newValue?.hashValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+    
+    var opacity : CGFloat{
+        get {
+            if let getOpacity = objc_getAssociatedObject(self, &storedOpacity){
+                return CGFloat(getOpacity.floatValue)
+            }else{
+                return 1.0
             }
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &storedOpacity, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+    
+    
+    func resetColor(){
+        self.setColor()
+        for subview in self.subviews{
+            subview.resetColor()
+        }
+    }
+    
+    func setColor(){
+        if(colorType != nil){
+            self.animate(
+                duration: ANI.DUR.GRADUALLY,
+                animations: {
+                    self.backgroundColor = self.colorType?.color.colorWithAlphaComponent(self.opacity)
+                    self.tintColor = self.colorType?.color.colorWithAlphaComponent(self.opacity)
+                },
+                completion: { (Bool) in
+            })
+            
         }
     }
 }
 
 extension UITextView{
-    override func resetColor(){
-        super.resetColor()
-        let defaults = DefaultsController.sharedInstance
-        
-        if self.textColor != nil{
+    override func setColor(){
+        if(colorType != nil){
+            self.animate(
+                duration: ANI.DUR.GRADUALLY,
+                animations: {
+                    self.textColor = self.colorType?.color
+                },
+                completion: { (Bool) in
+            })
             
-            let alpha = CIColor(color: (self.textColor)!).alpha
-            print(alpha)
-            self.textColor = self.textColor?.colorWithAlphaComponent(1.0)
-            
-            if self.textColor!.isEqual(defaults.getCurrentTheme().BACKGROUND){
-                self.textColor = defaults.getCurrentTheme().TEXT.colorWithAlphaComponent(alpha)
-            }else if self.textColor!.isEqual(defaults.getCurrentTheme().TEXT){
-                self.textColor = defaults.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(alpha)
-            }
         }
     }
+}
 
+extension UISwitch{
+    override func setColor(){
+        if (colorType != nil) && (self.tintColor != self.colorType?.color) {
+            UIView.transitionWithView(self, duration: (ANI.DUR.GRADUALLY / 2), options: .TransitionCrossDissolve, animations: {
+                self.alpha = 0
+                }, completion: { (Bool) in
+                    self.tintColor = self.colorType?.color
+                    self.thumbTintColor = self.colorType?.color
+                    UIView.transitionWithView(self, duration: (ANI.DUR.GRADUALLY / 2), options: .TransitionCrossDissolve, animations: {
+                        self.alpha = 1.0
+                        }, completion: { (Bool) in
+                            
+                    })
+            })
+        }
+    }
+    
+    func putColor(){
+        self.tintColor = self.colorType?.color
+        self.thumbTintColor = self.colorType?.color
+    }
+}
+
+extension UIImageView{
+    override func setColor(){
+        if(colorType != nil){
+            self.animate(
+                duration: ANI.DUR.GRADUALLY,
+                animations: {
+                    self.tintColor = self.colorType?.color.colorWithAlphaComponent(self.opacity)
+                },
+                completion: { (Bool) in
+            })
+            
+        }
+    }
+}
+
+extension UILabel{
+    override func setColor(){
+        if(colorType != nil){
+            UIView.transitionWithView(self, duration: ANI.DUR.GRADUALLY, options: .TransitionCrossDissolve, animations: {
+                self.textColor = self.colorType?.color
+                }, completion: { (Bool) in
+            })
+        }
+    }
+}
+
+extension UIButton{
+    //    override func setColor(){
+    //        if(colorType != nil){
+    //            UIView.transitionWithView(self, duration: ANI.DUR.GRADUALLY, options: .TransitionCrossDissolve, animations: {
+    //                self.setTitleColor(self.titleLabel?.colorType?.color, forState: .Normal)
+    //                self.setBackgroundColor((self.colorType?.color.colorWithAlphaComponent(self.opacity))!, forState: .Normal)
+    //                }, completion: { (Bool) in
+    //            })
+    //        }
+    //    }
+    
+    func putColor(){
+        self.setTitleColor(self.titleLabel?.colorType?.color, forState: .Normal)
+    }
 }

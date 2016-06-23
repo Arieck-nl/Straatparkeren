@@ -24,7 +24,10 @@ class SPTabbar: UIView {
                 frame.width,
                 frame.height
             ))
-        background.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
+        
+        self.colorType = .BACKGROUND
+        self.opacity = S.OPACITY.DARK
+
         self.addSubview(background)
         
         // Settings button
@@ -61,5 +64,6 @@ class SPTabbar: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
 
 }

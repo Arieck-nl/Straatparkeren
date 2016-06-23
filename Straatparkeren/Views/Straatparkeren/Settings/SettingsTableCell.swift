@@ -19,10 +19,6 @@ class SettingsTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
         
-        let background = UIView()
-        background.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.XLIGHT)
-        self.selectedBackgroundView = background
-        
         titleLabel = UILabel(
             x: D.SPACING.REGULAR,
             y: D.SPACING.REGULAR,
@@ -30,7 +26,7 @@ class SettingsTableCell: UITableViewCell {
             h: 100,
             fontSize: D.FONT.XXXLARGE
         )
-        titleLabel.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        titleLabel.colorType = .TEXT
         self.addSubview(titleLabel)
         
         subtitleLabel = UILabel(
@@ -40,7 +36,9 @@ class SettingsTableCell: UITableViewCell {
             h: 100,
             fontSize: D.FONT.XLARGE
         )
-        subtitleLabel.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+        
+        subtitleLabel.colorType = .TEXT
+        subtitleLabel.opacity = S.OPACITY.DARK
         subtitleLabel.numberOfLines = 0
         subtitleLabel.lineBreakMode = .ByWordWrapping
         
@@ -52,8 +50,8 @@ class SettingsTableCell: UITableViewCell {
             w: D.SETTINGS.SWITCH_HEIGHT,
             h: D.SETTINGS.SWITCH_HEIGHT
             ))
-        switchView.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
-        switchView.thumbTintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        switchView.colorType = .SWITCH
+        switchView.putColor()
         switchView.transform = CGAffineTransformMakeScale(1.5, 1.5)
         
         self.addSubview(switchView)
@@ -67,6 +65,7 @@ class SettingsTableCell: UITableViewCell {
             h: (D.SETTINGS.SEGMENTED_HEIGHT * 2)
             ))
         
+        self.resetColor()
         self.addSubview(segmentedView)
         
     }
@@ -108,11 +107,5 @@ class SettingsTableCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func resetColors(){
-        titleLabel?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
-        self.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.DARK)
-        
     }
 }

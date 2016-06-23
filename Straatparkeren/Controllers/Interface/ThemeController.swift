@@ -24,6 +24,19 @@ protocol ThemeProtocol{
 public enum THEME : Int {
     case DAY, NIGHT
     
+    func getColorForType(type : COLOR_TYPE) -> UIColor{
+        switch type {
+        case .TEXT:
+            return self.TEXT
+        case .BACKGROUND:
+            return self.BACKGROUND
+        case .BUTTON:
+            return self.BUTTON
+        case .SWITCH:
+            return self.SWITCH
+        }
+    }
+    
     var TEXT: UIColor {
         switch self {
         case .DAY:
@@ -39,6 +52,15 @@ public enum THEME : Int {
             return C.LIGHT
         case .NIGHT:
             return C.DARK
+        }
+    }
+    
+    var SWITCH: UIColor {
+        switch self {
+        case .DAY:
+            return C.DARK
+        case .NIGHT:
+            return C.LIGHT
         }
     }
     
@@ -75,29 +97,29 @@ class ThemeController: NSObject {
     var camera : Camera!
     
     func start(){
-//        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
+        //        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
         
         /*/// TODO: Remove this and change toggle theme to set theme
-        renderView = RenderView(superView: self.view)
-        self.view.addSubview(renderView)
-        let filter = AverageLuminanceExtractor()
-        filter.extractedLuminanceCallback = {luminance in
-            print(luminance)
-        }
-        
-        do {
-            camera = try Camera(sessionPreset: AVCaptureSessionPreset640x480, location: .FrontFacing)
-            camera --> filter --> renderView
-            
-            while (true) {
-                camera.startCapture()
-                
-                
-            }
-        } catch {
-            fatalError("Could not initialize rendering pipeline: \(error)")
-        }
-        /// */
+         renderView = RenderView(superView: self.view)
+         self.view.addSubview(renderView)
+         let filter = AverageLuminanceExtractor()
+         filter.extractedLuminanceCallback = {luminance in
+         print(luminance)
+         }
+         
+         do {
+         camera = try Camera(sessionPreset: AVCaptureSessionPreset640x480, location: .FrontFacing)
+         camera --> filter --> renderView
+         
+         while (true) {
+         camera.startCapture()
+         
+         
+         }
+         } catch {
+         fatalError("Could not initialize rendering pipeline: \(error)")
+         }
+         /// */
         
         
     }
@@ -115,7 +137,6 @@ class ThemeController: NSObject {
         DefaultsController.sharedInstance.setTheme(theme)
         
         //callout to all setDay / Night methods
-        print(theme.notificationKey)
         NSNotificationCenter.defaultCenter().postNotificationName(theme.notificationKey, object: self)
         
     }

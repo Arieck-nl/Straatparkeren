@@ -122,6 +122,7 @@ public struct ANI{
     public static let NOTIFICATION_DISMISS = 5.0
     
     public struct DUR{
+        public static let GRADUALLY = 3.0
         public static let REGULAR = 0.5
         public static let FAST = 0.3
     }

@@ -21,7 +21,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     var currentSegmentedValues      : [Double] = []
     
     override func viewDidLoad() {
-        self.view.backgroundColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND.colorWithAlphaComponent(S.OPACITY.XDARK)
+        self.view.colorType = .BACKGROUND
+        self.view.opacity = S.OPACITY.XDARK
         
         // Back button
         backBtn = SPNavButtonView(frame: CGRectMake(
@@ -33,6 +34,9 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         backBtn.addTapGesture { (UITapGestureRecognizer) in
             self.navigationController?.popViewControllerAnimated(true)
         }
+        backBtn.colorType = nil
+        backBtn.btnIcon?.colorType = .BUTTON
+        backBtn.btnText?.colorType = .BUTTON
         self.view.addSubview(backBtn)
         
         // Table view
@@ -57,7 +61,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             h: D.BTN.HEIGHT.REGULAR
             ))
         upBtn.setImage(UIImage(named: "UpButton")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        upBtn.imageView?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        upBtn.imageView!.colorType = .BUTTON
         upBtn.addTapGesture { (UITapGestureRecognizer) in
             var offset = CGPoint(
                 x: self.settingsTable.contentOffset.x,
@@ -82,7 +86,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             h: D.BTN.HEIGHT.REGULAR
             ))
         downBtn.setImage(UIImage(named: "DownButton")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        downBtn.imageView?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        downBtn.imageView!.colorType = .BUTTON
         downBtn.addTapGesture { (UITapGestureRecognizer) in
             
             var offset = CGPoint(
@@ -99,6 +103,9 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             self.settingsTable.setContentOffset(offset, animated: true)
         }
         self.view.addSubview(downBtn)
+        super.viewDidLoad()
+        self.setCustomToolbarHidden(true)
+        self.view.resetColor()
         
         addSettings()
         
@@ -159,6 +166,16 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.reloadData()
         settingsTable.resizeToFitHeight()
         
+    }
+    
+    override func setDayMode(){
+        self.view.resetColor()
+        settingsTable.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+    }
+    
+    override func setNightMode(){
+        self.view.resetColor()
+        settingsTable.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
     }
     
     /** Selector functions */

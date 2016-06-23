@@ -32,7 +32,7 @@ class SPNavButtonView: UIView {
                 ))
         }
         btnIcon?.image = image.imageWithRenderingMode(.AlwaysTemplate)
-        btnIcon?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        btnIcon?.colorType = .TEXT
         btnIcon?.contentMode = UIViewContentMode.ScaleAspectFit
         
         if iconLeft {btnIcon?.resizeToFitWidth()}
@@ -56,7 +56,7 @@ class SPNavButtonView: UIView {
         }
         btnText!.text = text
         iconLeft ? btnText?.fitWidth() : btnText?.fitHeight()
-        btnText?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
+        btnText!.colorType = .TEXT
         btnText!.textAlignment = iconLeft ? .Left : .Center
         
         self.addSubview(btnText!)
@@ -64,13 +64,13 @@ class SPNavButtonView: UIView {
         
     }
     
-    func resetColors(){
-        btnIcon?.tintColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
-        btnText?.textColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func resetColor() {
+        super.resetColor()
+        print("got here")
     }
     
 }
