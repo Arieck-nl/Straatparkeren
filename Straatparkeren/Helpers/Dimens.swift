@@ -22,6 +22,7 @@ public struct D{
         public struct HEIGHT{
             public static let REGULAR           : CGFloat = 64.0
             public static let LARGE             : CGFloat = 80.0
+            public static let XLARGE            : CGFloat = 96.0
         }
     }
     

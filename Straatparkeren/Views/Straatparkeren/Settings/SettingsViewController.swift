@@ -72,9 +72,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
                 offset = CGPointZero
             }
             
-            print("index: \(self.settingsTable.indexPathForRowAtPoint(offset)?.row) max: \(0))")
-            print(self.settingsTable.indexPathForRowAtPoint(offset)?.row <= 0)
-            
             self.settingsTable.setContentOffset(offset, animated: true)
         }
         self.view.addSubview(upBtn)
@@ -93,8 +90,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
                 x: self.settingsTable.contentOffset.x,
                 y: self.settingsTable.contentOffset.y + D.SETTINGS.SCROLL_OFFSET
             )
-            
-            print("index: \(self.settingsTable.indexPathForRowAtPoint(offset)?.row) max: \(self.settingsTable.numberOfRowsInSection(0))")
             
             if self.settingsTable.indexPathForRowAtPoint(offset)?.row >= self.settingsTable.numberOfRowsInSection(0) - 3{
                 offset = self.settingsTable.contentOffset

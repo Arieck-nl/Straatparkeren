@@ -27,6 +27,7 @@
 		1D3B77C01D0494F700669999 /* DefaultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3B77BF1D0494F700669999 /* DefaultsController.swift */; };
 		1D3B77C21D04C75000669999 /* NSMapItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3B77C11D04C75000669999 /* NSMapItem.swift */; };
 		1D413FEE1D05B4EE00BABB4E /* SPMultiSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D413FED1D05B4EE00BABB4E /* SPMultiSegmentedView.swift */; };
+		1D631E741D1BECCB00C98B99 /* SPSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D631E731D1BECCB00C98B99 /* SPSegmentedControl.swift */; };
 		1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */; };
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
 		1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; };
@@ -115,6 +116,7 @@
 		1D3B77BF1D0494F700669999 /* DefaultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultsController.swift; path = Defaults/DefaultsController.swift; sourceTree = "<group>"; };
 		1D3B77C11D04C75000669999 /* NSMapItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMapItem.swift; sourceTree = "<group>"; };
 		1D413FED1D05B4EE00BABB4E /* SPMultiSegmentedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPMultiSegmentedView.swift; sourceTree = "<group>"; };
+		1D631E731D1BECCB00C98B99 /* SPSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPSegmentedControl.swift; sourceTree = "<group>"; };
 		1D669F191CFDC1BF00C63A53 /* StraatparkerenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StraatparkerenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraatparkerenTests.swift; sourceTree = "<group>"; };
 		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				1D11D7D71D0434C5005D1E9B /* SPTabbar.swift */,
 				1D413FED1D05B4EE00BABB4E /* SPMultiSegmentedView.swift */,
 				1D86712D1D06007D00209281 /* SPNotificationView.swift */,
+				1D631E731D1BECCB00C98B99 /* SPSegmentedControl.swift */,
 			);
 			path = Custom;
 			sourceTree = "<group>";
@@ -612,6 +615,7 @@
 				1DEA935C1CE0ABBD003917CE /* SpringboardViewController.swift in Sources */,
 				1D3B77C01D0494F700669999 /* DefaultsController.swift in Sources */,
 				1DD505EC1CE31B1800BC56A2 /* Colors.swift in Sources */,
+				1D631E741D1BECCB00C98B99 /* SPSegmentedControl.swift in Sources */,
 				1DEA933A1CE0A801003917CE /* AppDelegate.swift in Sources */,
 				1DB2C0A21CEEF8A100FB5BCC /* SPNavButtonView.swift in Sources */,
 				1D182D531CFB88CA003757A5 /* HereAPIController.swift in Sources */,
