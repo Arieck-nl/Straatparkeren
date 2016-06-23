@@ -68,9 +68,4 @@ class SPNavButtonView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func resetColor() {
-        super.resetColor()
-        print("got here")
-    }
-    
 }

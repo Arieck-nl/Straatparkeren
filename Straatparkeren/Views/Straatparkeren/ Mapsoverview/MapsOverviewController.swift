@@ -40,7 +40,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     let locationImg             : UIImage = UIImage(named: "CurrentLocationIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     let destinationImg          : UIImage = UIImage(named: "LocationIcon")!.imageWithRenderingMode(.AlwaysTemplate)
     var tableView               : UITableView!
-    var infoBtn                 : UIImageView!
     var infoView                : SPOverlayView?
     var destinationView         : UIImageView!
     var tabbar                  : SPTabbar!
@@ -142,20 +141,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         tabbar.searchBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
         tabbar.favoritesBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleFavoritesList))
         self.view.addSubview(tabbar)
-        
-        let infoImg = UIImage(named: "InfoIconReverse")!.imageWithRenderingMode(.AlwaysTemplate)
-        self.infoBtn = UIImageView(
-            x: D.SCREEN_WIDTH - D.BTN.HEIGHT.REGULAR - D.SPACING.REGULAR,
-            y: D.SCREEN_HEIGHT - D.BTN.HEIGHT.REGULAR - D.NAVBAR.HEIGHT - D.SPACING.REGULAR,
-            w: D.BTN.HEIGHT.REGULAR,
-            h: D.BTN.HEIGHT.REGULAR,
-            image: infoImg)
-        self.infoBtn.tintColor = DefaultsController.sharedInstance.getCurrentTheme().BUTTON.colorWithAlphaComponent(S.OPACITY.DARK)
-        self.view.addSubview(self.infoBtn)
-        self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
-            self.showInfoView()
-        }
-        
         setSearchBar()
         
         self.SPNavBar?.hidden = true
@@ -163,6 +148,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         // Only show explanation of app on first start
         if  !defaultsCntrl.isFirstTimeUse() {
             defaultsCntrl.setFirstTimeUse(true)
+            showInfoView()
             setFirstTimeOverlay()
         }
         
@@ -176,6 +162,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             w: D.SCREEN_WIDTH,
             h: D.SCREEN_HEIGHT
             ), text: STR.disclaimer_text, btnText: STR.disclaimer_btn, iconImg : UIImage(named: "WarningIcon")!)
+        disclaimer.opacity = S.OPACITY.XXDARK
+        disclaimer.resetColor(false)
         self.view.addSubview(disclaimer)
     }
     

@@ -14,6 +14,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     var upBtn                       : UIButton!
     var downBtn                     : UIButton!
     var settingsTable               : UITableView!
+    var infoView                    : SPOverlayView!
+    var infoBtn                     : UIView!
     var defaults                    : DefaultsController = DefaultsController.sharedInstance
     var interfaceCntrl              : InterfaceModeController = InterfaceModeController.sharedInstance
     
@@ -98,6 +100,20 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             self.settingsTable.setContentOffset(offset, animated: true)
         }
         self.view.addSubview(downBtn)
+        
+        let infoImg = UIImage(named: "InfoIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+        self.infoBtn = UIImageView(
+            x: D.SCREEN_WIDTH - D.BTN.HEIGHT.REGULAR - D.SPACING.XLARGE,
+            y: D.SPACING.XLARGE,
+            w: D.BTN.HEIGHT.REGULAR,
+            h: D.BTN.HEIGHT.REGULAR,
+            image: infoImg)
+        self.infoBtn.colorType = .BUTTON
+        self.view.addSubview(self.infoBtn)
+        self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
+            self.showInfoView()
+        }
+        
         super.viewDidLoad()
         self.setCustomToolbarHidden(true)
         self.view.resetColor()
@@ -171,6 +187,30 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     override func setNightMode(){
         self.view.resetColor()
         settingsTable.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
+    }
+    
+    func showInfoView(){
+        if(self.infoView != nil){
+            self.infoView?.removeFromSuperview()
+            self.infoView = nil
+        }
+        self.infoView = SPOverlayView(frame: CGRect(
+            x: D.SCREEN_WIDTH * 0.125,
+            y: D.SCREEN_HEIGHT * 0.15,
+            w: D.SCREEN_WIDTH * 0.75,
+            h: D.SCREEN_HEIGHT * 0.7
+            ), text: STR.explanation_text, btnText: STR.explanation_btn)
+        self.infoView!.layer.cornerRadius = D.RADIUS.REGULAR
+        self.infoView!.hidden = true
+        self.infoView.iconView.colorType = nil
+        self.infoView.iconView.tintColor = C.TEXT
+        self.infoView.textLabel.colorType = nil
+        self.infoView.textLabel.textColor = C.TEXT
+        self.infoView.colorType = .HIGH_CONTRAST
+        self.infoView.opacity = S.OPACITY.XXDARK
+        self.infoView.resetColor(false)
+        self.view.addSubview(self.infoView!)
+        self.infoView!.show()
     }
     
     /** Selector functions */

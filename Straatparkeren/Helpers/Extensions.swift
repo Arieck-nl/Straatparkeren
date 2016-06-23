@@ -11,7 +11,7 @@ import UIKit
 
 
 public enum COLOR_TYPE : Int{
-    case TEXT, BACKGROUND, BUTTON, SWITCH
+    case TEXT, BACKGROUND, BUTTON, SWITCH, HIGH_CONTRAST
     
     var color: UIColor {
         let theme = DefaultsController.sharedInstance.getCurrentTheme()
@@ -87,17 +87,18 @@ extension UIView{
     }
     
     
-    func resetColor(){
-        self.setColor()
+    func resetColor(animated : Bool = true){
+        self.setColor(animated)
         for subview in self.subviews{
-            subview.resetColor()
+            subview.resetColor(animated)
         }
     }
     
-    func setColor(){
+    func setColor(animated : Bool = true){
         if(colorType != nil){
+            let duration = animated ? ANI.DUR.GRADUALLY : 0
             self.animate(
-                duration: ANI.DUR.GRADUALLY,
+                duration: duration,
                 animations: {
                     self.backgroundColor = self.colorType?.color.colorWithAlphaComponent(self.opacity)
                     self.tintColor = self.colorType?.color.colorWithAlphaComponent(self.opacity)
@@ -110,7 +111,7 @@ extension UIView{
 }
 
 extension UITextView{
-    override func setColor(){
+    override func setColor(animated : Bool = true){
         if(colorType != nil){
             self.animate(
                 duration: ANI.DUR.GRADUALLY,
@@ -125,7 +126,7 @@ extension UITextView{
 }
 
 extension UISwitch{
-    override func setColor(){
+    override func setColor(animated : Bool = true){
         if (colorType != nil) && (self.tintColor != self.colorType?.color) {
             UIView.transitionWithView(self, duration: (ANI.DUR.GRADUALLY / 2), options: .TransitionCrossDissolve, animations: {
                 self.alpha = 0
@@ -148,7 +149,7 @@ extension UISwitch{
 }
 
 extension UIImageView{
-    override func setColor(){
+    override func setColor(animated : Bool = true){
         if(colorType != nil){
             self.animate(
                 duration: ANI.DUR.GRADUALLY,
@@ -163,7 +164,7 @@ extension UIImageView{
 }
 
 extension UILabel{
-    override func setColor(){
+    override func setColor(animated : Bool = true){
         if(colorType != nil){
             UIView.transitionWithView(self, duration: ANI.DUR.GRADUALLY, options: .TransitionCrossDissolve, animations: {
                 self.textColor = self.colorType?.color

@@ -18,6 +18,7 @@ public struct S{
         public static let REGULAR : CGFloat = 0.5
         public static let DARK : CGFloat = 0.75
         public static let XDARK : CGFloat = 0.85
+        public static let XXDARK : CGFloat = 0.95
     }
 }
 
@@ -92,6 +93,7 @@ public struct STR{
     public static let explanation_btn = "Gereed"
     public static let disclaimer_text = "Het gebruik van deze applicatie is niet toegestaan tijdens het rijden.  Ieder gebruik van de applicatie is geheel op eigen risico. De makers kunnen niet aansprakelijk worden gesteld."
     public static let disclaimer_btn = "Akkoord"
+    public static let info_btn = "Info"
     public static let settings_text = "Instellingen"
     public static let favorites_text = "Favorieten"
     
@@ -106,6 +108,7 @@ public struct STR{
     public static let settings_location_segmented_label = "KM afstand"
     public static let settings_destination_title = "Toon meldingen"
     public static let settings_destination_subtitle = "Toon meldingen als er onverwacht veranderingen zijn in de parkeerbezetting rondom uw bestemming."
+    
     
     public static let navbar_favorite_btn = "Voeg toe"
     public static let navbar_favorited_btn = "Toegevoegd!"

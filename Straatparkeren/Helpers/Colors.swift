@@ -34,6 +34,7 @@ public struct C{
     }
     
     public static let LIGHT = UIColorFromRGB("FFFFFF")
+    public static let SEMI = UIColorFromRGB("4a4a4a")
     public static let DARK = UIColorFromRGB("000000")
     
     public struct BUTTON{

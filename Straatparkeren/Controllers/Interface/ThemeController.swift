@@ -34,6 +34,8 @@ public enum THEME : Int {
             return self.BUTTON
         case .SWITCH:
             return self.SWITCH
+        case .HIGH_CONTRAST:
+            return self.HIGH_CONTRAST
         }
     }
     
@@ -66,6 +68,10 @@ public enum THEME : Int {
     
     var BUTTON: UIColor {
         return C.BUTTON.DARK
+    }
+    
+    var HIGH_CONTRAST: UIColor {
+        return C.SEMI
     }
     
     var KEYBOARD : UIKeyboardAppearance{
