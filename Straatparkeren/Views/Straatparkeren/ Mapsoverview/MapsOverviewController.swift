@@ -12,7 +12,7 @@ import MapKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     //Number of parking availabilities to render (demo only)
-    static let NPA              : Int = 3
+    static let NPA              : Int = 0
     
     var map                     : MKMapView!
     var locationManager         : CLLocationManager!
@@ -54,7 +54,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.delegate = self
         map.showsPointsOfInterest = false
         map.showsUserLocation = true
-        map.setUserTrackingMode(.FollowWithHeading, animated: true)
         map.clipsToBounds = true
         map.userInteractionEnabled = true
         map.scrollEnabled = true
@@ -71,6 +70,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         view.addSubview(map)
         self.view.bringSubviewToFront(map)
+        map.setUserTrackingMode(.FollowWithHeading, animated: true)
         
         self.destinationView = UIImageView(
             x: (D.SCREEN_WIDTH - D.ICON.HEIGHT.LARGE) / 2,
@@ -359,6 +359,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }else if value == STR.home_btn_location{
             self.destinationView.hide({ (Bool) in
             })
+            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
             self.isCurrentLocation = true
             location = self.map.userLocation.coordinate
             self.map.addAnnotations(self.currentAnnotations)
@@ -444,6 +445,25 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         if !started{
             generateParkingAvailabilities(location!.coordinate)
+        }
+
+    }
+    
+    func mapView(mapView: MKMapView, didChangeUserTrackingMode mode: MKUserTrackingMode, animated: Bool) {
+        var newTrackingMode : MKUserTrackingMode = .None
+        
+        if CLLocationManager.locationServicesEnabled(){
+            if CLLocationManager.headingAvailable(){
+                newTrackingMode = .FollowWithHeading
+            }else{
+                newTrackingMode = .Follow
+            }
+        }
+        
+        if mode != newTrackingMode && self.isCurrentLocation {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.map.setUserTrackingMode(newTrackingMode, animated: false)
+            })
         }
     }
     
@@ -622,11 +642,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     //check if map interaction ended to restart collection of parking availabilities
     func didTapMap(gesture : UIGestureRecognizer){
+        self.isCurrentLocation = false
         if gesture.state == .Began{
             self.tableView.hide({_ in})
             self.destinationView.show()
-            self.isCurrentLocation = false
-            self.locationSegment.setSelectedFor(STR.home_btn_destination)
+            self.locationSegment.setSelectedFor(STR.home_btn_destination, trigger: false)
             self.locationSegment.show()
             setHomeBtn()
         } else if(gesture.state == .Ended){

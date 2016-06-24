@@ -50,14 +50,16 @@ class SPSegmentedControl: UIView {
         
     }
     
-    func setSelectedFor(key : String){
+    func setSelectedFor(key : String, trigger : Bool = true){
         for subview in self.subviews{
             if subview.isKindOfClass(SPSegmentButton){
                 let segment = subview as! SPSegmentButton
                 if segment.btnText?.text == key{
                     segment.selected = true
                     self.currentValue = key
-                    self.onValueChanged!(key)
+                    if trigger{
+                        self.onValueChanged!(key)
+                    }
                 }else{
                     segment.selected = false
                 }

@@ -52,7 +52,7 @@ class SettingsTableCell: UITableViewCell {
             ))
         switchView.colorType = .SWITCH
         switchView.putColor()
-        switchView.transform = CGAffineTransformMakeScale(1.5, 1.5)
+        switchView.transform = CGAffineTransformMakeScale(D.ELEMENT.MULTIPLIER, D.ELEMENT.MULTIPLIER)
         
         self.addSubview(switchView)
         
