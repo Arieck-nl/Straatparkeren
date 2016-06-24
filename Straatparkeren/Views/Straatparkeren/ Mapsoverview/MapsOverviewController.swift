@@ -19,6 +19,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var started                 : Bool = false
     var autocompleteTimer       : NSTimer?
     var regionDidChangeTimer    : NSTimer?
+    var trackingModeTimer       : NSTimer?
     var mapItems                : [NSMapItem] = []
     var currentResultLocation   : NSMapItem?
     var isCurrentLocation       : Bool = true
@@ -70,7 +71,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         view.addSubview(map)
         self.view.bringSubviewToFront(map)
-        map.setUserTrackingMode(.FollowWithHeading, animated: true)
+        map.setUserTrackingMode(.FollowWithHeading, animated: false)
         
         self.destinationView = UIImageView(
             x: (D.SCREEN_WIDTH - D.ICON.HEIGHT.LARGE) / 2,
@@ -359,8 +360,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }else if value == STR.home_btn_location{
             self.destinationView.hide({ (Bool) in
             })
-            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
             self.isCurrentLocation = true
+            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
             location = self.map.userLocation.coordinate
             self.map.addAnnotations(self.currentAnnotations)
             self.destinationView.show()
@@ -440,31 +441,33 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         if self.isCurrentLocation{
-            self.map.setRegion(region, animated: true)
+            self.map.setRegion(region, animated: false)
+            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
         }
         
         if !started{
             generateParkingAvailabilities(location!.coordinate)
         }
-
+        
     }
     
     func mapView(mapView: MKMapView, didChangeUserTrackingMode mode: MKUserTrackingMode, animated: Bool) {
-        var newTrackingMode : MKUserTrackingMode = .None
         
         if CLLocationManager.locationServicesEnabled(){
             if CLLocationManager.headingAvailable(){
-                newTrackingMode = .FollowWithHeading
-            }else{
-                newTrackingMode = .Follow
+                if mode != .FollowWithHeading && self.isCurrentLocation {
+                    trackingModeTimer?.invalidate()
+                    trackingModeTimer = nil
+                    trackingModeTimer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(MapsOverviewController.setUserTrackingMode), userInfo: nil, repeats: false)
+                }
             }
         }
-        
-        if mode != newTrackingMode && self.isCurrentLocation {
-            dispatch_async(dispatch_get_main_queue(), {
-                self.map.setUserTrackingMode(newTrackingMode, animated: false)
-            })
-        }
+    }
+    
+    internal func setUserTrackingMode(){
+        dispatch_async(dispatch_get_main_queue(), {
+            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
+        })
     }
     
     func generateParkingAvailabilitiesForCenter(){
