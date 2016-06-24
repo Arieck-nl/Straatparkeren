@@ -434,6 +434,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
+    func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        <#code#>
+    }
+    
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
         
@@ -442,7 +446,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         if self.isCurrentLocation{
             self.map.setRegion(region, animated: false)
-            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
         }
         
         if !started{
