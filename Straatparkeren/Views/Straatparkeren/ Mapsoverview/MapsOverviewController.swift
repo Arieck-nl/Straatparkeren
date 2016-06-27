@@ -33,6 +33,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var favoritesFrame          : CGRect!
     var favoritesInTable        : Bool = false
     var mapCamera               : MKMapCamera = MKMapCamera()
+    var currentReverseGeo       : NSMapItem?
     
     // Views
     var searchBar               : SPSearchBar?
@@ -49,6 +50,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var tabbar                  : SPTabbar!
     var locationSegment         : SPSegmentedControl!
     var userAnnotation          : MKAnnotationView?
+    var confirmBtn              : UILabel!
     
     override func viewDidLoad() {
         
@@ -150,8 +152,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         tabbar.favoritesBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleFavoritesList))
         self.view.addSubview(tabbar)
         setSearchBar()
+        setConfirmBtn()
         
         self.SPNavBar?.hidden = true
+        self.setCustomToolbarHidden(true)
         
         // Only show explanation of app on first start
         if  !defaultsCntrl.isFirstTimeUse() {
@@ -250,6 +254,34 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.showmapItemsFor((searchBar?.text)!)
     }
     
+    func setConfirmBtn(){
+        self.confirmBtn = UILabel()
+        self.confirmBtn?.textAlignment = .Center
+        self.confirmBtn?.text = STR.confirm_btn
+        self.confirmBtn!.font = self.confirmBtn!.font!.fontWithSize(D.FONT.XXLARGE)
+        self.confirmBtn?.fitWidth()
+        self.confirmBtn!.frame = CGRect(
+            x: self.destinationView.frame.x + self.destinationView.frame.width + D.SPACING.SMALL,
+            y: self.destinationView.frame.y,
+            w: self.confirmBtn!.frame.width + (D.SPACING.REGULAR * 2),
+            h: D.FONT.XXLARGE + (D.SPACING.REGULAR * 2))
+        self.confirmBtn?.textColor = C.LIGHT
+        self.confirmBtn?.layer.cornerRadius = D.RADIUS.SMALL
+        self.confirmBtn?.clipsToBounds = true
+        self.confirmBtn?.backgroundColor = C.BUTTON.DARK.colorWithAlphaComponent(S.OPACITY.XDARK)
+        self.confirmBtn?.hidden = true
+        self.confirmBtn.addTapGesture { _ in
+            self.saveCurrentLocationAsDestination()
+        }
+        self.view.addSubview(self.confirmBtn!)
+    }
+    
+    func showConfirmBtn(){
+        self.confirmBtn.show()
+        generateParkingAvailabilitiesForCenter()
+        
+    }
+    
     func toggleFavoritesList(){
         if self.tableView.hidden{
             showFavoritesList()
@@ -271,6 +303,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         self.resizeTableHeight()
         self.tableView.frame = self.tableView.frame.offsetBy(dx: 0, dy: -self.tableView.contentSize.height)
+        self.view.bringSubviewToFront(self.tableView)
         self.tableView.show()
     }
     
@@ -305,14 +338,21 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         navbarBtn?.btnText?.fitWidth()
     }
     
+    func addDestinationToFavorites(){
+        if self.currentReverseGeo != nil{
+            DefaultsController.sharedInstance.addFavorite(self.currentReverseGeo!)
+        }
+        navbarBtn?.btnIcon?.tintColor = C.FAVORITED
+        navbarBtn?.btnText?.textColor = C.FAVORITED
+        navbarBtn?.btnText?.text = STR.navbar_favorited_btn
+        navbarBtn?.btnText?.fitWidth()
+    }
+    
     func hideSearchBar(){
         //hide
         searchBar!.hidden = true
         searchBar!.text = ""
-        navbarBtn?.btnIcon?.image = favoriteImg
-        navbarBtn?.btnText!.text = STR.navbar_favorite_btn
-        navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.addSearchToFavorites))
-        navbarBtn?.hidden = false
+        setFavoriteForNavBtn()
         setHomeBtn()
         self.SPNavBar?.hidden = true
         mapItems = []
@@ -320,6 +360,19 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         searchBar?.resignFirstResponder()
         resizeTableHeight()
         self.tableView.hidden = true
+    }
+    
+    func setFavoriteForNavBtn(fromGeocoding : Bool = false){
+        navbarBtn?.btnIcon?.image = favoriteImg
+        navbarBtn?.btnText!.text = STR.navbar_favorite_btn
+        navbarBtn?.btnText?.textAlignment = .Center
+        navbarBtn?.resetColor(false)
+        if fromGeocoding{
+            navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.addDestinationToFavorites))
+        }else{
+            navbarBtn!.addTapGesture(target: self, action: #selector(MapsOverviewController.addSearchToFavorites))
+        }
+        navbarBtn?.hidden = false
     }
     
     func toggleSearchBar(){
@@ -372,6 +425,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.destinationView.show()
         }else if value == STR.home_btn_location{
             self.destinationView.hide({ (Bool) in
+            })
+            self.confirmBtn.hide({ (Bool) in
             })
             self.isCurrentLocation = true
             location = self.map.userLocation.coordinate
@@ -440,7 +495,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         // Rotate user annotation according to heading
         let transform : CGAffineTransform  = CGAffineTransformMakeRotation(CGFloat(GLKMathDegreesToRadians(Float(direction))))
-        self.mapCamera.heading = newHeading.magneticHeading
+        self.mapCamera.heading = newHeading.trueHeading
         if self.isCurrentLocation{
             map.setCamera(self.mapCamera, animated: false)
         }
@@ -474,7 +529,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
         self.mapCamera.centerCoordinate = (location?.coordinate)!
-
+        
         if self.isCurrentLocation{
             map.setCamera(self.mapCamera, animated: false)
         }
@@ -487,7 +542,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func generateParkingAvailabilitiesForCenter(){
-        defaultsCntrl.setDestination(NSMapItem(title: "", lat: self.map.centerCoordinate.latitude.toString, long: self.map.centerCoordinate.longitude.toString))
         self.generateParkingAvailabilities(nil)
     }
     
@@ -621,6 +675,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let searchResult = mapItems[indexPath.row]
         self.destinationView.show()
+        self.confirmBtn.hide({_ in})
         
         if !favoritesInTable{
             toggleSearchBar()
@@ -667,20 +722,50 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if gesture.state == .Began{
             self.tableView.hide({_ in})
             self.destinationView.show()
+            self.confirmBtn.hide({_ in})
             self.locationSegment.setSelectedFor(STR.home_btn_destination, trigger: false)
-            self.locationSegment.show()
+            self.locationSegment.hide({_ in})
+            self.SPNavBar!.hide({_ in})
+            
             setHomeBtn()
         } else if(gesture.state == .Ended){
             regionDidChangeTimer?.invalidate()
             regionDidChangeTimer = nil
-            regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(MapsOverviewController.saveCurrentLocationAsDestination), userInfo: nil, repeats: false)
+            regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(self.startReverseGeoCoding), userInfo: nil, repeats: false)
             
         }
     }
     
+    func startReverseGeoCoding(){
+        let location = CLLocation(latitude: self.map.centerCoordinate.latitude, longitude: self.map.centerCoordinate.longitude)
+        self.setHomeBtn()
+        self.locationSegment.show()
+        
+        MapSearchController.sharedInstance.reverseGeocodeFor(location) { (mapItem) in
+            self.currentReverseGeo = mapItem
+            self.SPNavBar?.setTitle(mapItem.getTitle())
+            self.setFavoriteForNavBtn(true)
+            self.SPNavBar?.show()
+            self.showConfirmBtn()
+            self.setHomeBtn()
+        }
+    }
+    
     func saveCurrentLocationAsDestination(){
-        generateParkingAvailabilitiesForCenter()
-        defaultsCntrl.setDestination(NSMapItem(title: "", lat: self.map.centerCoordinate.latitude.toString, long: self.map.centerCoordinate.longitude.toString))
+        
+        if self.currentReverseGeo != nil{
+            self.defaultsCntrl.setDestination(self.currentReverseGeo!)
+        }
+        self.confirmBtn.text = STR.confirm_btn_success
+        
+        UIView.transitionWithView(self.confirmBtn, duration: ANI.DUR.REGULAR, options: .TransitionCrossDissolve, animations: {
+            self.confirmBtn.backgroundColor = C.PRIMARY.LIGHT
+            }, completion: { (Bool) in
+                self.confirmBtn.hide({_ in
+                    self.confirmBtn.text = STR.confirm_btn
+                    self.confirmBtn.backgroundColor = C.BUTTON.LIGHT
+                })
+        })
     }
     
     // Allow other gestureRecognizers to also recognize gestures of specific element
@@ -726,7 +811,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     override func setMaximalMode(){
         print("minimal mode map activated")
-        self.setCustomToolbarHidden(false)
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {

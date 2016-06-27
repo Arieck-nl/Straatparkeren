@@ -96,6 +96,8 @@ public struct STR{
     public static let info_btn = "Info"
     public static let settings_text = "Instellingen"
     public static let favorites_text = "Favorieten"
+    public static let confirm_btn = "Bevestig bestemming"
+    public static let confirm_btn_success = "Bevestigd!"
     
     //settings
     public static let settings_safety_title = "Extra veilige modus"

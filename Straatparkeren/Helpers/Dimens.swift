@@ -40,6 +40,7 @@ public struct D{
     
     public struct RADIUS{
             public static let REGULAR           : CGFloat = 16.0 * SCREEN_MULTIPLIER
+            public static let SMALL             : CGFloat = 8.0 * SCREEN_MULTIPLIER
     }
     
     public struct SPACING{

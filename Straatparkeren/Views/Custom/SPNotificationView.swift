@@ -28,13 +28,13 @@ class SPNotificationView: UIView {
             ))
         self.addSubview(self.iconView!)
         
-        self.backgroundColor = C.BACKGROUND
+        self.backgroundColor = C.LIGHT
         titleLabel = UILabel(
             x: self.iconView!.frame.width + self.iconView!.frame.x + D.SPACING.REGULAR,
             y: (frame.height - D.FONT.XXXLARGE) / 2,
             w: frame.width - self.iconView!.frame.width - (D.SPACING.SMALL * 2),
             h: 100, fontSize: D.FONT.XXXLARGE)
-        titleLabel?.textColor = C.TEXT
+        titleLabel?.textColor = C.DARK
         titleLabel?.fitHeight()
         self.addSubview(titleLabel!)
     }
