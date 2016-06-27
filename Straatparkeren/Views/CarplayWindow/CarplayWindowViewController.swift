@@ -12,7 +12,7 @@ class CarplayWindowViewController: UIViewController {
     
     
     // If automatic shutdown is turned on, shutdown after this time of inactivity
-    static let dismissInterval  : Double = 15
+    static var dismissInterval  : Double = 15
     var dismissTimer            : NSTimer?
     
     var carplayControl          : UIView?
@@ -91,6 +91,8 @@ class CarplayWindowViewController: UIViewController {
             LocationDependentController.sharedInstance.sentLocationTrigger(.OPEN, value: "")
         }
         self.window!.addSubview(notificationView)
+        
+        self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(CarplayWindowViewController.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dissmissCurrentVCFromTimer), userInfo: nil, repeats: false)
     }
     
     // Gestures for debugging purposes

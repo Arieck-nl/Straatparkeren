@@ -53,6 +53,11 @@ class DefaultsController : NSObject{
         return shutdown
     }
     
+    func setAutomaticShutdown(value : Bool){
+        defaults.setBool(value, forKey: USER_DEFAULTS.AUTOMATIC_SHUTDOWN)
+        defaults.synchronize()
+    }
+    
     func toggleAutomaticShutdown(){
         let shutdown = isAutomaticShutdownOn()
         defaults.setBool(!shutdown, forKey: USER_DEFAULTS.AUTOMATIC_SHUTDOWN)

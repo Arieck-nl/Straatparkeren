@@ -167,5 +167,57 @@ class StraatparkerenTests: XCTestCase {
         
     }
     
+    // Test if app automatically shuts down if settings gets turned on
+    func testAutomaticShutdown() {
+        
+        let expectation = expectationWithDescription("Expect app to automatically shutdown when settings gets turned on")
+        
+        // preparation
+        class CarPlayMock : CarplayWindowViewController {
+            
+            var firstInnerExpectation : XCTestExpectation?
+            var received : Int = 0
+            
+            var innerExpectation : XCTestExpectation?
+            
+            private override func dismissCurrentVC() {
+                // if received gets called 2 times, first in view did load then in touchesbegan, fullfill
+                if received == 2{
+                    innerExpectation!.fulfill()
+                }
+            }
+            
+            override func dissmissCurrentVCFromTimer() {
+                received += 1
+                super.dissmissCurrentVCFromTimer()
+                DefaultsController.sharedInstance.setAutomaticShutdown(true)
+                self.touchesBegan([], withEvent: nil)
+            }
+            
+        }
+        
+        let currentValue = defaults.isAutomaticShutdownOn()
+        // Start on false
+        defaults.setAutomaticShutdown(false)
+        
+        CarplayWindowViewController.dismissInterval = 0.5
+        let carPlayMock = CarPlayMock()
+        
+        let navigationController = UINavigationController(rootViewController: carPlayMock)
+        navigationController.viewControllers.first?.view
+        
+        carPlayMock.innerExpectation = expectation
+        
+        waitForExpectationsWithTimeout(5.0) { error in
+            if let error = error {
+                XCTFail("waitForExpectationsWithTimeout failed with error: \(error)")
+            }
+            
+            self.defaults.setAutomaticShutdown(currentValue)
+        }
+        
+    }
+    
     
 }
+
