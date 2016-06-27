@@ -10,7 +10,7 @@ import MapKit
 
 /// Monitoring types used for sending out notifications
 public enum MONITORING_TYPE : Int{
-    case ETA, REGION, NOTIFICATION
+    case ETA, REGION, NOTIFICATION, OPEN
 }
 
 class LocationDependentController : NSObject, CLLocationManagerDelegate {
@@ -141,19 +141,6 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
         NSNotificationCenter.defaultCenter().postNotificationName(N.LOCATION_TRIGGER, object: nil, userInfo: userInfo)
         // independent of receiving class, play notification sound
         playNotificationSound()
-        
-    }
-    
-    
-    // used for demonstration puposes only
-    func sentDestinationTrigger(value : AnyObject) {
-        
-        if DefaultsController.sharedInstance.isDestinationNotificationsOn(){
-            let userInfo = ["value" : value]
-            NSNotificationCenter.defaultCenter().postNotificationName(N.DESTINATION_TRIGGER, object: nil, userInfo: userInfo)
-            // independent of receiving class, play notification sound
-            playNotificationSound()
-        }
         
     }
     

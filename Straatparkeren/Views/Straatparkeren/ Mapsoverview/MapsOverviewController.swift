@@ -100,7 +100,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         self.map.setRegion(region, animated: true)
         
         super.viewDidLoad()
-        self.setMaximalMode()
         
         self.favoritesFrame = CGRect(
             x: D.SCREEN_WIDTH / 4,
@@ -154,6 +153,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         
         self.view.resetColor()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setMaximalMode()
     }
     
     func setFirstTimeOverlay(){
@@ -321,10 +325,10 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             navbarBtn?.hidden = false
             self.SPNavBar?.show()
             searchBar!.show()
-            setHomeBtn()
         }else{
             self.hideSearchBar()
         }
+        setHomeBtn()
         tableView.hidden = true
     }
     
@@ -333,8 +337,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if self.SPNavBar == nil{
             return
         }
-        print("\(self.SPNavBar!.hidden) and \(self.searchBar!.hidden)")
-        if (self.SPNavBar!.hidden || self.searchBar!.hidden) || (self.SPNavBar!.hidden && self.searchBar!.hidden){
+        print("spnavbar: \(self.SPNavBar!.hidden) and searchbar \(self.searchBar!.hidden)")
+        print((self.SPNavBar!.hidden || self.searchBar!.hidden) || (self.SPNavBar!.hidden && self.searchBar!.hidden))
+        if self.SPNavBar!.hidden  || (self.SPNavBar!.hidden && self.searchBar!.hidden){
             self.locationSegment?.frame = CGRect(
                 x: 0,
                 y: 0,
@@ -367,11 +372,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.destinationView.show()
         }
         
-        setHomeBtn()
         
         let region = MKCoordinateRegion(center: location, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.SPNavBar?.setTitle("")
         self.hideSearchBar()
+        setHomeBtn()
         self.map.setRegion(region, animated: false)
     }
     
@@ -434,9 +439,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        <#code#>
-    }
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
@@ -458,7 +460,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         if CLLocationManager.locationServicesEnabled(){
             if CLLocationManager.headingAvailable(){
-                if mode != .FollowWithHeading && self.isCurrentLocation {
+                if mode != .FollowWithHeading{
                     trackingModeTimer?.invalidate()
                     trackingModeTimer = nil
                     trackingModeTimer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(MapsOverviewController.setUserTrackingMode), userInfo: nil, repeats: false)
@@ -468,9 +470,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     internal func setUserTrackingMode(){
-        dispatch_async(dispatch_get_main_queue(), {
-            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
-        })
+        if self.isCurrentLocation{
+            dispatch_async(dispatch_get_main_queue(), {
+                self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
+            })
+        }
     }
     
     func generateParkingAvailabilitiesForCenter(){
@@ -615,6 +619,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }else{
             toggleFavoritesList()
         }
+        self.locationSegment.setSelectedFor(STR.home_btn_destination, trigger: false)
         
         if(searchResult.getTitle() != ""){
             
@@ -642,6 +647,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             }
             self.SPNavBar?.hidden = false
             setHomeBtn()
+            self.locationSegment.show()
         }
         
     }

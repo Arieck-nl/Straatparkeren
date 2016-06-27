@@ -68,7 +68,6 @@ class InterfaceModeController {
     
     init(){
         motionMgr.deviceMotionUpdateInterval = 1.0 / UpdateFrequency
-        self.setMode(.MAXIMAL)
     }
     
     // start monitoring accelerometer

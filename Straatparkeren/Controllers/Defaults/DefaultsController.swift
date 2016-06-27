@@ -36,6 +36,11 @@ class DefaultsController : NSObject{
         return safetyMode
     }
     
+    func setSafetyMode(value : Bool){
+        defaults.setBool(value, forKey: USER_DEFAULTS.SAFETY_MODE)
+        defaults.synchronize()
+    }
+    
     func toggleSafetyMode(){
         let safetyMode = isInSafetyMode()
         defaults.setBool(!safetyMode, forKey: USER_DEFAULTS.SAFETY_MODE)

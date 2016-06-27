@@ -27,7 +27,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         createCollectionView()
         
         // Listen to automatically opening of app notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.pushMapsOverviewVC), name: N.LOCATION_TRIGGER, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.openApp), name: N.LOCATION_TRIGGER, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -100,6 +100,20 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
                 UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view!, cache: false)
             })
         }
+    }
+    
+    func openApp(notification: NSNotification){
+        
+        let userInfo : NSDictionary = notification.userInfo!
+        
+        // if monitoring type is open, open app
+        if let type = userInfo["type"] as? Int{
+            let realType = MONITORING_TYPE(rawValue: type)
+            if realType == .OPEN{
+                self.pushMapsOverviewVC()
+            }
+        }
+        
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

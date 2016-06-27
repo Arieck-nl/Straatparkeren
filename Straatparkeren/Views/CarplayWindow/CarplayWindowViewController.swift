@@ -12,7 +12,7 @@ class CarplayWindowViewController: UIViewController {
     
     
     // If automatic shutdown is turned on, shutdown after this time of inactivity
-    static let dismissInterval  : Double = 180
+    static let dismissInterval  : Double = 15
     var dismissTimer            : NSTimer?
     
     var carplayControl          : UIView?
@@ -26,7 +26,7 @@ class CarplayWindowViewController: UIViewController {
         super.viewDidLoad()
         
         // Listen to visible notification calls
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: N.DESTINATION_TRIGGER, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: N.LOCATION_TRIGGER, object: nil)
         
         carplayControl = UIView(frame: CGRect(x: 0, y: 0, w: D.CARPLAY.WIDTH, h: D.SCREEN_HEIGHT))
         carplayControl?.backgroundColor = UIColor.blackColor()
@@ -38,7 +38,7 @@ class CarplayWindowViewController: UIViewController {
         currentTimeLabel?.textAlignment = .Center
         
         currentTimeLabel?.addTapGesture(action: { (UITapGestureRecognizer) in
-            LocationDependentController.sharedInstance.sentDestinationTrigger(STR.notification_default)
+            LocationDependentController.sharedInstance.sentLocationTrigger(.NOTIFICATION, value: STR.notification_default)
         })
         
         updateClock()
@@ -88,7 +88,7 @@ class CarplayWindowViewController: UIViewController {
         
         self.notificationView.addTapGesture { (UITapGestureRecognizer) in
             self.notificationView.internalHide()
-            LocationDependentController.sharedInstance.sentLocationTrigger(.NOTIFICATION, value: "")
+            LocationDependentController.sharedInstance.sentLocationTrigger(.OPEN, value: "")
         }
         self.window!.addSubview(notificationView)
     }
@@ -112,7 +112,7 @@ class CarplayWindowViewController: UIViewController {
                 interfaceController.setMode(.MAXIMAL)
             }
         }
-    
+        
         let themeController = ThemeController.sharedInstance
         
         self.carplayControl!.addSwipeGesture(direction: .Left) { (Swiped) -> () in
@@ -149,10 +149,15 @@ class CarplayWindowViewController: UIViewController {
         
         let userInfo : NSDictionary = notification.userInfo!
         
-        if let title = userInfo["value"] as? String{
-            notificationView.internalShow(title)
+        if let type = userInfo["type"] as? Int{
+            let realType = MONITORING_TYPE(rawValue: type)
+            if realType == .NOTIFICATION{
+                if let title = userInfo["value"] as? String{
+                    notificationView.internalShow(title)
+                }
+                
+            }
         }
-        
         
     }
     
