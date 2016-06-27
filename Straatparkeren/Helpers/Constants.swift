@@ -128,6 +128,7 @@ public struct ANI{
     
     public struct DUR{
         public static let GRADUALLY = 3.0
+        public static let SLOW = 1.5
         public static let REGULAR = 0.5
         public static let FAST = 0.3
     }

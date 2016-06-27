@@ -332,6 +332,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if self.currentResultLocation != nil{
             DefaultsController.sharedInstance.addFavorite(self.currentResultLocation!)
         }
+        removeGestureRecognizers(self.navbarBtn!)
         navbarBtn?.btnIcon?.tintColor = C.FAVORITED
         navbarBtn?.btnText?.textColor = C.FAVORITED
         navbarBtn?.btnText?.text = STR.navbar_favorited_btn
@@ -342,6 +343,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if self.currentReverseGeo != nil{
             DefaultsController.sharedInstance.addFavorite(self.currentReverseGeo!)
         }
+        removeGestureRecognizers(self.navbarBtn!)
         navbarBtn?.btnIcon?.tintColor = C.FAVORITED
         navbarBtn?.btnText?.textColor = C.FAVORITED
         navbarBtn?.btnText?.text = STR.navbar_favorited_btn
@@ -751,19 +753,23 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
     }
     
+    // Use the reverse geocoded location to save as destination
     func saveCurrentLocationAsDestination(){
         
         if self.currentReverseGeo != nil{
             self.defaultsCntrl.setDestination(self.currentReverseGeo!)
         }
-        self.confirmBtn.text = STR.confirm_btn_success
         
         UIView.transitionWithView(self.confirmBtn, duration: ANI.DUR.REGULAR, options: .TransitionCrossDissolve, animations: {
-            self.confirmBtn.backgroundColor = C.PRIMARY.LIGHT
+            self.confirmBtn.text = STR.confirm_btn_success
+            self.confirmBtn.backgroundColor = C.PRIMARY.LIGHT.colorWithAlphaComponent(S.OPACITY.XDARK)
             }, completion: { (Bool) in
-                self.confirmBtn.hide({_ in
-                    self.confirmBtn.text = STR.confirm_btn
-                    self.confirmBtn.backgroundColor = C.BUTTON.LIGHT
+                UIView.transitionWithView(self.confirmBtn, duration: ANI.DUR.REGULAR, options: .TransitionCrossDissolve, animations: {
+                    }, completion: { (Bool) in
+                        self.confirmBtn.hide({_ in
+                            self.confirmBtn.text = STR.confirm_btn
+                            self.confirmBtn.backgroundColor = C.BUTTON.DARK.colorWithAlphaComponent(S.OPACITY.XDARK)
+                        })
                 })
         })
     }
