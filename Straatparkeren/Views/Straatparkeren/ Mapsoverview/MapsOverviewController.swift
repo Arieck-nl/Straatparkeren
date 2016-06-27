@@ -8,11 +8,13 @@
 
 import UIKit
 import MapKit
+import GLKit
 
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     //Number of parking availabilities to render (demo only)
     static let NPA              : Int = 0
+    static let ALTITUDE         : Double = 750.0
     
     var map                     : MKMapView!
     var locationManager         : CLLocationManager!
@@ -30,6 +32,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var searchFrame             : CGRect!
     var favoritesFrame          : CGRect!
     var favoritesInTable        : Bool = false
+    var mapCamera               : MKMapCamera = MKMapCamera()
     
     // Views
     var searchBar               : SPSearchBar?
@@ -45,6 +48,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var destinationView         : UIImageView!
     var tabbar                  : SPTabbar!
     var locationSegment         : SPSegmentedControl!
+    var userAnnotation          : MKAnnotationView?
     
     override func viewDidLoad() {
         
@@ -63,6 +67,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.rotateEnabled = false
         map.multipleTouchEnabled = true
         
+        mapCamera.altitude = MapsOverviewController.ALTITUDE
+        
         let mapTapRecognizer : UIPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.didTapMap))
         mapTapRecognizer.delegate = self
         map.addGestureRecognizer(mapTapRecognizer)
@@ -71,7 +77,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         view.addSubview(map)
         self.view.bringSubviewToFront(map)
-        map.setUserTrackingMode(.FollowWithHeading, animated: false)
         
         self.destinationView = UIImageView(
             x: (D.SCREEN_WIDTH - D.ICON.HEIGHT.LARGE) / 2,
@@ -91,10 +96,13 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.requestAlwaysAuthorization()
             locationManager.startUpdatingLocation()
+            locationManager.startUpdatingHeading()
+            locationManager.headingFilter = 2
+            willRotateToInterfaceOrientation(.LandscapeLeft, duration: 0)
         }
         
         
-        // Init map with location (later override this with user location)
+        // TODO: Init map with location (later override this with user location)
         let center = CLLocationCoordinate2DMake(51.9270289, 4.4598485)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.map.setRegion(region, animated: true)
@@ -366,18 +374,17 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.destinationView.hide({ (Bool) in
             })
             self.isCurrentLocation = true
-            self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
             location = self.map.userLocation.coordinate
             self.map.addAnnotations(self.currentAnnotations)
             self.destinationView.show()
         }
         
         
-        let region = MKCoordinateRegion(center: location, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
         self.SPNavBar?.setTitle("")
         self.hideSearchBar()
         setHomeBtn()
-        self.map.setRegion(region, animated: false)
+        self.mapCamera.centerCoordinate = location
+        self.map.setCamera(self.mapCamera, animated: false)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -393,19 +400,20 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
         if annotation.isKindOfClass(MKUserLocation) {
             let identifier = "UserPin"
-            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+            userAnnotation = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
             
-            if annotationView == nil
+            if userAnnotation == nil
             {
-                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView!.image = UIImage(named: "LocationArrowIcon")?.resizeWithWidth(D.MAP.USER_MARKER_WIDTH)
+                userAnnotation = MKAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                userAnnotation!.image = UIImage(named: "LocationArrowIcon")?.resizeWithWidth(D.MAP.USER_MARKER_WIDTH)
+                userAnnotation?.transform = CGAffineTransformMakeRotation(0.001)
             }
             else
             {
-                annotationView!.annotation = annotation
+                userAnnotation!.annotation = annotation
             }
             
-            return annotationView
+            return userAnnotation
         }
         else{
             let identifier = "LocationPin"
@@ -427,6 +435,29 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         
     }
     
+    func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        let direction = newHeading.trueHeading
+        
+        // Rotate user annotation according to heading
+        let transform : CGAffineTransform  = CGAffineTransformMakeRotation(CGFloat(GLKMathDegreesToRadians(Float(direction))))
+        self.mapCamera.heading = newHeading.magneticHeading
+        if self.isCurrentLocation{
+            map.setCamera(self.mapCamera, animated: false)
+        }
+        
+    }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        switch UIDevice.currentDevice().orientation{
+        case .LandscapeLeft:
+            locationManager.headingOrientation = CLDeviceOrientation.LandscapeLeft
+        case .LandscapeRight:
+            locationManager.headingOrientation = CLDeviceOrientation.LandscapeRight
+        default:
+            locationManager.headingOrientation = CLDeviceOrientation.LandscapeRight
+        }
+    }
+    
     func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         self.map.removeAnnotations(self.map.annotations)
         
@@ -442,39 +473,17 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
-        
-        
-        let center = CLLocationCoordinate2D(latitude: location!.coordinate.latitude, longitude: location!.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+        self.mapCamera.centerCoordinate = (location?.coordinate)!
+
         if self.isCurrentLocation{
-            self.map.setRegion(region, animated: false)
+            map.setCamera(self.mapCamera, animated: false)
         }
+        
         
         if !started{
             generateParkingAvailabilities(location!.coordinate)
         }
         
-    }
-    
-    func mapView(mapView: MKMapView, didChangeUserTrackingMode mode: MKUserTrackingMode, animated: Bool) {
-        
-        if CLLocationManager.locationServicesEnabled(){
-            if CLLocationManager.headingAvailable(){
-                if mode != .FollowWithHeading{
-                    trackingModeTimer?.invalidate()
-                    trackingModeTimer = nil
-                    trackingModeTimer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(MapsOverviewController.setUserTrackingMode), userInfo: nil, repeats: false)
-                }
-            }
-        }
-    }
-    
-    internal func setUserTrackingMode(){
-        if self.isCurrentLocation{
-            dispatch_async(dispatch_get_main_queue(), {
-                self.map.setUserTrackingMode(.FollowWithHeading, animated: false)
-            })
-        }
     }
     
     func generateParkingAvailabilitiesForCenter(){
