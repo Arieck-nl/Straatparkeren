@@ -98,36 +98,46 @@ class ThemeController: NSObject {
     // Singleton instance
     static let sharedInstance = ThemeController()
     
-    var videoCamera : AverageLuminanceExtractor!
-    
-    var camera : Camera!
+    var checkTimer : NSTimer?
+    var brightnessStack : [CGFloat] = []
     
     func start(){
-        //        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(self.toggleTheme), userInfo: nil, repeats: true)
+        self.checkBrightness()
+        self.checkTimer = NSTimer.scheduledTimerWithTimeInterval(DD.BRIGHTNESS_INTERVAL, target: self, selector: #selector(self.checkBrightness), userInfo: nil, repeats: true)
+    }
+    
+    // Check for light intensity
+    // User must have auto-brightness turned
+    internal func checkBrightness(){
+        let theme = DefaultsController.sharedInstance.getCurrentTheme()
+        var newTheme : THEME!
         
-        /*/// TODO: Remove this and change toggle theme to set theme
-         renderView = RenderView(superView: self.view)
-         self.view.addSubview(renderView)
-         let filter = AverageLuminanceExtractor()
-         filter.extractedLuminanceCallback = {luminance in
-         print(luminance)
-         }
-         
-         do {
-         camera = try Camera(sessionPreset: AVCaptureSessionPreset640x480, location: .FrontFacing)
-         camera --> filter --> renderView
-         
-         while (true) {
-         camera.startCapture()
-         
-         
-         }
-         } catch {
-         fatalError("Could not initialize rendering pipeline: \(error)")
-         }
-         /// */
+        let brightness = UIScreen.mainScreen().brightness
+        brightnessStack.append(brightness)
         
+        if brightnessStack.count > DD.BRIGHTNESS_STACK{
+            brightnessStack = Array(brightnessStack[1..<DD.BRIGHTNESS_STACK])
+            
+            // Calculate average of gathered brightness values and check if it exceeds predefined value
+            let average : CGFloat = brightnessStack.reduce(0, combine: +) / CGFloat(brightnessStack.count)
+            
+            if average > DD.BRIGHTNESS_TRIGGER{
+                newTheme = .DAY
+            }else{
+                newTheme = .NIGHT
+            }
+            
+            if theme != newTheme{
+                self.setTheme(newTheme)
+            }
+            
+        }
         
+    }
+    
+    func stop(){
+        self.checkTimer?.invalidate()
+        self.checkTimer = nil
     }
     
     // Switch themes

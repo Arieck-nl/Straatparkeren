@@ -37,6 +37,15 @@ public enum PARKING_STATE : Int {
     
 }
 
+/* DEBUG/DEMO VALUES */
+public struct DD{
+    public static let NPA = 0
+    public static let BRIGHTNESS_TRIGGER : CGFloat = 0.75
+    public static let BRIGHTNESS_INTERVAL = 2.0
+    public static let BRIGHTNESS_STACK = 2 //minimum 2
+    public static let BRIGHTNESS_ON = false
+}
+
 // User defaults keys
 public struct USER_DEFAULTS{
     public static let FIRST_TIME = "FirstTimeUse"

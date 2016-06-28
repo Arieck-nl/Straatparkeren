@@ -27,7 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Start interface controllers for monitoring
         themeCntrl = ThemeController.sharedInstance
-        themeCntrl!.start()
+        if DD.BRIGHTNESS_ON{
+            themeCntrl!.start()
+        }
         
         interfaceCntrl = InterfaceModeController.sharedInstance
         if defaults.isInSafetyMode(){ interfaceCntrl?.start() }

@@ -61,13 +61,17 @@ class MapSearchController: NSObject {
                 return
             }
             let placemark : CLPlacemark = placemarks![0]
-            let mapItem = NSMapItem(
-                title: placemark.name! + ", " + placemark.subAdministrativeArea!,
-                lat: (placemark.location?.coordinate.latitude.toString)!,
-                long: (placemark.location?.coordinate.longitude.toString)!
-            )
             
-            success(mapItem: mapItem)
+            if placemark.name != nil && placemark.subAdministrativeArea != nil{
+                
+                let mapItem = NSMapItem(
+                    title: placemark.name! + ", " + placemark.subAdministrativeArea!,
+                    lat: (placemark.location?.coordinate.latitude.toString)!,
+                    long: (placemark.location?.coordinate.longitude.toString)!
+                )
+                
+                success(mapItem: mapItem)
+            }
         }
         
     }

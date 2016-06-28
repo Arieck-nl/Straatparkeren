@@ -127,7 +127,6 @@ class DefaultsController : NSObject{
         
         let savedDurations = getETANotificationDurations()
         let destination = getDestination()
-        print("Destination \(destination?.getCoordinate())")
         if savedDurations.count > 0 && destination != nil{
             LocationDependentController.sharedInstance.setMonitoringForETAsToDestination((destination?.getCoordinate())!, etas: savedDurations)
         }

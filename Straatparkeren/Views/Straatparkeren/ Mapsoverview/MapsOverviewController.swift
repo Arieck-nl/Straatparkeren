@@ -13,7 +13,7 @@ import GLKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     //Number of parking availabilities to render (demo only)
-    static let NPA              : Int = 3
+    static let NPA              : Int = DD.NPA
     static let ALTITUDE         : Double = 750.0
     
     var map                     : MKMapView!
@@ -131,10 +131,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         }
         self.locationSegment.hidden = true
         self.view.addSubview(self.locationSegment)
-        
-        // TODO: Remove this, debugging and demo purposes only
-        LocationDependentController.sharedInstance.setMonitoringForRegions(CLLocationCoordinate2DMake(37.334486, -122.045596), regionSpans: [0.1, 0.3, 0.5, 1.0, 3.0])
-        //        LocationDependentController.sharedInstance.setMonitoringForETAsToDestination(CLLocationCoordinate2DMake(37.333952, -122.077975), etas: [1, 4, 9, 5, 2, 1, 4, 4])
         
         self.tabbar = SPTabbar(frame: CGRectMake(
             0,
@@ -732,11 +728,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.locationSegment.setSelectedFor(STR.home_btn_destination, trigger: false)
             self.locationSegment.hide({_ in})
             self.SPNavBar!.hide({_ in})
+            regionDidChangeTimer?.invalidate()
+            regionDidChangeTimer = nil
             
             setHomeBtn()
         } else if(gesture.state == .Ended){
-            regionDidChangeTimer?.invalidate()
-            regionDidChangeTimer = nil
             regionDidChangeTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(self.startReverseGeoCoding), userInfo: nil, repeats: false)
             
         }
