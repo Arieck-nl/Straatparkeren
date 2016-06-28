@@ -26,9 +26,9 @@ class SPSegmentedControl: UIView {
         for (i,value) in keys.enumerate(){
             
             let segment = SPSegmentButton(frame: CGRect(
-                x: btnWidth * CGFloat(i),
+                x: (btnWidth * CGFloat(i)) + 1,
                 y: 0,
-                w: btnWidth,
+                w: btnWidth - 1,
                 h: btnHeight), image: images[i], text: value)
             
             

@@ -19,54 +19,60 @@ class SettingsTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.backgroundColor = UIColor.clearColor()
         
-        titleLabel = UILabel(
-            x: D.SPACING.REGULAR,
-            y: D.SPACING.REGULAR,
-            w: self.frame.width - (D.SPACING.REGULAR * 2),
-            h: 100,
-            fontSize: D.FONT.XXXLARGE
-        )
-        titleLabel.colorType = .TEXT
-        self.addSubview(titleLabel)
+        if titleLabel == nil{
+            titleLabel = UILabel(
+                x: D.SPACING.REGULAR,
+                y: D.SPACING.REGULAR,
+                w: self.frame.width - (D.SPACING.REGULAR * 2),
+                h: 100,
+                fontSize: D.FONT.XXXLARGE
+            )
+            titleLabel.colorType = .TEXT
+            self.addSubview(titleLabel)
+        }
         
-        subtitleLabel = UILabel(
-            x: D.SPACING.REGULAR,
-            y: D.SPACING.REGULAR + titleLabel.frame.y + D.FONT.XXXLARGE,
-            w: self.frame.width - (D.SPACING.REGULAR * 2) - D.SETTINGS.SWITCH_HEIGHT,
-            h: 100,
-            fontSize: D.FONT.XLARGE
-        )
+        if subtitleLabel == nil{
+            subtitleLabel = UILabel(
+                x: D.SPACING.REGULAR,
+                y: D.SPACING.REGULAR + titleLabel.frame.y + D.FONT.XXXLARGE,
+                w: self.frame.width - (D.SPACING.REGULAR * 2) - D.SETTINGS.SWITCH_HEIGHT,
+                h: 100,
+                fontSize: D.FONT.XLARGE
+            )
+            
+            subtitleLabel.colorType = .TEXT
+            subtitleLabel.opacity = S.OPACITY.DARK
+            subtitleLabel.numberOfLines = 0
+            subtitleLabel.lineBreakMode = .ByWordWrapping
+            
+            self.addSubview(subtitleLabel)
+        }
         
-        subtitleLabel.colorType = .TEXT
-        subtitleLabel.opacity = S.OPACITY.DARK
-        subtitleLabel.numberOfLines = 0
-        subtitleLabel.lineBreakMode = .ByWordWrapping
+        if switchView == nil{
+            switchView = UISwitch(frame: CGRect(
+                x: frame.width - D.SPACING.REGULAR - D.SETTINGS.SWITCH_HEIGHT,
+                y: (D.SETTINGS.ROW_HEIGHT - D.SETTINGS.SWITCH_HEIGHT) / 2,
+                w: D.SETTINGS.SWITCH_HEIGHT,
+                h: D.SETTINGS.SWITCH_HEIGHT
+                ))
+            switchView.colorType = .SWITCH
+            switchView.putColor()
+            switchView.transform = CGAffineTransformMakeScale(D.ELEMENT.MULTIPLIER, D.ELEMENT.MULTIPLIER)
+            
+            self.addSubview(switchView)
+        }
         
-        self.addSubview(subtitleLabel)
-        
-        switchView = UISwitch(frame: CGRect(
-            x: frame.width - D.SPACING.REGULAR - D.SETTINGS.SWITCH_HEIGHT,
-            y: (D.SETTINGS.ROW_HEIGHT - D.SETTINGS.SWITCH_HEIGHT) / 2,
-            w: D.SETTINGS.SWITCH_HEIGHT,
-            h: D.SETTINGS.SWITCH_HEIGHT
-            ))
-        switchView.colorType = .SWITCH
-        switchView.putColor()
-        switchView.transform = CGAffineTransformMakeScale(D.ELEMENT.MULTIPLIER, D.ELEMENT.MULTIPLIER)
-        
-        self.addSubview(switchView)
-        
-        self.addSubview(subtitleLabel)
-        
-        segmentedView = SPMultiSegmentedView(frame: CGRect(
-            x: frame.width - D.SPACING.REGULAR - (D.FONT.XXXLARGE * 3),
-            y: 0,
-            w: (D.SETTINGS.SEGMENTED_HEIGHT * 3),
-            h: (D.SETTINGS.SEGMENTED_HEIGHT * 2)
-            ))
-        
-        self.resetColor()
-        self.addSubview(segmentedView)
+        if segmentedView == nil{
+            segmentedView = SPMultiSegmentedView(frame: CGRect(
+                x: frame.width - D.SPACING.REGULAR - (D.FONT.XXXLARGE * 3),
+                y: 0,
+                w: (D.SETTINGS.SEGMENTED_HEIGHT * 3),
+                h: (D.SETTINGS.SEGMENTED_HEIGHT * 2)
+                ))
+            
+            self.resetColor()
+            self.addSubview(segmentedView)
+        }
         
     }
     
@@ -102,6 +108,10 @@ class SettingsTableCell: UITableViewCell {
             w: self.switchView.frame.width,
             h: self.switchView.frame.height
         )
+    }
+    
+    override func prepareForReuse() {
+        segmentedView.hidden = true
     }
     
     

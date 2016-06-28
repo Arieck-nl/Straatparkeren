@@ -81,9 +81,9 @@ class DefaultsController : NSObject{
     func getLocationNotificationDistances() -> [Double]{
         var items : [Double] = []
         if let decodedObject : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_DEFAULTS.LOCATION_NOTIFICATION) as? NSData{
-            let distances = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as! [Double]
-            
-            items = distances
+            if let distances = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as? [Double]{
+                items = distances
+            }
         }
         return items
     }
@@ -105,6 +105,37 @@ class DefaultsController : NSObject{
             LocationDependentController.sharedInstance.stopMonitoringForRegions()
         }
     }
+    
+    // Return set ETAs for location notification durations
+    func getETANotificationDurations() -> [Int]{
+        var items : [Int] = []
+        if let decodedObject : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_DEFAULTS.ETA_NOTIFICATION) as? NSData{
+            if let durations = NSKeyedUnarchiver.unarchiveObjectWithData(decodedObject) as? [Int]{
+                items = durations
+            }
+        }
+        return items
+    }
+    
+    // Set durations in minutes for location to destination notifications
+    // Pass settings to LocationDependantController as to begin monitoring
+    func setETANotificationDurations(durations : [Int]){
+        let encodedObject : NSData = NSKeyedArchiver.archivedDataWithRootObject(durations as NSArray)
+        
+        defaults.setObject(encodedObject, forKey: USER_DEFAULTS.ETA_NOTIFICATION)
+        defaults.synchronize()
+        
+        let savedDurations = getETANotificationDurations()
+        let destination = getDestination()
+        print("Destination \(destination?.getCoordinate())")
+        if savedDurations.count > 0 && destination != nil{
+            LocationDependentController.sharedInstance.setMonitoringForETAsToDestination((destination?.getCoordinate())!, etas: savedDurations)
+        }
+        else{
+            LocationDependentController.sharedInstance.stopMonitoringForETAsToDestination()
+        }
+    }
+
     
     /** ------- Destination --------*/
     // Set current chosen destination, also update location notification location

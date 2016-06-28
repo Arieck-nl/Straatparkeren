@@ -91,18 +91,21 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
         
         
         // check every minute if current ETA is less than specified ETAs
-        NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(self.isETALessThanSpecified), userInfo: nil, repeats: true)
+        stopMonitoringForETAsToDestination()
+        self.isETALessThanSpecified()
+        self.monitoringTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(self.isETALessThanSpecified), userInfo: nil, repeats: true)
         
     }
     
     func stopMonitoringForETAsToDestination(){
-        monitoringTimer!.invalidate()
-        monitoringTimer = nil
+        if monitoringTimer != nil{
+            monitoringTimer!.invalidate()
+            monitoringTimer = nil
+        }
     }
     
     internal func isETALessThanSpecified(){
         if monitorDestination != nil && monitorETAs?.count > 0{
-            
             // fetch current eta to destination
             let request : MKDirectionsRequest = MKDirectionsRequest()
             request.source = MKMapItem.mapItemForCurrentLocation()
@@ -116,6 +119,7 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
                     print(error)
                 }else{
                     let seconds : Double = (eta?.expectedTravelTime)!
+                    print("It will take you \(seconds) seconds to your destination")
                     
                     for (i, eta) in self.monitorETAs!.enumerate(){
                         if seconds < Double(eta*60){
@@ -123,6 +127,9 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
                             self.monitorETAs!.removeRange(i...((self.monitorETAs?.count)! - 1))
                             
                             //send out notification
+                            var formattedNotification = String(format: STR.notification_eta, arguments: [eta])
+                            formattedNotification += eta == 1 ? STR.notification_eta_minute : STR.notification_eta_minutes
+                            self.sentLocationTrigger(.NOTIFICATION, value: formattedNotification)
                             self.sentLocationTrigger(.ETA, value: eta)
                             break
                         }
@@ -136,7 +143,6 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     // - parameter type: define what kind of location trigger this is
     // - parameter value: provide additional data
     func sentLocationTrigger(type : MONITORING_TYPE, value : AnyObject) {
-        
         let userInfo = ["type" : type.hashValue, "value" : value]
         NSNotificationCenter.defaultCenter().postNotificationName(N.LOCATION_TRIGGER, object: nil, userInfo: userInfo)
         // independent of receiving class, play notification sound

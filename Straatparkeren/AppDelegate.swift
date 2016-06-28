@@ -33,6 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.isInSafetyMode(){ interfaceCntrl?.start() }
         
         locationDependentCntrl = LocationDependentController.sharedInstance
+        let durations = defaults.getETANotificationDurations()
+        if durations.count > 0{
+            locationDependentCntrl?.setMonitoringForETAsToDestination((defaults.getDestination()?.getCoordinate())!, etas: durations)
+        }
         
         
         UIApplication.sharedApplication().statusBarHidden = true

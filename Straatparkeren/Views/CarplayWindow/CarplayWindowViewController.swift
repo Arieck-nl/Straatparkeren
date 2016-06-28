@@ -152,12 +152,22 @@ class CarplayWindowViewController: UIViewController {
         let userInfo : NSDictionary = notification.userInfo!
         
         if let type = userInfo["type"] as? Int{
-            let realType = MONITORING_TYPE(rawValue: type)
-            if realType == .NOTIFICATION{
-                if let title = userInfo["value"] as? String{
-                    notificationView.internalShow(title)
-                }
+            
+            
+            var title = ""
+            if ((userInfo["value"] as? String) != nil){
+                title = (userInfo["value"] as? String)!
+            }
+            
+            if title != ""{
+                let realType : MONITORING_TYPE = MONITORING_TYPE(rawValue: type)!
                 
+                switch realType{
+                case .NOTIFICATION:
+                    notificationView.internalShow(title)
+                default:
+                    break
+                }
             }
         }
         

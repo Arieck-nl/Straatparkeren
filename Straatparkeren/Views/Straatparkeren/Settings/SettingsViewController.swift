@@ -20,7 +20,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     var interfaceCntrl              : InterfaceModeController = InterfaceModeController.sharedInstance
     
     var settingsItems               : [SettingsItem] = []
-    var currentSegmentedValues      : [Double] = []
+    var currentSegmentedValues      : [String] = []
     
     override func viewDidLoad() {
         self.view.colorType = .BACKGROUND
@@ -133,16 +133,35 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
             }
         }
         
+        let durations = defaults.getETANotificationDurations()
+        let setDurations = ["1", "5", "10"]
+        var setDurValues = [false, false, false]
+        for (i, duration) in setDurations.enumerate(){
+            if  durations.contains(Int(duration)!){
+                setDurValues[i] = true
+            }
+        }
+        
         settingsItems = [
             SettingsItem(
                 title: STR.settings_location_title,
                 subtitle: STR.settings_location_subtitle,
                 switchHidden: true,
-                switchValue: defaults.isInSafetyMode(),
+                switchValue: false,
                 tapEvent: #selector(self.setLocationNotifications),
                 segmentedKeys: setDistances,
                 segmentedValues: setValues,
                 segmentedLabel: STR.settings_location_segmented_label
+            ),
+            SettingsItem(
+                title: STR.settings_eta_title,
+                subtitle: STR.settings_eta_subtitle,
+                switchHidden: true,
+                switchValue: false,
+                tapEvent: #selector(self.setETANotifications),
+                segmentedKeys: setDurations,
+                segmentedValues: setDurValues,
+                segmentedLabel: STR.settings_eta_segmented_label
             ),
             SettingsItem(
                 title: STR.settings_destination_title,
@@ -177,6 +196,21 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.reloadData()
         settingsTable.resizeToFitHeight()
         
+    }
+    
+    func getSelectedValues(keys : [String], values : [String]) -> [Bool]{
+        print(keys)
+        print(values)
+        var selectedValues : [Bool] = []
+        
+        for key in keys{
+            if  values.contains(key){
+                selectedValues.append(true)
+            }else{
+                selectedValues.append(false)
+            }
+        }
+        return selectedValues
     }
     
     override func setDayMode(){
@@ -215,7 +249,13 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     
     /** Selector functions */
     func setLocationNotifications(){
-        defaults.setLocationNotificationDistances(self.currentSegmentedValues)
+        let values = self.currentSegmentedValues.map({Double($0)!})
+        defaults.setLocationNotificationDistances(values)
+    }
+
+    func setETANotifications(){
+        let values = self.currentSegmentedValues.map({Int($0)!})
+        defaults.setETANotificationDurations(values)
     }
     
     func toggleDestinationNotification(){
@@ -259,6 +299,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! SettingsTableCell
         cell.switchView.on = !cell.switchView.on
+        settingsItem.switchValue = cell.switchView.on
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
@@ -278,15 +319,23 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         // Initiate custom segmented view
         if settingsItem.segmentedKeys != nil && settingsItem.segmentedValues != nil && settingsItem.segmentedLabel != ""{
             cell.segmentedView.setValues(settingsItem.segmentedKeys!, values: settingsItem.segmentedValues!, rightText: settingsItem.segmentedLabel!, tapHandler: {
+                settingsItem.segmentedValues = self.getSelectedValues(settingsItem.segmentedKeys!, values: cell.segmentedView.getSelectedValues())
                 self.currentSegmentedValues = cell.segmentedView.getSelectedValues()
                 self.performSelector(settingsItem.tapEvent!)
-            })
+                self.currentSegmentedValues = []
+                }
+            )
+            cell.segmentedView.hidden = false
         }
         
         // Reset view frames
         cell.resetViews()
         
-        if settingsItem.switchHidden! || settingsItem.segmentedValues != nil {cell.switchView.hidden = true}
+        if settingsItem.switchHidden! || settingsItem.segmentedValues != nil {
+            cell.switchView.hidden = true
+        }else{
+            cell.switchView.hidden = false
+        }
         if settingsItem.switchValue != nil {cell.switchView.on = settingsItem.switchValue!}
         
         if settingsItem.tapEvent != nil {

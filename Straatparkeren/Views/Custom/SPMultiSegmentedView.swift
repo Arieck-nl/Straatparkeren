@@ -13,23 +13,23 @@ class SPMultiSegmentedView: UIView {
     static let selectedColor = DefaultsController.sharedInstance.getCurrentTheme().BACKGROUND
     static let unselectedColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT
     
-    internal var iValues : [Double] = []
-    internal var kValues : [String] = []
+    internal var selectedValues : [String] = []
+    internal var keyValues : [String] = []
     
     var rightLabel : UILabel?
         
-    internal func toggleValue(value : Double){
-        if(self.iValues.contains(value)){
-            self.iValues.removeObject(value)
+    internal func toggleValue(value : String){
+        if(self.selectedValues.contains(value)){
+            self.selectedValues.removeObject(value)
         }else{
-            self.iValues.append(value)
+            self.selectedValues.append(value)
         }
     }
     
     func setValues(keys : [String], values : [Bool], rightText : String = "", tapHandler: () -> Void){
 
         self.removeSubviews()
-        self.kValues = keys
+        self.keyValues = keys
         let btnWidth = self.frame.width / CGFloat(values.count)
         let btnHeight = self.frame.height / 2
         var keyCount = 0
@@ -41,13 +41,13 @@ class SPMultiSegmentedView: UIView {
                 h: btnHeight))
             segment.setTitle(keys[i], forState: .Normal)
             
-            if value {self.iValues.append(Double(keys[i])!)}
+            if value {self.selectedValues.append(keys[i])}
             segment.selected = value
             keyCount += 1
             
             
             segment.addTapGesture(action: { (UITapGestureRecognizer) in
-                self.toggleValue(Double(segment.currentTitle!)!)
+                self.toggleValue(segment.currentTitle!)
                 tapHandler()
                 segment.selected = !segment.selected
             })
@@ -75,11 +75,11 @@ class SPMultiSegmentedView: UIView {
     }
     
     func getValues() -> [String]{
-        return self.kValues
+        return self.keyValues
     }
     
-    func getSelectedValues() -> [Double]{
-        return self.iValues
+    func getSelectedValues() -> [String]{
+        return self.selectedValues
     }
     
 }
