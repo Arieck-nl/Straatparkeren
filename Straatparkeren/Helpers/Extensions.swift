@@ -25,13 +25,13 @@ private var storedOpacity : UInt8 = 0
 extension UIView{
     
     // UIView extension to provide default hide and show with animation
-    func show(){
+    func show(aninimationDuration : Double = ANI.DUR.FAST){
         if(self.hidden){
             self.alpha = 0.0
             self.hidden = false
             
             self.animate(
-                duration: ANI.DUR.FAST,
+                duration: aninimationDuration,
                 animations: {
                     self.alpha = 1.0
                 },
@@ -43,12 +43,16 @@ extension UIView{
         
     }
     
-    // Pass along completionHandler
-    func hide(completionHandler : Bool -> Void){
+    func hide(completionHandler : Bool -> Void = {_ in }){
+        self.hide(ANI.DUR.FAST, completionHandler: completionHandler)
+    }
+    
+    // Pass along completionHandler and possible animation duration
+    func hide( animationDuration : Double = ANI.DUR.FAST, completionHandler : Bool -> Void = {_ in }){
         if(!self.hidden){
             self.alpha = 1.0
             self.animate(
-                duration: ANI.DUR.FAST,
+                duration: animationDuration,
                 animations: {
                     self.alpha = 0.0
                 },

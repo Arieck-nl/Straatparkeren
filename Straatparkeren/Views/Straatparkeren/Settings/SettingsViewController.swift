@@ -223,6 +223,15 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
     }
     
+    override func setMinimalMode(){
+    }
+    
+    override func setMediumMode(){
+    }
+    
+    override func setMaximalMode(){
+    }
+    
     func showInfoView(){
         if(self.infoView != nil){
             self.infoView?.removeFromSuperview()

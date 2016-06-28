@@ -13,7 +13,7 @@ import GLKit
 class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     //Number of parking availabilities to render (demo only)
-    static let NPA              : Int = 0
+    static let NPA              : Int = 3
     static let ALTITUDE         : Double = 750.0
     
     var map                     : MKMapView!
@@ -598,11 +598,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     // - parameter snapToRoad: if true, provides polylines are accurately drawn along roads
     // - parameter minimal: if true, only free parking availabilties are drawn
     func renderParkingPolylines(parkingAvailabilities : [ParkingAvailability], snapToRoad : Bool = true, minimal : Bool = false){
-        self.currentPAs = []
         
         for parkingAvailability in parkingAvailabilities{
             
             if(snapToRoad){
+                self.currentPAs = []
+                self.map.removeOverlays(map.overlays)
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.map.addAnnotations(self.currentAnnotations)
+                })
                 // Convert polylines
                 GoogleAPIController.sharedInstance.snapToRoad(parkingAvailability.polylinePoints, success: {(polyline) -> Void in
                     parkingAvailability.polylinePoints = polyline
@@ -794,7 +798,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     override func setMinimalMode(){
         print("minimal mode map activated")
-        self.setCustomToolbarHidden(true)
+        self.SPNavBar!.hide(ANI.DUR.GRADUALLY, completionHandler: {_ in
+            self.setHomeBtn()
+        })
+        self.searchBar!.hide(ANI.DUR.GRADUALLY)
+        self.tabbar!.hide(ANI.DUR.GRADUALLY)
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
@@ -805,8 +813,12 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     override func setMediumMode(){
-        print("minimal mode map activated")
-        self.setCustomToolbarHidden(true)
+        print("medium mode map activated")
+        self.SPNavBar!.hide(ANI.DUR.GRADUALLY, completionHandler: {_ in
+            self.setHomeBtn()
+        })
+        self.searchBar!.hide(ANI.DUR.GRADUALLY)
+        self.tabbar!.hide(ANI.DUR.GRADUALLY)
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
@@ -816,7 +828,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     override func setMaximalMode(){
-        print("minimal mode map activated")
+        print("maximal mode map activated")
+        self.tabbar!.show(ANI.DUR.GRADUALLY)
+        self.setHomeBtn()
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
