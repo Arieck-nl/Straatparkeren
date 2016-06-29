@@ -8,8 +8,6 @@
 
 import UIKit
 import MapKit
-import GPUImage
-import AVFoundation
 
 // implement protocol along with notification listeners
 protocol ThemeProtocol{

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import GPUImage
-import AVFoundation
 
 class SpringboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
@@ -102,7 +100,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
     }
     
     func pushMapsOverviewVC(){
-        if !(self.navigationController?.visibleViewController is MapsOverviewController && self.navigationController != nil){
+        if self.navigationController?.visibleViewController is SpringboardViewController{
             UIView.animateWithDuration(0.75, animations: { () -> Void in
                 UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
                 self.navigationController?.pushViewController(self.vc!, animated: false)

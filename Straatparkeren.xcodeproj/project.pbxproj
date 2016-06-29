@@ -30,8 +30,6 @@
 		1D631E741D1BECCB00C98B99 /* SPSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D631E731D1BECCB00C98B99 /* SPSegmentedControl.swift */; };
 		1D669F1C1CFDC1BF00C63A53 /* StraatparkerenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */; };
 		1D7B406D1CEF0B5A00141D65 /* SPOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */; };
-		1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; };
-		1D82264F1D01D2470029901F /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 1D8226481D01D2120029901F /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D86712E1D06007D00209281 /* SPNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D86712D1D06007D00209281 /* SPNotificationView.swift */; };
 		1D8671311D06AC3B00209281 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8671301D06AC3B00209281 /* Extensions.swift */; };
 		1D899AF01D00328A006E4527 /* LocationDependentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D899AEF1D00328A006E4527 /* LocationDependentController.swift */; };
@@ -58,27 +56,6 @@
 			remoteGlobalIDString = 1DEA93351CE0A7FC003917CE;
 			remoteInfo = Straatparkeren;
 		};
-		1D8226471D01D2120029901F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCD1B1251C66A262001F2BDC;
-			remoteInfo = GPUImage;
-		};
-		1D8226491D01D2120029901F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BCD1B12F1C66A262001F2BDC;
-			remoteInfo = GPUImageTests;
-		};
-		1D82264B1D01D2190029901F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = BCD1B1241C66A262001F2BDC;
-			remoteInfo = GPUImage;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,7 +65,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1D82264F1D01D2470029901F /* GPUImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,7 +97,6 @@
 		1D669F1B1CFDC1BF00C63A53 /* StraatparkerenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StraatparkerenTests.swift; sourceTree = "<group>"; };
 		1D669F1D1CFDC1BF00C63A53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D7B406C1CEF0B5A00141D65 /* SPOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPOverlayView.swift; sourceTree = "<group>"; };
-		1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = "GPUImage-iOS.xcodeproj"; sourceTree = "<group>"; };
 		1D86712D1D06007D00209281 /* SPNotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPNotificationView.swift; sourceTree = "<group>"; };
 		1D8671301D06AC3B00209281 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		1D899AEF1D00328A006E4527 /* LocationDependentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationDependentController.swift; path = LocationDependent/LocationDependentController.swift; sourceTree = "<group>"; };
@@ -156,7 +131,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D82264E1D01D2400029901F /* GPUImage.framework in Frameworks */,
 				11CD668630238D8147759EFD /* Pods_Straatparkeren.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -230,7 +204,6 @@
 		1D12AE591CF4E70600F8CE71 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				1D2FC8591D01B1EF006A835C /* GPUImage */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
@@ -251,22 +224,6 @@
 			name = MapSearch;
 			sourceTree = "<group>";
 		};
-		1D2FC8591D01B1EF006A835C /* GPUImage */ = {
-			isa = PBXGroup;
-			children = (
-				1D2FCC131D01B833006A835C /* framework */,
-			);
-			path = GPUImage;
-			sourceTree = "<group>";
-		};
-		1D2FCC131D01B833006A835C /* framework */ = {
-			isa = PBXGroup;
-			children = (
-				1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */,
-			);
-			path = framework;
-			sourceTree = "<group>";
-		};
 		1D3B77BD1D0494CB00669999 /* Defaults */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,15 +239,6 @@
 				1D669F1D1CFDC1BF00C63A53 /* Info.plist */,
 			);
 			path = StraatparkerenTests;
-			sourceTree = "<group>";
-		};
-		1D8226431D01D2110029901F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1D8226481D01D2120029901F /* GPUImage.framework */,
-				1D82264A1D01D2120029901F /* GPUImageTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		1D899AEC1D0031B4006E4527 /* LocationDependent */ = {
@@ -463,7 +411,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				1D82264C1D01D2190029901F /* PBXTargetDependency */,
 			);
 			name = Straatparkeren;
 			productName = Straatparkeren;
@@ -501,12 +448,6 @@
 			mainGroup = 1DEA932D1CE0A7FC003917CE;
 			productRefGroup = 1DEA93371CE0A7FD003917CE /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 1D8226431D01D2110029901F /* Products */;
-					ProjectRef = 1D8226421D01D2110029901F /* GPUImage-iOS.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1DEA93351CE0A7FC003917CE /* Straatparkeren */,
@@ -514,23 +455,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		1D8226481D01D2120029901F /* GPUImage.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GPUImage.framework;
-			remoteRef = 1D8226471D01D2120029901F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1D82264A1D01D2120029901F /* GPUImageTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests.xctest;
-			remoteRef = 1D8226491D01D2120029901F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D669F171CFDC1BF00C63A53 /* Resources */ = {
@@ -657,11 +581,6 @@
 			isa = PBXTargetDependency;
 			target = 1DEA93351CE0A7FC003917CE /* Straatparkeren */;
 			targetProxy = 1D669F1E1CFDC1BF00C63A53 /* PBXContainerItemProxy */;
-		};
-		1D82264C1D01D2190029901F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = GPUImage;
-			targetProxy = 1D82264B1D01D2190029901F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -24,7 +24,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         self.view.colorType = .BACKGROUND
-        
+        super.viewDidLoad()
+        self.setCustomToolbarHidden(true)
         // Back button
         backBtn = SPNavButtonView(frame: CGRectMake(
             0,
@@ -39,6 +40,19 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         backBtn.btnIcon?.colorType = .BUTTON
         backBtn.btnText?.colorType = .BUTTON
         self.view.addSubview(backBtn)
+        
+        let infoImg = UIImage(named: "InfoIcon")!.imageWithRenderingMode(.AlwaysTemplate)
+        self.infoBtn = UIImageView(
+            x: D.SCREEN_WIDTH - D.BTN.HEIGHT.REGULAR - D.SPACING.XLARGE,
+            y: D.SPACING.XLARGE,
+            w: D.BTN.HEIGHT.REGULAR,
+            h: D.BTN.HEIGHT.REGULAR,
+            image: infoImg)
+        self.infoBtn.colorType = .BUTTON
+        self.view.addSubview(self.infoBtn)
+        self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
+            self.infoView.show()
+        }
         
         // Table view
         settingsTable = UITableView(frame: CGRect(
@@ -55,6 +69,8 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.separatorStyle = .SingleLine
     
         view.addSubview(settingsTable!)
+        
+        self.setInfoView()
         
         upBtn = UIButton(frame: CGRect(
             x: settingsTable.frame.x + settingsTable.frame.width + D.SPACING.LARGE,
@@ -101,25 +117,9 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         }
         self.view.addSubview(downBtn)
         
-        let infoImg = UIImage(named: "InfoIcon")!.imageWithRenderingMode(.AlwaysTemplate)
-        self.infoBtn = UIImageView(
-            x: D.SCREEN_WIDTH - D.BTN.HEIGHT.REGULAR - D.SPACING.XLARGE,
-            y: D.SPACING.XLARGE,
-            w: D.BTN.HEIGHT.REGULAR,
-            h: D.BTN.HEIGHT.REGULAR,
-            image: infoImg)
-        self.infoBtn.colorType = .BUTTON
-        self.view.addSubview(self.infoBtn)
-        self.infoBtn.addTapGesture { (UITapGestureRecognizer) in
-            self.showInfoView()
-        }
-        
-        super.viewDidLoad()
-        self.setCustomToolbarHidden(true)
         self.view.resetColor(false)
         
         addSettings()
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -242,11 +242,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     override func setMaximalMode(){
     }
     
-    func showInfoView(){
-        if(self.infoView != nil){
-            self.infoView?.removeFromSuperview()
-            self.infoView = nil
-        }
+    func setInfoView(){
         self.infoView = SPOverlayView(frame: CGRect(
             x: D.SCREEN_WIDTH * 0.125,
             y: D.SCREEN_HEIGHT * 0.15,
@@ -259,11 +255,14 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         self.infoView.iconView.tintColor = C.TEXT
         self.infoView.textLabel.colorType = nil
         self.infoView.textLabel.textColor = C.TEXT
+        removeGestureRecognizers(self.infoView.dismissBtn)
+        self.infoView.dismissBtn.addTapGesture { (UITapGestureRecognizer) in
+            self.infoView.hide({_ in})
+        }
         self.infoView.colorType = .HIGH_CONTRAST
         self.infoView.opacity = S.OPACITY.XXDARK
-        self.infoView.resetColor(false)
+        self.infoView.hidden = true
         self.view.addSubview(self.infoView!)
-        self.infoView!.show()
     }
     
     /** Selector functions */
@@ -363,10 +362,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         }
         
         return cell
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        print("check")
     }
     
 }

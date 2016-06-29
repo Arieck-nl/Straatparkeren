@@ -22,6 +22,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     var autocompleteTimer       : NSTimer?
     var regionDidChangeTimer    : NSTimer?
     var trackingModeTimer       : NSTimer?
+    var confirmBtnTimer         : NSTimer?
     var mapItems                : [NSMapItem] = []
     var currentResultLocation   : NSMapItem?
     var isCurrentLocation       : Bool = true
@@ -62,6 +63,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.showsPointsOfInterest = false
         map.showsUserLocation = true
         map.clipsToBounds = true
+        map.userInteractionEnabled = true
         map.scrollEnabled = true
         map.pitchEnabled = true
         map.zoomEnabled = true
@@ -267,7 +269,11 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func showConfirmBtn(){
         self.confirmBtn.show()
-        NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(self.hideConfirmBtn), userInfo: nil, repeats: false)
+        if self.confirmBtnTimer != nil{
+            self.confirmBtnTimer?.invalidate()
+            self.confirmBtnTimer = nil
+        }
+        self.confirmBtnTimer = NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(self.hideConfirmBtn), userInfo: nil, repeats: false)
         generateParkingAvailabilitiesForCenter()
         
     }
@@ -280,7 +286,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         if self.tableView.hidden{
             showFavoritesList()
         }else{
-            self.tableView.hide({_ in})
+            self.tableView.hide({_ in
+            })
         }
     }
     
@@ -346,16 +353,18 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func hideSearchBar(){
         //hide
-        searchBar!.hidden = true
+        searchBar?.hide({_ in
+        })
         searchBar!.text = ""
         setFavoriteForNavBtn()
-        setHomeBtn()
-        self.SPNavBar?.hidden = true
+        self.SPNavBar?.hide({_ in
+            self.setHomeBtn()
+        })
         mapItems = []
         tableView.reloadData()
         searchBar?.resignFirstResponder()
         resizeTableHeight()
-        self.tableView.hidden = true
+        self.tableView.hide({_ in})
     }
     
     func setFavoriteForNavBtn(fromGeocoding : Bool = false){
@@ -718,7 +727,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
                 generateParkingAvailabilities(searchResult.getCoordinate())
             }
             self.SPNavBar?.hidden = false
-            setHomeBtn()
+            self.setHomeBtn()
             self.locationSegment.show()
         }
         
@@ -734,6 +743,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.confirmBtn.hide({_ in})
             self.locationSegment.setSelectedFor(STR.home_btn_destination, trigger: false)
             self.locationSegment.hide({_ in})
+            self.hideSearchBar()
             self.SPNavBar!.hide({_ in})
             regionDidChangeTimer?.invalidate()
             regionDidChangeTimer = nil
@@ -789,12 +799,14 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     override func setDayMode(){
         self.view.resetColor()
         self.searchBar?.setNeedsDisplay()
+        self.searchBar?.keyboardAppearance = DefaultsController.sharedInstance.getCurrentTheme().KEYBOARD
         tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
     }
     
     override func setNightMode(){
         self.view.resetColor()
         self.searchBar?.setNeedsDisplay()
+        self.searchBar?.keyboardAppearance = DefaultsController.sharedInstance.getCurrentTheme().KEYBOARD
         tableView.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
     }
     
@@ -842,9 +854,5 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.map.addAnnotations(self.currentAnnotations)
         })
         renderParkingPolylines(currentPAs, snapToRoad: false, minimal: false)
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        print("maps tap")
     }
 }

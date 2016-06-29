@@ -117,8 +117,9 @@ extension UIView{
 extension UITextView{
     override func setColor(animated : Bool = true){
         if(colorType != nil){
+            let duration = animated ? ANI.DUR.GRADUALLY : 0
             self.animate(
-                duration: ANI.DUR.GRADUALLY,
+                duration: duration,
                 animations: {
                     self.textColor = self.colorType?.color
                 },
@@ -155,8 +156,9 @@ extension UISwitch{
 extension UIImageView{
     override func setColor(animated : Bool = true){
         if(colorType != nil){
+            let duration = animated ? ANI.DUR.GRADUALLY : 0
             self.animate(
-                duration: ANI.DUR.GRADUALLY,
+                duration: duration,
                 animations: {
                     self.tintColor = self.colorType?.color.colorWithAlphaComponent(self.opacity)
                 },
@@ -170,7 +172,8 @@ extension UIImageView{
 extension UILabel{
     override func setColor(animated : Bool = true){
         if(colorType != nil){
-            UIView.transitionWithView(self, duration: ANI.DUR.GRADUALLY, options: .TransitionCrossDissolve, animations: {
+            let duration = animated ? ANI.DUR.GRADUALLY : 0
+            UIView.transitionWithView(self, duration: duration, options: .TransitionCrossDissolve, animations: {
                 self.textColor = self.colorType?.color
                 }, completion: { (Bool) in
             })
