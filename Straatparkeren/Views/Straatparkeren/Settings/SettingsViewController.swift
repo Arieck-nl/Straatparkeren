@@ -24,7 +24,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         self.view.colorType = .BACKGROUND
-        self.view.opacity = S.OPACITY.XDARK
         
         // Back button
         backBtn = SPNavButtonView(frame: CGRectMake(
@@ -122,6 +121,18 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        
+        let nextVCName = self.navigationController?.topViewController?.className
+        if nextVCName == SpringboardViewController.className{
+            UIView.animateWithDuration(0.75, animations: { () -> Void in
+                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
+                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, forView: self.navigationController!.view, cache: false)
+            })
+        }
+        
+    }
+    
     // Provide settings for tableview
     func addSettings(){
         let distances = defaults.getLocationNotificationDistances()
@@ -199,8 +210,6 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     }
     
     func getSelectedValues(keys : [String], values : [String]) -> [Bool]{
-        print(keys)
-        print(values)
         var selectedValues : [Bool] = []
         
         for key in keys{

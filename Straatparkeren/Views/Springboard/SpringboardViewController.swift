@@ -30,6 +30,15 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.openApp), name: N.LOCATION_TRIGGER, object: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        if animated{
+            UIView.animateWithDuration(0.75, animations: { () -> Void in
+                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
+                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view!, cache: false)
+            })
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -97,7 +106,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
             UIView.animateWithDuration(0.75, animations: { () -> Void in
                 UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
                 self.navigationController?.pushViewController(self.vc!, animated: false)
-                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromRight, forView: self.navigationController!.view!, cache: false)
+                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, forView: self.navigationController!.view!, cache: false)
             })
         }
     }

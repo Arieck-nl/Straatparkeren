@@ -126,6 +126,7 @@ class CarplayWindowViewController: UIViewController {
     }
     
     func dismissCurrentVC(){
+        print(self.springboardNavVC?.topViewController?.className)
         self.springboardNavVC!.popToRootViewControllerAnimated(true)
     }
     

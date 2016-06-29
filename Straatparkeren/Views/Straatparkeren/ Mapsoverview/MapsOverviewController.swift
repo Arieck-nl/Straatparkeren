@@ -142,7 +142,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         // Tabbar gestures
         tabbar.settingsBtn.addTapGesture { (UITapGestureRecognizer) in
             let settingsVC = SettingsViewController()
-            self.navigationController?.pushViewController(settingsVC, animated: false)
+            self.navigationController?.pushViewController(settingsVC, animated: true)
         }
         tabbar.searchBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleSearchBar))
         tabbar.favoritesBtn.addTapGesture(target: self, action: #selector(MapsOverviewController.toggleFavoritesList))
@@ -441,12 +441,15 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     override func viewWillDisappear(animated: Bool) {
-        // Animation when view will dissapear
-        // TODO: change this animation
-        UIView.animateWithDuration(0.75, animations: { () -> Void in
-            UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
-            UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, forView: self.navigationController!.view, cache: false)
-        })
+        
+        let nextVCName = self.navigationController?.topViewController?.className
+        if nextVCName == SpringboardViewController.className{
+            UIView.animateWithDuration(0.75, animations: { () -> Void in
+                UIView.setAnimationCurve(UIViewAnimationCurve.EaseInOut)
+                UIView.setAnimationTransition(UIViewAnimationTransition.FlipFromLeft, forView: self.navigationController!.view, cache: false)
+            })
+        }
+        
     }
     
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
@@ -492,7 +495,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let direction = newHeading.trueHeading
         
         // Rotate user annotation according to heading
-        let transform : CGAffineTransform  = CGAffineTransformMakeRotation(CGFloat(GLKMathDegreesToRadians(Float(direction))))
         self.mapCamera.heading = newHeading.trueHeading
         if self.isCurrentLocation{
             map.setCamera(self.mapCamera, animated: false)
