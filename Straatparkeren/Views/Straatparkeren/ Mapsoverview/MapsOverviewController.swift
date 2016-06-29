@@ -267,8 +267,13 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     func showConfirmBtn(){
         self.confirmBtn.show()
+        NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(self.hideConfirmBtn), userInfo: nil, repeats: false)
         generateParkingAvailabilitiesForCenter()
         
+    }
+    
+    func hideConfirmBtn(){
+        self.confirmBtn.hide({ _ in})
     }
     
     func toggleFavoritesList(){
@@ -384,27 +389,35 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         tableView.hidden = true
     }
     
-    func setHomeBtn(){
+    func setHomeBtn(animated : Bool = false, forcedUp : Bool = false){
         
         if self.SPNavBar == nil{
             return
         }
-        print("spnavbar: \(self.SPNavBar!.hidden) and searchbar \(self.searchBar!.hidden)")
-        print((self.SPNavBar!.hidden || self.searchBar!.hidden) || (self.SPNavBar!.hidden && self.searchBar!.hidden))
-        if self.SPNavBar!.hidden  || (self.SPNavBar!.hidden && self.searchBar!.hidden){
-            self.locationSegment?.frame = CGRect(
+        
+        var frame : CGRect!
+        if self.SPNavBar!.hidden  || (self.SPNavBar!.hidden && self.searchBar!.hidden) || forcedUp{
+            frame = CGRect(
                 x: 0,
                 y: 0,
                 w: D.BTN.HEIGHT.XLARGE * 2,
                 h: D.BTN.HEIGHT.XLARGE
             )
         }else{
-            self.locationSegment?.frame = CGRect(
+            frame = CGRect(
                 x: 0,
                 y: D.NAVBAR.HEIGHT,
                 w: D.BTN.HEIGHT.XLARGE * 2,
                 h: D.BTN.HEIGHT.XLARGE
             )
+        }
+        
+        if animated {
+            self.locationSegment.animate(duration: ANI.DUR.GRADUALLY, animations: {
+                self.locationSegment.frame = frame
+            })
+        }else{
+            self.locationSegment.frame = frame
         }
     }
     
@@ -789,8 +802,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     override func setMinimalMode(){
         print("minimal mode map activated")
         self.SPNavBar!.hide(ANI.DUR.GRADUALLY, completionHandler: {_ in
-            self.setHomeBtn()
+            self.searchBar?.resignFirstResponder()
         })
+        self.setHomeBtn(true, forcedUp: true)
         self.searchBar!.hide(ANI.DUR.GRADUALLY)
         self.tabbar!.hide(ANI.DUR.GRADUALLY)
         
@@ -805,8 +819,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     override func setMediumMode(){
         print("medium mode map activated")
         self.SPNavBar!.hide(ANI.DUR.GRADUALLY, completionHandler: {_ in
-            self.setHomeBtn()
+            self.searchBar?.resignFirstResponder()
         })
+        self.setHomeBtn(true, forcedUp: true)
         self.searchBar!.hide(ANI.DUR.GRADUALLY)
         self.tabbar!.hide(ANI.DUR.GRADUALLY)
         
@@ -820,7 +835,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     override func setMaximalMode(){
         print("maximal mode map activated")
         self.tabbar!.show(ANI.DUR.GRADUALLY)
-        self.setHomeBtn()
+        self.setHomeBtn(true)
         
         map.removeOverlays(map.overlays)
         dispatch_async(dispatch_get_main_queue(), {
