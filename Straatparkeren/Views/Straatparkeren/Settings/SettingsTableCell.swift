@@ -70,7 +70,7 @@ class SettingsTableCell: UITableViewCell {
                 h: (D.SETTINGS.SEGMENTED_HEIGHT * 2)
                 ))
             
-            self.resetColor()
+            self.resetColor(false)
             self.addSubview(segmentedView)
         }
         

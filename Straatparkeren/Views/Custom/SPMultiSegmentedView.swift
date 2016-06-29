@@ -69,7 +69,7 @@ class SPMultiSegmentedView: UIView {
             rightLabel!.fitHeight()
             
             self.addSubview(rightLabel!)
-            self.resetColor()
+            self.resetColor(false)
         }
 
     }

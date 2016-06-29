@@ -21,7 +21,7 @@ class MapSearchResultViewCell: UITableViewCell {
         self.colorType = .BACKGROUND
         self.opacity = S.OPACITY.DARK
         
-        self.resetColor()
+        self.resetColor(false)
     }
     
     required init?(coder aDecoder: NSCoder) {

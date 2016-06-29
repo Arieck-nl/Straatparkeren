@@ -145,7 +145,7 @@ class DefaultsController : NSObject{
         defaults.synchronize()
         
         self.setLocationNotificationDistances(self.getLocationNotificationDistances())
-        // TODO: implement ETA dependant monitoring?
+        self.setETANotificationDurations(self.getETANotificationDurations())
     }
     
     // Get current set destination

@@ -49,7 +49,6 @@ func removeGestureRecognizers(view : UIView){
 }
 
 // Play system sound for notifications
-// TODO: make generic to receive sound id
 func playNotificationSound(){
     AudioServicesPlaySystemSound(SOUND.APP)
 }

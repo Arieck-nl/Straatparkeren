@@ -23,14 +23,17 @@ class SPViewController: UIViewController, ThemeProtocol, InterfaceModeProtocol {
         setToolbar()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        let window = view.window!
+        let gr0 = window.gestureRecognizers![0] as UIGestureRecognizer
+        let gr1 = window.gestureRecognizers![1] as UIGestureRecognizer
+        gr0.delaysTouchesBegan = false
+        gr1.delaysTouchesBegan = false
+    }
+    
     func setToolbar(){
         SPNavBar = SPNavigationBar(frame: CGRectMake(0, 0, D.SCREEN_WIDTH, D.NAVBAR.HEIGHT))
         view.addSubview(SPNavBar!)
-    }
-    
-    func itemSelected(){
-        self.popVC()
-        self.pushVC(SpringboardViewController())
     }
     
     func setCustomToolbarHidden(hidden : Bool){

@@ -53,6 +53,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         settingsTable.dataSource = self
         settingsTable.separatorColor = DefaultsController.sharedInstance.getCurrentTheme().TEXT.colorWithAlphaComponent(S.OPACITY.DARK)
         settingsTable.separatorStyle = .SingleLine
+    
         view.addSubview(settingsTable!)
         
         upBtn = UIButton(frame: CGRect(
@@ -115,7 +116,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         
         super.viewDidLoad()
         self.setCustomToolbarHidden(true)
-        self.view.resetColor()
+        self.view.resetColor(false)
         
         addSettings()
         
@@ -362,6 +363,10 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         }
         
         return cell
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        print("check")
     }
     
 }

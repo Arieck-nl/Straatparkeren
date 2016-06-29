@@ -62,7 +62,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         map.showsPointsOfInterest = false
         map.showsUserLocation = true
         map.clipsToBounds = true
-        map.userInteractionEnabled = true
         map.scrollEnabled = true
         map.pitchEnabled = true
         map.zoomEnabled = true
@@ -102,12 +101,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             locationManager.headingFilter = 2
             willRotateToInterfaceOrientation(.LandscapeLeft, duration: 0)
         }
-        
-        
-        // TODO: Init map with location (later override this with user location)
-        let center = CLLocationCoordinate2DMake(51.9270289, 4.4598485)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
-        self.map.setRegion(region, animated: true)
         
         super.viewDidLoad()
         
@@ -160,7 +153,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             setFirstTimeOverlay()
         }
         
-        self.view.resetColor()
+        self.view.resetColor(false)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -492,8 +485,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     }
     
     func locationManager(manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        let direction = newHeading.trueHeading
-        
         // Rotate user annotation according to heading
         self.mapCamera.heading = newHeading.trueHeading
         if self.isCurrentLocation{
@@ -722,6 +713,7 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     //check if map interaction ended to restart collection of parking availabilities
     func didTapMap(gesture : UIGestureRecognizer){
+        print("map tapped")
         self.isCurrentLocation = false
         if gesture.state == .Began{
             self.tableView.hide({_ in})
@@ -835,5 +827,9 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.map.addAnnotations(self.currentAnnotations)
         })
         renderParkingPolylines(currentPAs, snapToRoad: false, minimal: false)
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        print("maps tap")
     }
 }

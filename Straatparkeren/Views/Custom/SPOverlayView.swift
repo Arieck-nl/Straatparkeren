@@ -65,7 +65,7 @@ class SPOverlayView: UIView {
         
         self.addSubview(textLabel)
         
-        self.resetColor()
+        self.resetColor(false)
     }
     
     required init?(coder aDecoder: NSCoder) {
