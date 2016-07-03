@@ -82,6 +82,17 @@ class SPMultiSegmentedView: UIView {
         return self.selectedValues
     }
     
+    func resetSelected(){
+        self.selectedValues = []
+        self.keyValues = []
+        for subview in self.subviews{
+            if subview is SPMultiSegmentButton{
+                let segment = subview as! SPMultiSegmentButton
+                segment.selected = false
+            }
+        }
+    }
+    
 }
 
 class SPMultiSegmentButton : UIButton{

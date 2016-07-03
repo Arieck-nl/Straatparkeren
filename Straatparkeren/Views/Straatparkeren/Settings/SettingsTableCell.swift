@@ -112,6 +112,7 @@ class SettingsTableCell: UITableViewCell {
     
     override func prepareForReuse() {
         segmentedView.hidden = true
+        segmentedView.resetSelected()
     }
     
     

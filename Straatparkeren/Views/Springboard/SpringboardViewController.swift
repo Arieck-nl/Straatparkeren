@@ -116,7 +116,7 @@ class SpringboardViewController: UIViewController, UICollectionViewDataSource, U
         // if monitoring type is open, open app
         if let type = userInfo["type"] as? Int{
             let realType = MONITORING_TYPE(rawValue: type)
-            if realType == .OPEN{
+            if realType == .REGION{
                 self.pushMapsOverviewVC()
             }
         }

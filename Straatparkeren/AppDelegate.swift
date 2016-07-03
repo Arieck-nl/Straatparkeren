@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         interfaceCntrl = InterfaceModeController.sharedInstance
         
-        print("safety: \(defaults.isInSafetyMode())")
         if defaults.isInSafetyMode(){ interfaceCntrl?.start() }
         
         locationDependentCntrl = LocationDependentController.sharedInstance

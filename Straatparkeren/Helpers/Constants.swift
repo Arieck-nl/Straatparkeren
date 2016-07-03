@@ -39,11 +39,12 @@ public enum PARKING_STATE : Int {
 
 /* DEBUG/DEMO VALUES */
 public struct DD{
-    public static let NPA = 0
+    public static let NPA = 3
     public static let BRIGHTNESS_TRIGGER : CGFloat = 0.75
     public static let BRIGHTNESS_INTERVAL = 2.0
     public static let BRIGHTNESS_STACK = 2 //minimum 2
     public static let BRIGHTNESS_ON = false
+    public static let DEMO_OBSERVER_ETA = "ETA"
 }
 
 // User defaults keys
@@ -134,7 +135,7 @@ public struct STR{
     
     //notifications
     public static let notification_default = NSLocalizedString("Op uw bestemming zijn nu voldoende vrije plaatsen.", comment: "")
-    public static let notification_eta = NSLocalizedString("U bereikt uw bestemming over %d ", comment: "")
+    public static let notification_eta = NSLocalizedString("U bereikt uw bestemming binnen %d ", comment: "")
     public static let notification_eta_minutes = NSLocalizedString("minuten.", comment: "")
     public static let notification_eta_minute = NSLocalizedString("minuut.", comment: "")
 }

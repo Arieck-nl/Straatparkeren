@@ -73,7 +73,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         self.setInfoView()
         
         upBtn = UIButton(frame: CGRect(
-            x: settingsTable.frame.x + settingsTable.frame.width + D.SPACING.LARGE,
+            x: settingsTable.frame.x + settingsTable.frame.width + D.SPACING.XLARGE,
             y: settingsTable.frame.y + (settingsTable.frame.height / 4) - (D.BTN.HEIGHT.REGULAR / 2),
             w: D.BTN.HEIGHT.REGULAR,
             h: D.BTN.HEIGHT.REGULAR
@@ -95,7 +95,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         self.view.addSubview(upBtn)
         
         downBtn = UIButton(frame: CGRect(
-            x: settingsTable.frame.x + settingsTable.frame.width + D.SPACING.LARGE,
+            x: settingsTable.frame.x + settingsTable.frame.width + D.SPACING.XLARGE,
             y: settingsTable.frame.y + (settingsTable.frame.height * 0.75) - (D.BTN.HEIGHT.REGULAR / 2),
             w: D.BTN.HEIGHT.REGULAR,
             h: D.BTN.HEIGHT.REGULAR
@@ -137,7 +137,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
     // Provide settings for tableview
     func addSettings(){
         let distances = defaults.getLocationNotificationDistances()
-        let setDistances = ["1", "3", "5"]
+        let setDistances = ["0.5", "1", "3"]
         var setValues = [false, false, false]
         for (i, distance) in setDistances.enumerate(){
             if  distances.contains(Double(distance)!){
@@ -335,7 +335,7 @@ class SettingsViewController: SPViewController, UITableViewDelegate, UITableView
         cell.subtitleLabel.text = settingsItem.subtitle != nil ? settingsItem.subtitle : ""
         
         // Initiate custom segmented view
-        if settingsItem.segmentedKeys != nil && settingsItem.segmentedValues != nil && settingsItem.segmentedLabel != ""{
+        if settingsItem.segmentedKeys != nil && settingsItem.segmentedLabel != ""{
             cell.segmentedView.setValues(settingsItem.segmentedKeys!, values: settingsItem.segmentedValues!, rightText: settingsItem.segmentedLabel!, tapHandler: {
                 settingsItem.segmentedValues = self.getSelectedValues(settingsItem.segmentedKeys!, values: cell.segmentedView.getSelectedValues())
                 self.currentSegmentedValues = cell.segmentedView.getSelectedValues()

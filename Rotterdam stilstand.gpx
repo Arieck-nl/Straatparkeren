@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="mapstogpx.com" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+    <metadata>
+        <link href="http://www.mapstogpx.com">
+            <text>Sverrir Sigmundarson</text>
+        </link>
+        <!--desc>Map data copyright 2016 Google</desc-->
+        <!--copyright author="Google Inc">
+         <year>2015</year>
+         <license>https://developers.google.com/maps/terms</license>
+         </copyright-->
+        <!--url>https://www.google.co.uk/maps/dir/Heemraadssingel+308,+3021+NC+Rotterdam/Essenburgsingel,+Rotterdam/@51.9165918,4.4422795,15z/am=t/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x47c43496acdd17e5:0x333c39b25dc36399!2m2!1d4.457151!2d51.9108597!1m5!1m1!1s0x47c434b8b3def19d:0xfd5e872bcdb692c0!2m2!1d4.4531482!2d51.9222005?hl=en</url-->
+        <time>2016-07-02T14:50:15Z</time>
+    </metadata>
+    <wpt lat="51.913053" lon="4.456120">
+        <name>WP002</name>
+        <time>2016-07-02T14:51:05Z</time>
+    </wpt>
+</gpx>

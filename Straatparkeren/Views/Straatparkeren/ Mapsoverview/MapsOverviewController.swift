@@ -75,9 +75,13 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
         let mapTapRecognizer : UIPanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.didTapMap))
         mapTapRecognizer.delegate = self
         map.addGestureRecognizer(mapTapRecognizer)
-        map.addTapGesture { (UITapGestureRecognizer) in
+        map.addPinchGesture { (UIPinchGestureRecognizer) in
+            self.didTapMap(UIPinchGestureRecognizer)
+        }
+        map.addLongPressGesture { UITapGestureRecognizer in
             self.didTapMap(UITapGestureRecognizer)
         }
+
         view.addSubview(map)
         self.view.bringSubviewToFront(map)
         
@@ -442,6 +446,8 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
             self.confirmBtn.hide({ (Bool) in
             })
             self.isCurrentLocation = true
+            self.regionDidChangeTimer?.invalidate()
+            self.regionDidChangeTimer = nil
             location = self.map.userLocation.coordinate
             self.map.addAnnotations(self.currentAnnotations)
             self.destinationView.show()
@@ -735,7 +741,6 @@ class MapsOverviewController: SPViewController, CLLocationManagerDelegate, MKMap
     
     //check if map interaction ended to restart collection of parking availabilities
     func didTapMap(gesture : UIGestureRecognizer){
-        print("map tapped")
         self.isCurrentLocation = false
         if gesture.state == .Began{
             self.tableView.hide({_ in})

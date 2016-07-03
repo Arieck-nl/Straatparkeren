@@ -42,7 +42,7 @@ class InterfaceModeController {
     private let interval : Double = 15.0
     
     private let mediumTrigger : Double = 0.006
-    private let maximumTrigger : Double = 0.05
+    private let maximumTrigger : Double = 0.035
     
     private let peakTrigger = 15
     // Update every X times per second
@@ -125,7 +125,7 @@ class InterfaceModeController {
                 // If cooldown period is over, interface switching should be enabled again
                 if((timeDiff > self.interval) && (self.stackX.count >= self.peakTrigger)){
                     
-                    print("avgX" + avgX.toString + "avgY" + avgY.toString + "avgZ" + avgZ.toString)
+//                    print("avgX" + avgX.toString + "avgY" + avgY.toString + "avgZ" + avgZ.toString)
                     
                     // If any of the axis averages exceeds predefined values, trigger interface switching
                     if(abs(avgX) > self.maximumTrigger || abs(avgY) > self.maximumTrigger || abs(avgZ) > self.maximumTrigger){

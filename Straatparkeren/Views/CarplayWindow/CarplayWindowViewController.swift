@@ -19,6 +19,7 @@ class CarplayWindowViewController: UIViewController {
     var currentTimeLabel        : UILabel?
     var window                  : UIView?
     var homeBtn                 : UIImageView?
+    var etaLabel                : UILabel!
     var springboardNavVC        : SPNavigationController?
     var notificationView        : SPNotificationView!
     
@@ -27,6 +28,7 @@ class CarplayWindowViewController: UIViewController {
         
         // Listen to visible notification calls
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.displayNotification), name: N.LOCATION_TRIGGER, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.setETA), name: DD.DEMO_OBSERVER_ETA, object: nil)
         
         carplayControl = UIView(frame: CGRect(x: 0, y: 0, w: D.CARPLAY.WIDTH, h: D.SCREEN_HEIGHT))
         carplayControl?.backgroundColor = UIColor.blackColor()
@@ -92,6 +94,24 @@ class CarplayWindowViewController: UIViewController {
         }
         self.window!.addSubview(notificationView)
         
+        self.etaLabel = UILabel(
+            x: 0,
+            y: D.SPACING.SMALL,
+            w: (carplayControl?.frame.width)!,
+            h: 100,
+            fontSize: D.FONT.XXLARGE
+        )
+        let etas = DefaultsController.sharedInstance.getETANotificationDurations()
+        if etas.count == 0{
+            self.etaLabel.hidden = true
+        }
+        self.etaLabel.lineBreakMode = .ByWordWrapping
+        self.etaLabel.numberOfLines = 0
+        self.etaLabel.textAlignment = .Center
+        self.etaLabel.textColor = C.BUTTON.LIGHT.colorWithAlphaComponent(S.OPACITY.XDARK)
+        
+        self.carplayControl?.addSubview(self.etaLabel)
+        
         self.dismissTimer = NSTimer.scheduledTimerWithTimeInterval(CarplayWindowViewController.dismissInterval, target: self, selector: #selector(CarplayWindowViewController.dissmissCurrentVCFromTimer), userInfo: nil, repeats: false)
     }
     
@@ -125,8 +145,26 @@ class CarplayWindowViewController: UIViewController {
         }
     }
     
+    //TEMPORARY, DEMO ONLY
+    func setETA(notification: NSNotification){
+        if let userInfo : NSDictionary = notification.userInfo{
+            
+            if let value = userInfo["value"] as? Int{
+                self.etaLabel.text = "ETA: \(value)s"
+            }
+        }else{
+            let etas = DefaultsController.sharedInstance.getETANotificationDurations()
+            if etas.count > 0{
+                self.etaLabel.text = ""
+                self.etaLabel.show()
+            }else{
+                self.etaLabel.hide({_ in})
+            }
+        }
+        
+    }
+    
     func dismissCurrentVC(){
-        print(self.springboardNavVC?.topViewController?.className)
         self.springboardNavVC!.popToRootViewControllerAnimated(true)
     }
     
@@ -154,7 +192,6 @@ class CarplayWindowViewController: UIViewController {
         
         if let type = userInfo["type"] as? Int{
             
-            
             var title = ""
             if ((userInfo["value"] as? String) != nil){
                 title = (userInfo["value"] as? String)!
@@ -165,7 +202,9 @@ class CarplayWindowViewController: UIViewController {
                 
                 switch realType{
                 case .NOTIFICATION:
-                    notificationView.internalShow(title)
+                    if DefaultsController.sharedInstance.isDestinationNotificationsOn(){
+                        notificationView.internalShow(title)
+                    }
                 default:
                     break
                 }

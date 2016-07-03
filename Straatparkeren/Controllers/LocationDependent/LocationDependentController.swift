@@ -83,6 +83,9 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     // - parameter etas: etas in minutes
     func setMonitoringForETAsToDestination(destination : CLLocationCoordinate2D, etas : [Int]){
         
+        // TEMPORARY, DEMO ONLY
+        NSNotificationCenter.defaultCenter().postNotificationName(DD.DEMO_OBSERVER_ETA, object: nil, userInfo: nil)
+        
         // sort etas as to receive closest eta first, then dismiss others
         var filteredETAs = Array(Set(etas))
         filteredETAs = filteredETAs.sort({ $0 < $1 })
@@ -92,12 +95,14 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
         
         // check every minute if current ETA is less than specified ETAs
         stopMonitoringForETAsToDestination()
-        self.isETALessThanSpecified()
-        self.monitoringTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(self.isETALessThanSpecified), userInfo: nil, repeats: true)
+        self.monitoringTimer = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(self.isETALessThanSpecified), userInfo: nil, repeats: true)
         
     }
     
     func stopMonitoringForETAsToDestination(){
+        // TEMPORARY, DEMO ONLY
+        NSNotificationCenter.defaultCenter().postNotificationName(DD.DEMO_OBSERVER_ETA, object: nil, userInfo: nil)
+        
         if monitoringTimer != nil{
             monitoringTimer!.invalidate()
             monitoringTimer = nil
@@ -116,10 +121,13 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
             let directions : MKDirections = MKDirections(request: request)
             directions.calculateETAWithCompletionHandler { (eta, error) in
                 if(error != nil){
-                    print(error)
+//                    print(error)
                 }else{
                     let seconds : Double = (eta?.expectedTravelTime)!
-                    print("It will take you \(seconds) seconds to your destination")
+                    
+                    // TEMPORARY, DEMO ONLY
+                    let userInfo = ["value" : Int(seconds)]
+                    NSNotificationCenter.defaultCenter().postNotificationName(DD.DEMO_OBSERVER_ETA, object: nil, userInfo: userInfo)
                     
                     for (i, eta) in self.monitorETAs!.enumerate(){
                         if seconds < Double(eta*60){
@@ -153,6 +161,7 @@ class LocationDependentController : NSObject, CLLocationManagerDelegate {
     // When user enters preset region sent out notification
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         self.sentLocationTrigger(.REGION, value: region.identifier)
+        print("entered region: \(region.identifier)")
     }
     
     
